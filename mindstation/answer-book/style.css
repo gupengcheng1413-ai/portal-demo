@@ -341,8 +341,8 @@ body[data-state="depleted"] .books--open .book--small-front {
    ======================================================== */
 .title-img {
   position: absolute;
-  left: 374px; top: 153px;
-  width: 197px; height: 52px;
+  left: 374px; top: 156px;
+  width: 189px; height: 44px;
   z-index: 4;
   filter:
     drop-shadow(0 0 10px rgba(255,200,140,.32))
