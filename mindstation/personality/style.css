@@ -1,0 +1,1584 @@
+/* ============================================================
+   心灵驿站 · 性格认知 — 长条屏 1640×348
+   ============================================================ */
+
+/* codename 装饰字体 — 站酷快乐体(免费, 近似设计稿付费「字魂144号-浪漫体」) */
+@font-face{
+  font-family:"ZCOOL KuaiLe";
+  font-style:normal;font-weight:400;font-display:swap;
+  src:url("assets/fonts/ZCOOLKuaiLe-Regular.ttf") format("truetype");
+}
+
+:root{
+  --bg-night:#0a0d12;
+  --card-dark:#23272e;
+  --card-on:#383b42;
+  --card-on-border:#464953;
+  --text-mute:#7b8396;
+  --text-strong:#cfd6e2;
+  --text-headline:#e6ecf5;
+
+  --grad-cta:linear-gradient(90deg,#03d6a5 0%,#2391ff 100%);
+  --grad-glow:linear-gradient(247deg,#1259ff 16%,#009eb9 57%);
+
+  --c-analysts:#7B61FF;
+  --c-diplomats:#3FBF7F;
+  --c-sentinels:#3F8FFF;
+  --c-explorers:#FFB23F;
+
+  --font-cn:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --font-display:"ZCOOL XiaoWei","Noto Serif SC","Noto Sans SC",serif;
+
+  --t-fast:160ms cubic-bezier(.2,.7,.3,1);
+  --t-mid:240ms cubic-bezier(.2,.7,.3,1);
+  --t-slow:380ms cubic-bezier(.2,.7,.3,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none !important}
+html,body{
+  height:100%;
+  font-family:var(--font-cn);
+  background:var(--bg-night);
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ===== 舞台容器:自适应缩放 (与 v1 主壳一致) ===== */
+.stage{
+  width:100vw;height:100vh;
+  width:100dvw;height:100dvh;
+  display:flex;align-items:center;justify-content:center;
+  background:#000;
+  overflow:hidden;
+}
+.device{
+  position:relative;
+  width:1640px;height:348px;
+  background:var(--bg-night);
+  overflow:hidden;
+  border-radius:14px;
+  transform-origin:top left;
+  --device-scale:1;
+  transform:scale(var(--device-scale));
+  flex-shrink:0;
+  margin-right:calc(-1640px * (1 - var(--device-scale)));
+  margin-bottom:calc(-348px * (1 - var(--device-scale)));
+}
+
+.scene{position:absolute;inset:0;z-index:5}
+.scene[hidden]{display:none}
+.scene.is-entering{animation:sceneIn .42s cubic-bezier(.2,.7,.25,1) forwards}
+@keyframes sceneIn{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}
+.scene.is-leaving{animation:sceneOut .2s ease forwards}
+@keyframes sceneOut{to{opacity:0;transform:translateY(-8px)}}
+
+/* ============================================================
+   1. menu 入口 — 1:1 还原 Figma 4350:1744(整图坐标)
+   ============================================================ */
+.scene-menu{
+  background:linear-gradient(109.2deg,#D1E1FF 11.6%,#EDE9FF 103%);
+}
+
+/* ===== mbti-knowledge 关于 MBTI(Figma 4666:3438) ===== */
+.scene-knowledge{
+  background:linear-gradient(109.2deg,#D1E1FF 11.6%,#EDE9FF 103%);
+}
+.kn-page{
+  position:absolute;inset:0;
+  overflow-x:hidden;overflow-y:auto;
+  scroll-behavior:smooth;scrollbar-width:none;
+}
+.kn-page::-webkit-scrollbar{display:none}
+.kn-back{
+  position:absolute;left:0;top:1px;width:80px;height:68px;
+  padding:0;background:transparent;border:0;display:block;z-index:20;cursor:pointer;
+  transition:opacity var(--t-fast),transform var(--t-fast);
+}
+.kn-back img{display:block;width:80px;height:68px;pointer-events:none;-webkit-user-drag:none}
+.kn-back:hover{opacity:.7}
+.kn-back:active{transform:scale(.92)}
+.kn-title{
+  position:absolute;left:80px;top:12px;
+  font-size:34px;font-weight:500;letter-spacing:1px;color:#3a444d;line-height:46px;z-index:10;
+}
+.kn-card{
+  position:relative;margin:90px 0 0 83px;width:1475px;min-height:764px;
+  background:rgba(255,255,255,.61);border-radius:35px;
+  box-sizing:border-box;padding:40px 43px 56px;
+}
+.kn-page::after{content:"";display:block;height:40px}
+.kn-p{
+  margin:0;font-family:var(--font-cn);font-size:32px;font-weight:500;
+  color:rgba(0,0,0,.6);line-height:1.46;
+}
+.kn-intro{margin-top:0}
+.kn-lead{margin-top:42px}
+.kn-dims{list-style:none;margin:18px 0 0;padding:0}
+.kn-dim{
+  position:relative;padding-left:24px;margin-bottom:18px;
+  font-family:var(--font-cn);font-size:30px;font-weight:400;
+  color:rgba(0,0,0,.6);line-height:1.4;
+}
+.kn-dim:last-child{margin-bottom:0}
+.kn-dim::before{
+  content:"";position:absolute;left:0;top:.6em;
+  width:15px;height:15px;border-radius:50%;background:#696969;
+}
+.kn-dim b{font-weight:700;color:rgba(0,0,0,.6)}
+.kn-outro{margin-top:42px}
+/* 左上返回 — Figma 4350:1804 Group 152(80×68 命中区,SVG 内置箭头位) */
+.m-back{
+  position:absolute;left:0;top:1px;
+  width:80px;height:68px;
+  padding:0;background:transparent;border:0;
+  display:block;
+  z-index:20;
+  cursor:pointer;
+  transition:opacity var(--t-fast),transform var(--t-fast);
+}
+.m-back img{
+  display:block;width:80px;height:68px;
+  pointer-events:none;user-select:none;-webkit-user-drag:none;
+}
+.m-back:hover{opacity:.7}
+.m-back:active{transform:scale(.92)}
+.m-title{
+  position:absolute;left:80px;top:12px;
+  font-size:34px;font-weight:500;letter-spacing:1px;
+  color:#3a444d;line-height:46px;
+  z-index:10;
+}
+/* 右上 ? 帮助按钮 — Figma 4666:3437 Group 298(圆环 1576/21 44×44 + 字框 1581/20 34×46) */
+.m-help{
+  position:absolute;left:1576px;top:21px;
+  width:44px;height:44px;
+  background:transparent;border:0;padding:0;
+  z-index:20;
+  cursor:pointer;
+}
+.m-help::before{
+  content:"";
+  position:absolute;inset:0;
+  border-radius:50%;
+  border:2px solid #3f434d;
+  pointer-events:none;
+}
+.m-help span{
+  position:absolute;left:5px;top:-1px;
+  width:34px;height:46px;
+  font-family:"PingFang TC","PingFang SC","Noto Sans SC",sans-serif;
+  font-size:34px;font-weight:600;line-height:46px;
+  color:#3f434d;
+  text-align:center;
+  display:block;
+}
+
+/* 两张大卡 + illo 合成图,卡身 725×238,illo 顶部溢出到 y=36(向上 53) */
+.mp-cards{
+  position:absolute;left:80px;top:36px;right:80px;
+  height:292px;
+  display:flex;gap:30px;
+}
+.mp-card{
+  position:relative;flex:1;
+  height:238px;
+  margin-top:54px;
+  border-radius:28px;
+  overflow:visible;
+  background:transparent;
+  border:0;padding:0;
+  cursor:pointer;
+}
+.mp-card-bg{
+  position:absolute;left:0;top:-54px;
+  width:100%;height:auto;
+  pointer-events:none;
+  user-select:none;-webkit-user-drag:none;
+}
+/* 右卡 PNG 内 rect 顶端比左卡低 5px(Figma frame y=30 vs 36),需多偏移 5px 才能让两张卡身基线对齐 */
+.mp-card-pick .mp-card-bg{top:-59px}
+.mp-card-text{
+  position:absolute;
+  font-family:var(--font-cn);
+  font-size:36px;font-weight:500;letter-spacing:0;
+  line-height:46px;
+  z-index:2;
+  pointer-events:none;
+  white-space:nowrap;
+}
+/* 开始测试: Figma 整图 (135,150) → 卡内 (55,61) */
+.mp-card-test .mp-card-text{
+  left:55px;top:60px;
+  color:#050441;
+}
+/* 选择 MBTI: Figma 整图 (890,149) → 卡内 (55,60) */
+.mp-card-pick .mp-card-text{
+  left:55px;top:59px;
+  color:#530045;
+}
+@keyframes eggBob{0%{transform:translateY(0) rotate(-2deg)}100%{transform:translateY(-8px) rotate(2deg)}}
+@keyframes eggBob{0%{transform:translateY(0) rotate(-2deg)}100%{transform:translateY(-8px) rotate(2deg)}}
+
+/* ============================================================
+   2. quiz 测试流程 — 对齐 Figma 4364:2157 / 4666:3304
+   ============================================================ */
+.scene-quiz{
+  background:linear-gradient(109.2deg,#BCD2FF 11.6%,#E4DEFF 103%);
+}
+.q-top{
+  position:absolute;left:0;top:0;right:0;height:68px;
+  display:flex;align-items:center;
+  z-index:10;
+}
+.q-back{
+  width:80px;height:68px;flex:0 0 80px;
+  display:grid;place-items:center;
+  color:#3a444d;
+  transition:opacity var(--t-fast);
+}
+.q-back:hover{opacity:.65}
+.q-back:active{transform:scale(.92)}
+.q-num{
+  font-size:34px;font-weight:500;color:#3a444d;
+  line-height:46px;letter-spacing:1px;
+}
+.q-num b{font-weight:700}
+
+.q-stem{
+  position:absolute;left:80px;right:80px;top:58px;
+  font-size:36px;font-weight:500;
+  color:#3a444d;
+  letter-spacing:1px;
+  line-height:46px;
+  text-align:center;
+}
+
+.q-opts{
+  position:absolute;left:319px;top:128px;
+  display:flex;gap:32px;
+}
+.q-opt{
+  width:500px;height:160px;
+  background:rgba(255,255,255,.67);
+  border:4px solid transparent;
+  border-radius:28px;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 40px;
+  text-align:center;
+  transition:background var(--t-fast),border-color var(--t-fast),transform var(--t-fast);
+}
+.q-opt:hover{background:rgba(255,255,255,.85)}
+.q-opt:active{transform:scale(.99)}
+.q-opt.is-picked{
+  background:rgba(201,250,255,.67);
+  border-color:#3EBFFF;
+}
+.q-opt-text{
+  font-size:36px;font-weight:500;
+  color:#7b8396;
+  letter-spacing:1px;
+  line-height:46px;
+}
+
+.q-prev,.q-next{
+  position:absolute;top:185px;
+  font-size:34px;font-weight:500;color:#636973;
+  letter-spacing:1px;line-height:46px;
+  background:none;border:0;padding:6px 14px;
+  transition:color var(--t-fast),transform var(--t-fast);
+}
+.q-prev{left:96px}
+.q-next{right:96px}
+.q-prev:hover{color:#3a444d}
+.q-next:hover:not(:disabled){color:#3a444d}
+.q-prev:active,.q-next:active{transform:scale(.95)}
+.q-prev:disabled{opacity:.35;cursor:not-allowed}
+.q-next:disabled{opacity:.35;cursor:not-allowed}
+
+.q-bar{
+  position:absolute;left:0;right:0;bottom:0;height:20px;
+  background:rgba(255,255,255,.67);
+  overflow:hidden;
+}
+.q-bar-fill{
+  height:100%;width:0;
+  background:rgba(57,90,235,.67);
+  transition:width .35s cubic-bezier(.2,.7,.3,1);
+}
+
+/* quiz 退出确认弹层 */
+.quiz-exit{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.8);
+  z-index:50;
+  display:grid;place-items:center;
+  animation:fadeIn .2s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.qe-title{
+  position:absolute;left:50%;top:105px;
+  transform:translateX(-50%);
+  font-size:34px;font-weight:500;color:#fff;
+  letter-spacing:1px;line-height:46px;
+  text-align:center;
+  white-space:nowrap;
+}
+.qe-actions{
+  position:absolute;left:50%;top:207px;
+  transform:translateX(-50%);
+  display:flex;gap:30px;
+}
+.qe-btn{
+  width:340px;height:80px;border-radius:16px;
+  font-size:36px;font-weight:500;letter-spacing:2px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 25.4px 11px rgba(0,0,0,.09);
+  transition:transform var(--t-fast),filter var(--t-fast);
+}
+.qe-btn:hover{filter:brightness(1.08)}
+.qe-btn:active{transform:scale(.97)}
+.qe-btn-cancel{background:#3a414b;color:#cfd6e2}
+.qe-btn-confirm{background:linear-gradient(90deg,#7187FF,#9A56E9);color:#fff;text-shadow:0 4px 19.1px rgba(7,46,155,.35)}
+
+/* ============================================================
+   2.5 profile 录档 — 像素级对齐 Figma 4364:2274 / 4666:3222
+   ============================================================ */
+.scene-profile{
+  background:linear-gradient(109.2deg,#BCD2FF 11.6%,#E4DEFF 103%);
+}
+/* 顶栏返回 — Figma 4666:3230 Group 152 (0,1) 80×68 */
+.scene-profile .pf-back{
+  position:absolute;left:0;top:1px;
+  width:80px;height:68px;
+  padding:0;background:transparent;border:0;
+  display:block;
+  z-index:20;
+  cursor:pointer;
+  transition:opacity var(--t-fast),transform var(--t-fast);
+}
+.scene-profile .pf-back img{
+  display:block;width:80px;height:68px;
+  pointer-events:none;user-select:none;-webkit-user-drag:none;
+}
+.scene-profile .pf-back:hover{opacity:.7}
+.scene-profile .pf-back:active{transform:scale(.92)}
+
+/* 顶栏标题 — Figma 4666:3238 (80,12) 136×46 "录入档案" 34/46 #3a444d Medium */
+.scene-profile .pf-title-top{
+  position:absolute;left:80px;top:12px;
+  font-family:var(--font-cn);
+  font-size:34px;font-weight:500;
+  color:#3a444d;line-height:46px;letter-spacing:0;
+  z-index:10;
+}
+/* 下一步 — Figma 4666:3252 (1498,30) 102×46 34/46 #636973 Bold opacity 0.3(默认 disabled) */
+.scene-profile .pf-next{
+  position:absolute;left:1498px;top:30px;
+  font-family:var(--font-cn);
+  font-size:34px;font-weight:700;
+  color:#636973;line-height:46px;letter-spacing:0;
+  background:none;border:0;padding:0;
+  opacity:.3;
+  cursor:not-allowed;
+  z-index:10;
+  transition:opacity var(--t-fast),transform var(--t-fast);
+}
+.scene-profile .pf-next.is-on{opacity:1;cursor:pointer}
+.scene-profile .pf-next.is-on:hover{transform:translateX(2px)}
+
+/* 主白底面板 — Figma 4365:2307 Rectangle 196 (212,90) 1216×386 r=35 white */
+.scene-profile .pf-panel{
+  position:absolute;left:212px;top:90px;
+  width:1216px;height:386px;
+  background:#fff;border-radius:35px;
+  z-index:1;
+  pointer-events:none;
+}
+/* 标题"先完善档案哦~" — Figma 4666:3236 (316,140) 363×64 40/62 #3a444d Medium 旋 0.32deg */
+.scene-profile .pf-panel-title{
+  position:absolute;left:316px;top:140px;
+  width:363px;
+  font-family:var(--font-cn);
+  font-size:40px;font-weight:500;
+  color:#3a444d;line-height:62px;letter-spacing:2.4px;
+  transform:rotate(0.32deg);
+  transform-origin:left top;
+  z-index:2;
+  white-space:nowrap;
+}
+
+/* 姓名行容器 — Figma 4666:3239 Group 291 (780,130) 520×80 r=47 bg rgba(232,232,232,.47) */
+.scene-profile .pf-row-name{
+  position:absolute;left:780px;top:130px;
+  width:520px;height:80px;
+  background:rgba(232,232,232,.47);
+  border:0;border-radius:47px;
+  z-index:2;
+  transition:background var(--t-fast);
+}
+.scene-profile .pf-row-name:focus-within{background:rgba(232,232,232,.6)}
+
+/* 关系行容器 — Figma 4666:3244 Group 293 (780,230) 520×80 同样式 */
+.scene-profile .pf-row-relation{
+  position:absolute;left:780px;top:230px;
+  width:520px;height:80px;
+  background:rgba(232,232,232,.47);
+  border:0;border-radius:47px;
+  padding:0;
+  cursor:pointer;
+  z-index:2;
+  transition:background var(--t-fast),transform var(--t-fast);
+}
+.scene-profile .pf-row-relation:hover{background:rgba(232,232,232,.7)}
+.scene-profile .pf-row-relation:active{transform:scale(.99)}
+
+/* "姓名"/"关系" label — Figma 4666:3241 / 4666:3246 (810,147) / (810,247) 68×46
+   34/46 rgba(0,0,0,.64) Medium */
+.scene-profile .pf-row-label{
+  position:absolute;left:30px;top:17px;
+  width:68px;height:46px;
+  font-family:var(--font-cn);
+  font-size:34px;font-weight:500;
+  color:rgba(0,0,0,.64);
+  line-height:46px;letter-spacing:0;
+  pointer-events:none;
+}
+
+/* 姓名输入框 — 输入文本/光标都按 Figma 4666:3298 (896,146) 起,
+   字号 34/46 #3a444d Medium。空态显示 Figma 4365:2318 placeholder + 4365:2317 4×49 橙光标 */
+.scene-profile .pf-input{
+  position:absolute;left:116px;top:17px;
+  width:380px;height:46px;
+  background:transparent;border:0;outline:none;
+  font-family:var(--font-cn);
+  font-size:34px;font-weight:500;
+  color:#3a444d;line-height:46px;letter-spacing:0;
+  caret-color:#ff8a36;
+  padding:0;
+}
+.scene-profile .pf-input::placeholder{
+  font-size:28px;font-weight:500;
+  color:rgba(123,131,150,.52);
+  letter-spacing:0;
+}
+/* 4×49 橙色光标 — Figma 4365:2317 (892,146) 4×49 #ff8a36
+   仅空态显示(input 有值时隐藏);本地光标(caret-color)接力 */
+.scene-profile .pf-cursor{
+  position:absolute;left:112px;top:16px;
+  width:4px;height:49px;
+  background:#ff8a36;
+  pointer-events:none;
+  animation:pfCaretBlink 1s steps(2,end) infinite;
+}
+.scene-profile .pf-row-name:focus-within .pf-cursor,
+.scene-profile .pf-row-name.is-typed .pf-cursor{display:none}
+@keyframes pfCaretBlink{50%{opacity:0}}
+
+/* 未选择/关系值 — Figma 4666:3253 (896,247) 84×46 28/46 rgba(123,131,150,.52) Medium
+   选中后切到 4666:3298 风格 34/46 #3a444d */
+.scene-profile .pf-row-value{
+  position:absolute;left:116px;top:17px;
+  font-family:var(--font-cn);
+  font-size:28px;font-weight:500;
+  color:rgba(123,131,150,.52);
+  line-height:46px;letter-spacing:0;
+  pointer-events:none;
+}
+.scene-profile .pf-row-value.is-on{
+  font-size:34px;color:#3a444d;
+}
+/* 关系箭头 SVG — Figma 4365:2323 Vector 77 (1261,259) 9×22 stroke #7d7d7d w=4 round */
+.scene-profile .pf-row-arrow{
+  position:absolute;left:481px;top:29px;
+  width:9px;height:22px;
+  pointer-events:none;
+  display:block;
+}
+
+/* 关系选择弹层 — 像素级对齐 Figma 4531:541 modal_guanxi_2(默认) / 4365:2324 modal_guanxi_1(选中态参考)
+   遮罩 1640×348 rgba(0,0,0,.7) + 暗色弹层 1640×316 r=40 仅顶部圆角 #18181C(y=39 起) */
+.profile-modal{
+  position:absolute;inset:0;
+  z-index:50;
+  animation:fadeIn .22s ease;
+}
+.pm-mask{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.7);
+}
+.pm-sheet{
+  position:absolute;left:0;top:39px;
+  width:1640px;height:316px;
+  background:#18181C;
+  border-radius:40px 40px 0 0;
+}
+/* 紫色提示 bar — Figma 4531:585 (80,69) 14×42 r=34 #976eff */
+.pm-bar{
+  position:absolute;left:80px;top:69px;
+  width:14px;height:42px;
+  background:#976eff;border-radius:34px;
+  z-index:2;
+}
+/* 顶栏标题 — Figma 4531:584 "选择关系标签" (106,67) 34/46 #636973 Regular */
+.pm-title{
+  position:absolute;left:106px;top:67px;
+  font-family:var(--font-cn);
+  font-size:34px;font-weight:400;
+  color:#636973;line-height:46px;letter-spacing:0;
+  white-space:nowrap;
+  z-index:2;
+}
+/* 顶栏右"确定" — Figma 4531:629 (1487,67) 72×46 36/46 #636973 Medium
+   未选 chip:灰态 #636973 不可点;有 pending 选中后变白 #fff Medium 可点 */
+.pm-confirm{
+  position:absolute;left:1487px;top:67px;
+  width:72px;height:46px;
+  font-family:var(--font-cn);
+  font-size:36px;font-weight:500;
+  color:#636973;line-height:46px;letter-spacing:0;
+  background:none;border:0;padding:0;
+  text-align:left;
+  z-index:2;
+  cursor:not-allowed;
+  transition:color var(--t-fast),transform var(--t-fast);
+}
+.pm-confirm.is-on{color:#fff;cursor:pointer}
+.pm-confirm.is-on:hover{transform:scale(1.04)}
+.pm-confirm.is-on:active{transform:scale(.96)}
+
+/* chip 容器只是逻辑分组,所有 chip 自身绝对定位到 Figma 坐标。
+   不能用 inset:0,否则容器全屏覆盖了"确定"按钮的命中区。 */
+.pm-chips{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none;z-index:2}
+.pm-chips .pm-chip{pointer-events:auto}
+/* 单 chip 公共样式 — Figma Rectangle 158 283×80 r=14 #23272e(默认) / #3a414b(选中) */
+.pm-chip{
+  position:absolute;
+  width:283px;height:80px;
+  background:#23272e;
+  border:0;border-radius:14px;
+  padding:0;
+  cursor:pointer;
+  transition:background var(--t-fast),transform var(--t-fast);
+}
+.pm-chip:hover{background:#2c3138}
+.pm-chip:active{transform:scale(.98)}
+.pm-chip.is-on{background:#3a414b}
+
+/* 6 个 chip 各自坐标 */
+.pm-chip-self     {left:80px;  top:143px}
+.pm-chip-friend   {left:379px; top:143px}
+.pm-chip-classmate{left:678px; top:143px}
+.pm-chip-family   {left:977px; top:143px}
+.pm-chip-teacher  {left:1276px;top:142px}
+.pm-chip-other    {left:80px;  top:239px}
+
+/* chip 内 icon — off/on 两张 SVG 互切。默认 #7b8396 灰图,选中切 Figma 自带荧光色版本 */
+.pm-chip-icon{
+  position:absolute;
+  pointer-events:none;
+  user-select:none;-webkit-user-drag:none;
+  transition:opacity var(--t-fast);
+}
+.pm-chip-icon-on{opacity:0}
+.pm-chip.is-on .pm-chip-icon-off{opacity:0}
+.pm-chip.is-on .pm-chip-icon-on{opacity:1}
+
+/* 6 个 chip 各自的图标尺寸/位置:对 off 与 on 同时生效 */
+.pm-chip-self      .pm-chip-icon{left:82px; top:23px;width:34px;height:34px}
+.pm-chip-friend    .pm-chip-icon{left:83px; top:23px;width:34px;height:34px}
+.pm-chip-classmate .pm-chip-icon{left:80px; top:22px;width:39px;height:39px}
+.pm-chip-family    .pm-chip-icon{left:77px; top:17px;width:45px;height:45px}
+.pm-chip-teacher   .pm-chip-icon{left:81px; top:22px;width:37px;height:37px}
+.pm-chip-other     .pm-chip-icon{left:86px; top:26px;width:28px;height:28px}
+
+/* chip 内文字 — Figma 36/46 #7b8396 Medium,选中切 #fff
+   每个 chip 文字位置不同 */
+.pm-chip-text{
+  position:absolute;
+  font-family:var(--font-cn);
+  font-size:36px;font-weight:500;
+  color:#7b8396;line-height:46px;letter-spacing:0;
+  pointer-events:none;
+  transition:color var(--t-fast);
+}
+.pm-chip.is-on .pm-chip-text{color:#fff}
+
+.pm-chip-self     .pm-chip-text{left:128px;top:17px}
+.pm-chip-friend   .pm-chip-text{left:128px;top:17px}
+.pm-chip-classmate.pm-chip-text, .pm-chip-classmate .pm-chip-text{left:131px;top:17px}
+.pm-chip-family   .pm-chip-text{left:134px;top:18px}
+.pm-chip-teacher  .pm-chip-text{left:130px;top:17px}
+.pm-chip-other    .pm-chip-text{left:125px;top:17px}
+
+/* ============================================================
+   3. result 人格主页 — 像素级对齐 Figma 4654:807(1640×1954)
+   ============================================================ */
+/* ---- 4 群组主题色 token ----
+   紫 analysts(4654:807) / 绿 diplomats(4666:3553) / 蓝 sentinels(4672:3744) / 黄 explorers(4672:4119)
+   type 字渐变 + 重新测试按钮 = Figma 精确取色; 主背景渐变紫绿蓝精确, 黄为推导值 */
+.scene-result{
+  /* 默认 = analysts 紫 */
+  --rg-bg:linear-gradient(120.45deg,#b1a5ff 29.87%,#e4deff 89.22%);
+  --rg-type-a:rgba(202,11,255,.85);
+  --rg-type-b:rgba(44,2,255,.85);
+  --rg-btn:#9466ff;
+  --rg-accent:#340fad;
+  --rg-tip:#5a4eff;
+  --rg-banner:url('assets/result/banner/bg-analysts.svg');
+  --rg-stripes:url('assets/result/banner/stripes-analysts.svg');
+  --rg-frame:url('assets/result/badge/frame-analysts.svg');
+  --rg-star:url('assets/result/badge/star-analysts.svg');
+  --rg-star-text:#8800ff;
+  --rg-dash:#C8AFFF;
+
+  background:var(--rg-bg);
+  overflow:hidden;
+}
+.scene-result[data-group="diplomats"]{
+  --rg-bg:linear-gradient(120.45deg,#6fe293 29.87%,#aaf6f6 89.22%);
+  --rg-type-a:#00d20e;--rg-type-b:#00ace0;
+  --rg-btn:#00a987;--rg-accent:#0e6f37;--rg-tip:#0e9c5a;
+  --rg-banner:url('assets/result/banner/bg-diplomats.svg');
+  --rg-stripes:url('assets/result/banner/stripes-diplomats.svg');
+  --rg-frame:url('assets/result/badge/frame-diplomats.svg');
+  --rg-star:url('assets/result/badge/star-diplomats.svg');
+  --rg-star-text:#007e35;
+  --rg-dash:#4FE06E;
+}
+.scene-result[data-group="sentinels"]{
+  --rg-bg:linear-gradient(120.45deg,#a4c0ff 29.87%,#aae7f6 89.22%);
+  --rg-type-a:#005eff;--rg-type-b:#0095ff;
+  --rg-btn:#0089e5;--rg-accent:#0a3aad;--rg-tip:#2e6fff;
+  --rg-banner:url('assets/result/banner/bg-sentinels.svg');
+  --rg-stripes:url('assets/result/banner/stripes-sentinels.svg');
+  --rg-frame:url('assets/result/badge/frame-sentinels.svg');
+  --rg-star:url('assets/result/badge/star-sentinels.svg');
+  --rg-star-text:#1a54e6;
+  --rg-dash:#9DCEFF;
+}
+.scene-result[data-group="explorers"]{
+  --rg-bg:linear-gradient(120.45deg,#ffd27a 29.87%,#fff0c8 89.22%);
+  --rg-type-a:#ff9d00;--rg-type-b:#ff6a00;
+  --rg-btn:#fd8e07;--rg-accent:#a05a00;--rg-tip:#e08a00;
+  --rg-banner:url('assets/result/banner/bg-explorers.svg');
+  --rg-stripes:url('assets/result/banner/stripes-explorers.svg');
+  --rg-frame:url('assets/result/badge/frame-explorers.svg');
+  --rg-star:url('assets/result/badge/star-explorers.svg');
+  --rg-star-text:#ff7b00;
+  --rg-dash:#F8CE27;
+}
+.r-page{
+  position:absolute;inset:0;
+  overflow-x:hidden;overflow-y:auto;
+  scroll-behavior:smooth;
+  scrollbar-width:none;
+}
+.r-page::-webkit-scrollbar{display:none}
+.r-page-inner{
+  position:relative;
+  width:1640px;
+  min-height:1954px;
+}
+.r-scroll-tip{
+  position:fixed;right:24px;bottom:14px;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.7);
+  color:var(--rg-tip);
+  display:grid;place-items:center;
+  z-index:30;
+  pointer-events:none;
+  animation:rTipBob 1.2s ease-in-out infinite;
+}
+.r-scroll-tip.is-hidden{opacity:0;transition:opacity .3s}
+.r-scroll-arrow{font-size:24px;line-height:1;font-weight:700;display:block;transform:translateY(-3px)}
+@keyframes rTipBob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+/* ===== 顶栏 ===== */
+.rp-back{
+  position:absolute;left:0;top:1px;
+  width:80px;height:68px;
+  padding:0;background:transparent;border:0;
+  z-index:30;cursor:pointer;
+  transition:opacity var(--t-fast),transform var(--t-fast);
+}
+.rp-back img{width:80px;height:68px;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.rp-back:hover{opacity:.7}
+.rp-back:active{transform:scale(.92)}
+.rp-top-label{
+  position:absolute;left:75px;top:14px;
+  font-family:var(--font-cn);font-size:32px;font-weight:500;
+  color:#000;line-height:46px;letter-spacing:0;
+  z-index:10;
+}
+/* result 顶栏右侧切换/新建胶囊容器 — Figma 4746:1117, 右对齐 top:10 */
+.rp-top-chips{
+  position:absolute;right:20px;top:10px;
+  display:flex;align-items:center;gap:18px;
+  z-index:10;
+}
+
+/* ===== Banner 区(75-362) ===== */
+.rp-banner-bg{
+  position:absolute;left:101px;top:75px;
+  width:1438px;height:287px;
+  background:var(--rg-banner,url('assets/result/banner/bg-analysts.svg')) no-repeat;background-size:100% 100%;
+  z-index:1;
+}
+.rp-banner-stripes{
+  position:absolute;left:101px;top:75px;
+  width:1438px;height:286px;
+  background:var(--rg-stripes,url('assets/result/banner/stripes-analysts.svg')) no-repeat;background-size:100% 100%;
+  z-index:2;
+}
+.rp-banner-frame{
+  position:absolute;left:1224px;top:92px;
+  width:266px;height:179px;
+  background:var(--rg-frame,url('assets/result/badge/frame-analysts.svg')) no-repeat;background-size:100% 100%;
+  z-index:3;
+}
+/* IP 形象 — 16 型各一张透明 PNG(底部透明已裁, 图底边=真实脚底)
+   水平居中 banner 右上(1322), 脚底踩在「重新测试」按钮(top:279)上方 1px, 等比 95% */
+.rp-mascot{
+  position:absolute;left:1322px;top:278px;
+  transform-origin:bottom center;
+  transform:translate(-50%,-100%) scale(.95);
+  max-width:266px;max-height:250px;
+  z-index:4;pointer-events:none;
+}
+/* type 大字 — Figma 4654:865 (129,103) 216×83 紫渐变 120px Passion One
+   16 种 type 动态生成,DOM 渲染;字体用 Passion One(已加载) */
+.rp-type-block{display:none}
+.rp-type{
+  position:absolute;left:129px;top:103px;
+  width:216px;
+  font-family:"Passion One","Saira Stencil One",var(--font-cn);
+  font-size:120px;font-weight:400;line-height:96px;letter-spacing:-1.2px;
+  text-transform:uppercase;
+  background:linear-gradient(90deg,var(--rg-type-a),var(--rg-type-b));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  text-align:center;
+  z-index:5;
+  margin:0;
+}
+.rp-type-deco{
+  position:absolute;left:347px;top:150px;
+  width:172px;height:44px;
+  z-index:5;pointer-events:none;
+}
+/* codename 非正式名 — Figma 4672:3801 type 右侧 347/128 黑字, 字号随字数(JS inline)
+   设计稿为付费「字魂144号-浪漫体」, 用免费近似「ZCOOL KuaiLe 站酷快乐体」替代 */
+.rp-codename{
+  position:absolute;left:347px;top:118px;
+  font-family:"ZCOOL KuaiLe",var(--font-cn);
+  font-weight:400;line-height:54px;letter-spacing:0;
+  color:#000;white-space:nowrap;
+  z-index:6;margin:0;pointer-events:none;
+}
+/* codename 切图(浪漫体 PNG)— Figma text 4695:3984 (354,128 162×46) */
+.rp-codename-img{
+  position:absolute;left:354px;top:126px;
+  height:50px;width:auto;
+  z-index:6;pointer-events:none;
+}
+/* ENFP「快乐小狗」4 字最宽, 与"能量来源"卡片贴边 → 缩到 95%, 以左上为基准 */
+.scene-result[data-type="ENFP"] .rp-codename-img{
+  transform:scale(.95);transform-origin:left top;
+}
+
+/* 副标题 — Figma 4654:858 (131,229) 36/46 #3c3c3c Bold 双行 */
+.rp-subtitle-block{display:none}
+.rp-subtitle{
+  position:absolute;left:131px;top:229px;
+  width:404px;
+  font-family:var(--font-cn);font-size:36px;font-weight:700;
+  color:#3c3c3c;line-height:46px;letter-spacing:0;
+  z-index:5;
+}
+.rp-subtitle p{margin:0}
+
+/* 4 个轴卡(553/720/874/1014 列)— 像素级对齐 Figma 4657:1007/1021/1008/1015 */
+.rp-axis-card{
+  position:absolute;top:57px;width:140px;height:295px;
+  background:#fff;border-radius:17px;
+  box-shadow:0 4px 32px rgba(0,0,0,.08);
+  z-index:5;
+}
+/* 标题 — Figma 26/46 #000 Bold */
+.rp-axis-title{
+  position:absolute;width:104px;height:46px;
+  font-family:var(--font-cn);font-size:26px;font-weight:700;
+  color:#000;line-height:46px;letter-spacing:0;
+  white-space:nowrap;
+  z-index:6;
+  margin:0;
+}
+/* pole 标签 — 默认 24/24 rgba(0,0,0,.7) Medium;选中 is-on 切对应荧光色
+   文字 + 箭头用 inline-flex 自动居中对齐 */
+.rp-axis-pole{
+  position:absolute;
+  font-family:var(--font-cn);font-size:24px;font-weight:500;
+  line-height:24px;letter-spacing:0;
+  color:rgba(0,0,0,.7);
+  z-index:6;
+  white-space:nowrap;
+  display:inline-flex;align-items:center;gap:6px;
+}
+/* 4 轴选中色 — 对齐天线 vector95 颜色 (EI=#F95589 / SN=#5757FF / TF=#F2A100 / JP=#09A8B3) */
+[data-axis="EI"] .rp-axis-pole.is-on{color:#F95589}
+[data-axis="SN"] .rp-axis-pole.is-on{color:#5757FF}
+[data-axis="TF"] .rp-axis-pole.is-on{color:#F2A100}
+[data-axis="JP"] .rp-axis-pole.is-on{color:#09A8B3}
+/* pole-arrow — 默认 #4D4D4D 灰 / 选中按各轴主色;用 mask 染色,共享 1 张 SVG
+   inline-block 做 flex item,自动与文字基线垂直居中 */
+.rp-pole-arrow{
+  flex:0 0 11.6px;
+  width:11.6px;height:18.8px;
+  display:inline-block;pointer-events:none;
+  background:#4D4D4D;
+  -webkit-mask:url('assets/result/pole-arrow.svg') no-repeat center/100% 100%;
+          mask:url('assets/result/pole-arrow.svg') no-repeat center/100% 100%;
+}
+/* 选中态:跟随轴主色 */
+.rp-axis-pole.is-on .rp-pole-arrow{background:currentColor}
+/* 轨道 + knob — 重画立式版,用 CSS 渐变模拟 Figma axis-knob.svg 的双色效果
+   30×80 立轨,r=10:灰底 #E1E1E1 + 选中端用 #FF1D65 highlight 30×30 r=10
+   .is-top → highlight 在顶端;.is-bot → highlight 在底端 */
+.rp-axis-track{
+  position:absolute;width:30px;height:80px;
+  background:#E1E1E1;border-radius:10px;
+  z-index:6;
+  overflow:hidden;
+}
+.rp-axis-track::after{
+  content:"";
+  position:absolute;left:0;width:30px;height:30px;
+  border-radius:10px;
+}
+.rp-axis-track.is-top::after{top:0}
+.rp-axis-track.is-bot::after{bottom:0}
+/* 4 轴选中色:EI=红 #F95589 / SN=蓝 #5757FF / TF=橙 #F2A100 / JP=青 #09A8B3 */
+[data-axis="EI"] .rp-axis-track::after{background:#F95589}
+[data-axis="SN"] .rp-axis-track::after{background:#5757FF}
+[data-axis="TF"] .rp-axis-track::after{background:#F2A100}
+[data-axis="JP"] .rp-axis-track::after{background:#09A8B3}
+
+/* 蛋蛋 star — Figma 4654:861 Group 266 (1381,99) 195×195
+   五角星矢量(按群组配色)+ DOM e人/i人 文字, 替代旧截图整图 */
+.rp-star{
+  position:absolute;left:1381px;top:99px;
+  width:195px;height:195px;
+  z-index:6;
+}
+.rp-star::before{
+  content:"";position:absolute;
+  inset:11.45% 12.21% 3.25% 9.13%;
+  background:var(--rg-star,url('assets/result/badge/star-analysts.svg')) no-repeat center/100% 100%;
+}
+.rp-star img{display:none}
+.rp-star-text{
+  position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%) rotate(-12.79deg);
+  font-family:"Noto Sans SC",var(--font-cn);
+  font-size:50px;line-height:46px;font-weight:900;
+  color:var(--rg-star-text,#80f);
+  text-transform:uppercase;white-space:nowrap;
+  display:block;z-index:1;pointer-events:none;
+}
+/* 重新测试 CTA — Figma 4663:1026 (1209,279) 300×68 r=14 #9466ff border #fff
+   纯 CSS 渲染:紫色背景 + 白色文字 + 白边框 */
+.rp-retest{
+  position:absolute;left:1209px;top:279px;
+  width:300px;height:68px;
+  background:var(--rg-btn);
+  border:1px solid #fff;border-radius:14px;
+  padding:0;
+  font-family:var(--font-cn);font-size:34px;font-weight:500;
+  color:#fff;letter-spacing:0;line-height:46px;
+  cursor:pointer;
+  z-index:7;
+  transition:transform var(--t-fast),filter var(--t-fast);
+}
+.rp-retest:hover{filter:brightness(1.08)}
+.rp-retest:active{transform:scale(.97)}
+
+/* divider — Figma 4654:870/871/872 全宽细线 */
+/* 模块分隔虚线 — Figma Vector 90/91/92, dasharray 12/12, 跟随群组主题色, 置于最顶层 */
+.rp-divider{
+  position:absolute;left:135px;width:1370px;height:1.01px;
+  background:repeating-linear-gradient(90deg,
+    var(--rg-dash,#C8AFFF) 0 12px, transparent 12px 24px);
+  z-index:20;
+}
+.rp-divider-v90{height:2.02px}
+
+/* ===== 性格特点(362-852) ===== */
+.rp-trait-bg{
+  position:absolute;left:101px;top:362px;
+  width:1438px;height:490px;
+  background:url('assets/result/bg-trait.svg') no-repeat;background-size:100% 100%;
+  z-index:1;
+}
+/* 板块标签 — Figma 4654:841/844/902 矩形渐变(左半圆 r=35 + 右直角)
+   trait #FFAEED 粉 / study #77FFA9 绿 / social #FFED4C 黄,fade to white-transparent */
+.rp-section-tag{
+  position:absolute;left:123px;width:507px;height:70px;
+  background-size:100% 100%;background-repeat:no-repeat;
+  z-index:2;
+  pointer-events:none;
+}
+.rp-section-tag.rp-tag-trait{background-image:url('assets/result/tag-trait.svg')}
+.rp-section-tag.rp-tag-study{background-image:url('assets/result/tag-study.svg')}
+.rp-section-tag.rp-tag-social{background-image:url('assets/result/tag-social.svg')}
+
+/* 板块标题文字 — Figma 4654:843/845/903 36/46 #2f2f2f
+   位置: 性格特点 (157,390) / 学习优势分析 (153,881) / 校园相处锦囊 (162,1684) */
+.rp-section-title{
+  position:absolute;
+  font-family:var(--font-cn);
+  font-size:36px;font-weight:500;
+  color:#2f2f2f;line-height:46px;letter-spacing:0;
+  white-space:nowrap;
+  z-index:3;
+  margin:0;
+  display:block !important;
+}
+.rp-trait-text{
+  position:absolute;left:131px;top:471px;
+  width:1371px;
+  font-family:var(--font-cn);font-size:32px;font-weight:400;
+  color:rgba(0,0,0,.6);line-height:41.6px;letter-spacing:0;
+  text-indent:2em;
+  z-index:2;
+  margin:0;
+  white-space:normal;
+}
+
+/* ===== 学习优势分析(853-1443) ===== */
+.rp-study-bg{
+  position:absolute;left:101px;
+  width:1438px;height:590px;
+  background:url('assets/result/bg-study.svg') no-repeat;background-size:100% 100%;
+  z-index:1;
+}
+.rp-study-card{
+  position:absolute;width:680px;height:205px;
+  background:rgba(217,217,217,.2);
+  border-radius:20px;
+  z-index:2;
+}
+.rp-study-title{
+  position:absolute;
+  font-family:var(--font-cn);font-size:36px;font-weight:500;
+  color:#000;line-height:46px;letter-spacing:0;
+  word-break:break-all;
+  overflow-wrap:anywhere;
+  z-index:3;
+  margin:0;
+}
+.rp-study-body{
+  position:absolute;
+  font-family:var(--font-cn);font-size:32px;font-weight:400;
+  color:rgba(0,0,0,.6);line-height:41.6px;letter-spacing:0;
+  z-index:3;
+  margin:0;
+}
+/* 🎓高效学习方式标签 — Figma 4654:859 (148,1493) 273×46
+   Bold 34/46 Noto Sans SC, 自身 273 宽内 text-center, emoji 默认色, 文字 #340fad */
+.rp-study-tag-label{
+  position:absolute;left:148px;
+  width:273px;
+  font-family:var(--font-cn);font-size:34px;font-weight:700;
+  color:#0e0e0e;line-height:46px;letter-spacing:0;
+  text-align:center;
+  white-space:nowrap;
+  z-index:3;
+  margin:0;
+}
+.rp-emoji{font-weight:400}
+.rp-purple{color:var(--rg-accent)}
+.rp-study-tags{
+  position:absolute;left:440px;top:1500px;width:1100px;height:33px;
+  display:flex;align-items:center;justify-content:flex-start;gap:20px;
+  z-index:3;
+}
+.rp-tag-item{
+  font-family:var(--font-cn);font-size:30px;font-weight:700;
+  color:#0e0e0e;line-height:46px;
+  white-space:nowrap;
+}
+.rp-tag-sep{
+  width:3px;height:33px;background:#000;
+  display:inline-block;
+}
+
+/* ===== 校园相处锦囊(1573-1850) ===== */
+.rp-social-bg-top{
+  position:absolute;left:101px;
+  width:1438px;height:165px;
+  background:url('assets/result/bg-social-top.svg') no-repeat;background-size:100% 100%;
+  transform:scaleY(-1);transform-origin:center;
+  z-index:1;
+}
+.rp-social-bg-bot{
+  position:absolute;left:101px;
+  width:1438px;height:209px;
+  background:url('assets/result/bg-social-bot.svg') no-repeat;background-size:100% 100%;
+  z-index:1;
+}
+/* 跑道环连接(study↔social 之间)— Rectangle228 左钩 / Group275 右钩, #333 描边弧线
+   两钩各自镜像翻转, 上下对准圆孔列(左 x130 / 右 x1510) */
+.rp-social-bar{
+  position:absolute;left:122px;
+  width:16px;height:103px;
+  background:url('assets/result/connector/bar-left.svg') no-repeat center/100% 100%;
+  transform:scaleX(-1);
+  z-index:4;
+}
+.rp-social-bar-right{
+  position:absolute;left:1498px;
+  width:24px;height:103px;
+  background:url('assets/result/connector/bar-right.svg') no-repeat center/100% 100%;
+  transform:scaleX(-1);
+  z-index:4;
+}
+.rp-social-bar-line{
+  position:absolute;left:142px;
+  width:8px;height:32px;
+  background:url('assets/result/connector/bar-left-line.svg') no-repeat center/100% 100%;
+  z-index:5;
+}
+.rp-social-dot{
+  position:absolute;width:18px;height:18px;border-radius:50%;
+  z-index:3;
+}
+.rp-dot-1{left:121px;top:1568px;background:url('assets/result/dot-corner-1.svg') no-repeat center/100% 100%}
+.rp-dot-2{left:121px;top:1661px;background:url('assets/result/dot-corner-2.svg') no-repeat center/100% 100%}
+.rp-dot-3{left:1501px;top:1571px;background:url('assets/result/dot-corner-1.svg') no-repeat center/100% 100%}
+.rp-dot-4{left:1501px;top:1661px;background:url('assets/result/dot-corner-2.svg') no-repeat center/100% 100%}
+.rp-social-tip{
+  position:absolute;left:141px;top:1765px;
+  width:1334px;
+  font-family:var(--font-cn);font-size:32px;font-weight:400;
+  color:rgba(0,0,0,.6);line-height:1.04;letter-spacing:0;
+  z-index:3;
+  margin:0;
+}
+
+
+/* ============================================================
+   toast
+   ============================================================ */
+.toast{
+  position:absolute;left:50%;top:24px;
+  transform:translate(-50%,12px);
+  background:rgba(20,24,32,.92);
+  color:#fff;font-size:22px;letter-spacing:1px;
+  padding:14px 28px;
+  border-radius:24px;
+  opacity:0;pointer-events:none;
+  z-index:1000;
+  transition:opacity .3s,transform .3s;
+  backdrop-filter:blur(8px);
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+.toast.is-on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+
+/* ============================================================
+   reduced-motion
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}
+
+/* ============================================================
+   轴 pole 解读弹层 — Figma Detail Page-i/e/n/s/t/f/j/p
+   ============================================================ */
+.pd-modal{
+  position:absolute;inset:0;
+  z-index:60;
+  animation:fadeIn .22s ease;
+}
+/* Figma Rectangle 237 — 整屏 1640×347 rgba(0,0,0,.9) 黑底,文字直接浮其上 */
+.pd-mask{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.9);
+}
+.pd-sheet{
+  position:absolute;left:0;top:1px;
+  width:1640px;height:347px;
+  background:transparent;
+}
+/* X 内倾 — Figma (140,71) 36/48 白色 Bold */
+.pd-letter{
+  position:absolute;left:140px;top:71px;
+  height:48px;
+  font-family:var(--font-cn);font-size:36px;font-weight:700;
+  color:#fff;line-height:48px;letter-spacing:0;
+  white-space:nowrap;
+  margin:0;
+}
+/* (Introvert) — 紧跟字母右侧, Figma (258,72) 36/48 #B7B7FF 浅紫 */
+.pd-en{
+  position:absolute;left:258px;top:72px;
+  height:48px;
+  font-family:var(--font-cn);font-size:36px;font-weight:400;
+  color:#B7B7FF;line-height:48px;letter-spacing:0;
+  white-space:nowrap;
+}
+/* 副标题 — Figma (138,136) 36/40 白色 Medium */
+.pd-sub{
+  position:absolute;left:138px;top:136px;
+  width:1300px;
+  font-family:var(--font-cn);font-size:32px;font-weight:500;
+  color:#fff;line-height:40px;letter-spacing:0;
+  margin:0;
+}
+/* 描述 — Figma (140,182) 974×105 28/35 灰白色 三行 */
+.pd-desc{
+  position:absolute;left:140px;top:182px;
+  width:1040px;
+  font-family:var(--font-cn);font-size:28px;font-weight:400;
+  color:rgba(255,255,255,.78);line-height:35px;letter-spacing:0;
+  white-space:pre-line;
+  margin:0;
+}
+/* 我知道了 CTA — Figma (1200,188) 340×80 r=14 #9466ff border #fff */
+.pd-confirm{
+  position:absolute;left:1200px;top:188px;
+  width:340px;height:80px;
+  background:#9466ff;border:1px solid #fff;border-radius:14px;
+  font-family:var(--font-cn);font-size:36px;font-weight:500;
+  color:#fff;letter-spacing:0;line-height:48px;
+  cursor:pointer;
+  transition:transform var(--t-fast),filter var(--t-fast);
+}
+.pd-confirm:hover{filter:brightness(1.08)}
+.pd-confirm:active{transform:scale(.97)}
+
+/* ============================================================
+   4. pick 选择 MBTI — 像素级对齐 Figma 4377:3245(默认) / 4377:3041(选中态)
+   1640×590 黑底纵向滚动,4×4 卡(358×90 r=14),4 行配色
+   ============================================================ */
+.scene-pick{
+  background:#000;
+  overflow:hidden;
+}
+.pp-page{
+  position:absolute;inset:0;
+  overflow-x:hidden;overflow-y:auto;
+  scroll-behavior:smooth;
+  scrollbar-width:none;
+}
+.pp-page::-webkit-scrollbar{display:none}
+.pp-page-inner{
+  position:relative;
+  width:1640px;
+  min-height:540px;
+}
+.pp-scroll-tip{
+  position:fixed;right:24px;bottom:14px;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  display:grid;place-items:center;
+  z-index:30;
+  pointer-events:none;
+  animation:rTipBob 1.2s ease-in-out infinite;
+}
+.pp-scroll-tip.is-hidden{opacity:0;transition:opacity .3s}
+.pp-scroll-arrow{font-size:24px;line-height:1;font-weight:700;display:block;transform:translateY(-3px)}
+
+/* 顶栏返回 — Figma 4377:3246 (0,1) 80×68 同 menu 返回 */
+.pp-back{
+  position:absolute;left:0;top:1px;
+  width:80px;height:68px;
+  background:transparent;border:0;padding:0;
+  display:grid;place-items:center;
+  cursor:pointer;
+  transition:opacity var(--t-fast),transform var(--t-fast);
+}
+.pp-back img{width:32px;height:32px;display:block;filter:brightness(0) invert(1) opacity(.7)}
+.pp-back:hover{opacity:.7}
+.pp-back:active{transform:scale(.92)}
+
+/* 顶栏标题 — Figma 4377:3251 (80,12) 34/46 #636973 */
+.pp-title{
+  position:absolute;left:80px;top:12px;
+  height:46px;
+  font-family:var(--font-cn);font-size:34px;font-weight:400;
+  color:#636973;line-height:46px;letter-spacing:0;
+  white-space:nowrap;
+  margin:0;
+}
+
+/* 确定按钮(右上角) — Figma 4377:3252 image 2 (1562,18) 60×60
+   设计稿默认/选中态都是亮绿色;未选时仍亮显但点击无效(JS 拦截) */
+.pp-confirm-btn{
+  position:absolute;left:1562px;top:18px;
+  width:60px;height:60px;
+  background:transparent;border:0;padding:0;
+  cursor:pointer;
+  opacity:1;
+  transition:transform var(--t-fast),filter var(--t-fast);
+}
+.pp-confirm-btn img{width:60px;height:60px;display:block}
+.pp-confirm-btn:not(.is-on){cursor:not-allowed}
+.pp-confirm-btn.is-on:hover{filter:brightness(1.1)}
+.pp-confirm-btn.is-on:active{transform:scale(.95)}
+
+/* 4×4 卡片网格容器 — Figma 卡 (80,88)/(454,88)/(828,88)/(1202,88) ... 4 行
+   pointer-events 只保留卡身,容器透,不挡顶栏返回/标题/确定按钮 */
+.pp-grid{
+  position:absolute;left:0;top:0;
+  width:1640px;height:540px;
+  pointer-events:none;
+}
+.pp-grid > .pp-card{pointer-events:auto}
+
+/* 单卡 — 默认态 Figma 4377:3320 等 358×90 r=14 #23272e */
+.pp-card{
+  position:absolute;
+  width:358px;height:90px;
+  background:#23272e;
+  border:3px solid transparent;
+  border-radius:14px;
+  padding:0;
+  cursor:pointer;
+  transition:background var(--t-fast),border-color var(--t-fast),transform var(--t-fast);
+}
+.pp-card:hover{filter:brightness(1.08)}
+.pp-card:active{transform:scale(.985)}
+
+/* 卡内代号 — Figma 设计稿: 英文紫字水平左半,中文白字水平右半
+   紫字像素 x=99..166, 中文 x=194..274 (卡内 358 宽), 字基线 y≈37 居中
+   英文 right-align 至 ~170, 中文 left-align 起于 ~194 */
+.pp-card-code{
+  position:absolute;left:0;top:18px;
+  width:170px;height:54px;
+  font-family:var(--font-cn);font-size:36px;font-weight:500;
+  color:#7b8396;line-height:54px;letter-spacing:0;
+  text-align:right;
+  padding-right:4px;
+  text-transform:uppercase;
+  pointer-events:none;
+}
+/* 卡内中文 — 白字 28/46 居中 */
+.pp-card-cn{
+  position:absolute;left:190px;top:22px;
+  width:160px;height:46px;
+  font-family:var(--font-cn);font-size:28px;font-weight:400;
+  color:#7b8396;line-height:46px;letter-spacing:0;
+  text-align:left;
+  pointer-events:none;
+}
+
+/* 选中态 — Figma 4377:3181 等 358×90 r=14 #383b42 + 3px #464953 边框 */
+.pp-card.is-on{
+  background:#383b42;
+  border-color:#464953;
+}
+.pp-card.is-on .pp-card-cn{color:#fff}
+
+/* 4 行各自配色(选中态字色 + text-shadow 发光) — Figma 行 1/2/3/4 */
+.pp-card[data-row="0"].is-on .pp-card-code{
+  color:#b46fff;
+  text-shadow:0 4px 17.6px #5b01ff;
+}
+.pp-card[data-row="1"].is-on .pp-card-code{
+  color:#05c08e;
+  text-shadow:0 4px 13.9px rgba(0,187,140,0.36);
+}
+.pp-card[data-row="2"].is-on .pp-card-code{
+  color:#1fa3ef;
+  text-shadow:0 4px 6.3px rgba(0,119,255,0.46);
+}
+.pp-card[data-row="3"].is-on .pp-card-code{
+  color:#e0ab4f;
+  text-shadow:0 4px 5.5px rgba(200,133,0,0.36);
+}
+
+/* ============================================================
+   5. archive 档案切换 / 删除 — 对齐 Figma 4381:3733(切换) / 4741:463(删除) / 4741:519(删除确认)
+   黑底, 3 张档案卡 482×90 r=14, 当前生效高亮(白字+紫钩) / 其他暗灰
+   删除模式: 卡身灰, 每张左 46×46 复选框, 选中显紫钩
+   ============================================================ */
+.scene-archive{
+  background:#000;
+  overflow:hidden;
+}
+
+/* 返回 — Figma (0,1) 80×68 */
+.ar-back{
+  position:absolute;left:0;top:1px;
+  width:80px;height:68px;
+  background:transparent;border:0;padding:0;
+  display:grid;place-items:center;
+  cursor:pointer;
+  transition:opacity var(--t-fast),transform var(--t-fast);
+}
+.ar-back img{width:32px;height:32px;display:block;filter:brightness(0) invert(1) opacity(.7)}
+.ar-back:hover{opacity:.7}
+.ar-back:active{transform:scale(.92)}
+
+/* 标题 — Figma (80,12) 34/46 #636973 */
+.ar-title{
+  position:absolute;left:80px;top:12px;
+  height:46px;
+  font-family:var(--font-cn);font-size:34px;font-weight:400;
+  color:#636973;line-height:46px;letter-spacing:0;
+  white-space:nowrap;
+  margin:0;
+}
+
+/* 右上确定按钮 — Figma 4746:1050 (1562,18) 60×60 */
+.ar-confirm-btn{
+  position:absolute;left:1562px;top:18px;
+  width:60px;height:60px;
+  background:transparent;border:0;padding:0;
+  cursor:pointer;
+  transition:transform var(--t-fast),filter var(--t-fast);
+}
+.ar-confirm-btn img{width:60px;height:60px;display:block}
+.ar-confirm-btn:hover{filter:brightness(1.1)}
+.ar-confirm-btn:active{transform:scale(.95)}
+
+/* 删除模式下顶栏右上的"确定"按钮变灰禁用(切换/确认按需 toggle) */
+.scene-archive[data-mode="delete"] .ar-confirm-btn{display:none}
+
+/* 列表容器 — 卡 482×90 纵向单列居中, x=579, y 递增, 可纵向滚动 */
+.ar-list{
+  position:absolute;left:0;top:0;
+  width:1640px;height:348px;
+  pointer-events:none;
+  overflow-x:hidden;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.ar-list::-webkit-scrollbar{display:none}
+.ar-list-spacer{
+  position:absolute;left:0;width:1px;height:1px;
+  pointer-events:none;
+}
+.ar-list > .ar-card{pointer-events:auto}
+
+/* 单卡 — 默认态 Figma 4531:530/482px×90px r=14 #23272e */
+.ar-card{
+  position:absolute;
+  width:482px;height:90px;
+  background:#23272e;
+  border:3px solid transparent;
+  border-radius:14px;
+  padding:0;
+  cursor:pointer;
+  transition:background var(--t-fast),border-color var(--t-fast),transform var(--t-fast);
+}
+.ar-card:hover{filter:brightness(1.08)}
+.ar-card:active{transform:scale(.99)}
+
+/* 当前生效卡 — Figma 4531:632 切换页第一张 #383b42 + 3px #464953 边框 + 白字 */
+.ar-card.is-current{
+  background:#383b42;
+  border-color:#464953;
+}
+
+/* 卡内三段文字 — Figma:
+   昵称 36 Regular: x=110 居左对齐
+   关系 32 Regular: x=144 (label inset 17.56% ~84.7px+卡左边)
+   类型 36 Medium uppercase: x=240 (inset 27.07% ~130.5px+卡左边)
+   细看 React 代码三个 inset 分别是: 10.49% / 17.56% / 27.07% 距离 1640 总宽 → 转卡内坐标
+   1640*0.1049=171.84(绝对) → 卡 80 起 → 卡内 91.84
+   1640*0.1756=287.98 → 卡内 207.98
+   1640*0.2707=443.95 → 卡内 363.95
+   即三段文字大致 x=92/208/364, 卡总宽 482 */
+.ar-card-main{
+  position:absolute;left:30px;top:22px;right:190px;
+  height:46px;
+  display:flex;align-items:baseline;gap:10px;
+  overflow:hidden;
+}
+.ar-card-name{
+  flex:0 1 auto;min-width:0;
+  height:46px;
+  font-family:var(--font-cn);font-size:32px;font-weight:500;
+  color:#7b8396;line-height:46px;letter-spacing:0;
+  text-align:left;
+  text-transform:uppercase;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  pointer-events:none;
+}
+.ar-card-rel{
+  flex:0 0 auto;
+  height:46px;
+  font-family:var(--font-cn);font-size:32px;font-weight:400;
+  color:#7b8396;line-height:46px;letter-spacing:0;
+  white-space:nowrap;
+  pointer-events:none;
+}
+.ar-card-type{
+  position:absolute;left:300px;top:22px;
+  height:46px;
+  width:160px;
+  font-family:var(--font-cn);font-size:36px;font-weight:500;
+  color:#7b8396;line-height:46px;letter-spacing:0;
+  text-align:center;
+  text-transform:uppercase;
+  pointer-events:none;
+}
+/* 当前生效卡的字色: 昵称白 / 关系灰(保持) / 类型白 */
+.ar-card.is-current .ar-card-name{color:#fff}
+.ar-card.is-current .ar-card-type{color:#fff}
+
+/* 当前生效卡: 用卡身高亮(深底+边框+白字)表达选中, 不再叠加左侧图标 */
+
+/* 新增档案卡 — 第三张, 居中 +号 45×45 + 文字"新增档案" */
+.ar-card-add{cursor:pointer}
+.ar-add-plus{
+  position:absolute;left:30px;top:23px;
+  width:45px;height:45px;
+  pointer-events:none;
+}
+.ar-add-plus img{width:45px;height:45px;display:block}
+.ar-card-add .ar-card-name{position:absolute;left:84px;top:22px;color:#7b8396}
+
+/* 删除模式: 卡身全部 #23272e 灰、左侧 46×46 复选框 */
+.scene-archive[data-mode="delete"] .ar-card{cursor:pointer}
+.scene-archive[data-mode="delete"] .ar-card.is-current{background:#23272e;border-color:transparent}
+.scene-archive[data-mode="delete"] .ar-card.is-current .ar-card-name{color:#7b8396}
+.scene-archive[data-mode="delete"] .ar-card.is-current .ar-card-main{left:90px}
+.scene-archive[data-mode="delete"] .ar-card.is-current .ar-card-type{color:#7b8396}
+.scene-archive[data-mode="delete"] .ar-card-add{display:none}
+
+/* 复选框 — Figma 4741:508 (110,112) 46×46 r=11 4px #7b8396 边框 */
+.ar-check{
+  position:absolute;left:30px;top:22px;
+  width:46px;height:46px;
+  border-radius:11px;
+  pointer-events:none;
+  display:none;
+}
+.scene-archive[data-mode="delete"] .ar-check{display:block}
+.ar-check-box{
+  position:absolute;inset:0;
+  border:4px solid #7b8396;
+  border-radius:11px;
+  box-sizing:border-box;
+}
+.ar-check-tick{
+  position:absolute;inset:0;
+  width:46px;height:46px;
+  display:none;
+}
+.ar-check-tick img{width:46px;height:46px;display:block}
+.ar-card.is-checked .ar-check-tick{display:block}
+.ar-card.is-checked .ar-check-box{display:none}
+/* 删除模式下卡内文字往右挪给复选框位置 */
+.scene-archive[data-mode="delete"] .ar-card-main{left:90px}
+
+/* 右下垃圾桶按钮 — Figma 4531:753 (1578,281) 46×47 */
+.ar-trash{
+  position:absolute;left:1578px;top:281px;
+  width:46px;height:47px;
+  background:transparent;border:0;padding:0;
+  cursor:pointer;
+  transition:transform var(--t-fast),filter var(--t-fast);
+}
+.ar-trash img{width:46px;height:47px;display:block}
+.ar-trash:hover{filter:brightness(1.1)}
+.ar-trash:active{transform:scale(.92)}
+
+/* 删除确认弹层 — Figma 4741:519 整屏 1640×348 rgba(0,0,0,0.8) */
+.ar-del-confirm{
+  position:absolute;inset:0;
+  z-index:60;
+  animation:fadeIn .22s ease;
+}
+.adc-mask{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.8);
+}
+/* 标题 — Figma 4741:565 (525.4,119) 34/46 #fff Medium 居中 */
+.adc-title{
+  position:absolute;left:50%;top:93px;
+  transform:translateX(-50%);
+  width:auto;
+  font-family:var(--font-cn);font-size:34px;font-weight:500;
+  color:#fff;line-height:46px;letter-spacing:0;
+  white-space:nowrap;
+  text-align:center;
+  margin:0;
+}
+/* 取消(灰底) — Figma 4741:563 (470,207) 340×80 r=16 #3a414b 文字 #cfd6e2 */
+.adc-btn-cancel{
+  position:absolute;left:470px;top:207px;
+  width:340px;height:80px;
+  background:#3a414b;border:0;border-radius:16px;
+  font-family:var(--font-cn);font-size:36px;font-weight:500;
+  color:#cfd6e2;letter-spacing:0;line-height:46px;
+  cursor:pointer;
+  box-shadow:0 4px 25.4px 11px rgba(0,0,0,0.09);
+  transition:filter var(--t-fast),transform var(--t-fast);
+}
+/* 确定(蓝紫渐变) — Figma 4741:560 (840,207) 340×80 r=16 linear-gradient(90deg,#7187ff,#9a56e9) 白字 */
+.adc-btn-ok{
+  position:absolute;left:840px;top:207px;
+  width:340px;height:80px;
+  background:linear-gradient(90deg,#7187ff,#9a56e9);
+  border:0;border-radius:16px;
+  font-family:var(--font-cn);font-size:36px;font-weight:500;
+  color:#fff;letter-spacing:0;line-height:46px;
+  cursor:pointer;
+  box-shadow:0 4px 25.4px 11px rgba(0,0,0,0.09);
+  text-shadow:0 4px 19.1px rgba(7,46,155,0.35);
+  transition:filter var(--t-fast),transform var(--t-fast);
+}
+.adc-btn:hover{filter:brightness(1.08)}
+.adc-btn:active{transform:scale(.97)}
+
+/* result 顶栏胶囊 — Figma 4746:1118 自己(浅紫底+双箭头) / 4746:1134 新建档案(紫底+加号) */
+.rp-top-switch{
+  position:static;
+  display:flex;align-items:center;gap:14px;
+  height:56px;padding:0 24px;
+  background:rgba(85,36,219,.1);border:0;border-radius:39px;
+  cursor:pointer;
+}
+.rp-top-switch .rp-top-self{
+  position:static;
+  font-family:var(--font-cn);font-size:28px;font-weight:700;
+  color:#000;line-height:46px;letter-spacing:0;white-space:nowrap;
+}
+.rp-top-switch .rp-top-arrow{
+  position:relative;
+  width:23px;height:20px;display:block;flex:none;
+}
+.rp-top-switch .rp-top-arrow img{
+  position:absolute;left:0;width:23px;height:9px;display:block;
+  pointer-events:none;-webkit-user-drag:none;
+}
+.rp-top-switch .rp-arrow-up{top:0}
+.rp-top-switch .rp-arrow-dn{bottom:0;transform:rotate(180deg)}
+.rp-top-switch:hover{filter:brightness(1.05)}
+.rp-top-switch:active{transform:scale(.97)}
+
+.rp-top-new{
+  display:flex;align-items:center;gap:14px;
+  height:58px;padding:0 26px;
+  background:rgba(85,36,219,.1);border:0;border-radius:39px;
+  cursor:pointer;
+}
+.rp-top-new-text{
+  font-family:var(--font-cn);font-size:28px;font-weight:700;
+  color:#000;line-height:46px;letter-spacing:0;white-space:nowrap;
+}
+.rp-top-new-plus{width:21px;height:21px;display:block}
+.rp-top-new-plus img{width:100%;height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
+.rp-top-new:hover{filter:brightness(1.04)}
+.rp-top-new:active{transform:scale(.97)}

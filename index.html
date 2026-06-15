@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171717">
+<title>长条屏 · 主页</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  /* demo 以外区域：对齐查词翻译外层 bg-neutral-900 */
+  body {
+    background: #171717;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* 物理屏：1640×348，整体等比缩放后居中（contain，不超过原始尺寸） */
+  .screen {
+    position: relative;
+    width: 1640px;
+    height: 348px;
+    flex: none;
+    background: #000;
+    overflow: hidden;
+    transform: scale(var(--s, 1));
+    transform-origin: center center;
+  }
+
+  /* ============ 主页层 ============ */
+  .home { position: absolute; inset: 0; }
+  .home-bg {
+    position: absolute; inset: 0;
+    width: 1640px; height: 348px;
+    display: block; user-select: none; -webkit-user-drag: none;
+  }
+  /* 透明热区：盖在三张卡片上（坐标取自 Figma 5102:560） */
+  .hot {
+    position: absolute;
+    border: 0; padding: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 40px;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .hot:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,255,255,.12); }
+  .hot:active { transform: translateY(0); }
+  .hot-fenping     { left: 57px;  top: 72px; width: 380px; height: 246px; }
+  .hot-mindstation { left: 453px; top: 72px; width: 226px; height: 246px; }
+  .hot-jiangjuzi   { left: 695px; top: 72px; width: 226px; height: 246px; }
+
+  /* ============ 应用层（iframe 全屏） ============ */
+  .app { position: absolute; inset: 0; display: none; background: #000; }
+  .app.active { display: block; }
+  .app iframe {
+    position: absolute; inset: 0;
+    width: 1640px; height: 348px;
+    border: 0; display: block;
+  }
+</style>
+</head>
+<body>
+  <div class="screen">
+    <!-- 主页 -->
+    <section class="home" id="home">
+      <img class="home-bg" src="assets/home-bg.png" alt="" draggable="false">
+      <button type="button" class="hot hot-fenping"     data-app="fenping"     aria-label="查词翻译"></button>
+      <button type="button" class="hot hot-mindstation" data-app="mindstation" aria-label="心灵驿站"></button>
+      <button type="button" class="hot hot-jiangjuzi"   data-app="jiangjuzi"   aria-label="句子讲解"></button>
+    </section>
+
+    <!-- 应用 -->
+    <section class="app" id="app">
+      <iframe id="appFrame" title="应用" allow="autoplay; clipboard-write"></iframe>
+    </section>
+  </div>
+
+  <script>
+    // 等比缩放：让 1640×348 画布在任意屏完整居中显示（contain，最大 1 倍）
+    function fit() {
+      const s = Math.min(window.innerWidth / 1640, window.innerHeight / 348, 1);
+      document.documentElement.style.setProperty('--s', s);
+    }
+    fit();
+    window.addEventListener('resize', fit);
+    window.addEventListener('orientationchange', fit);
+
+    const SRC = {
+      fenping:     './fenping/index.html',
+      mindstation: './mindstation/index.html',
+      jiangjuzi:   './jiangjuzi/index.html',
+    };
+    const home  = document.getElementById('home');
+    const app   = document.getElementById('app');
+    const frame = document.getElementById('appFrame');
+
+    function openApp(name) {
+      const url = SRC[name];
+      if (!url) return;
+      frame.src = url;
+      app.classList.add('active');
+      home.style.display = 'none';
+    }
+    function goHome() {
+      app.classList.remove('active');
+      home.style.display = '';
+      frame.src = 'about:blank';   // 卸载子应用，回主页是干净状态
+    }
+
+    document.querySelectorAll('.hot').forEach(btn => {
+      btn.addEventListener('click', () => openApp(btn.dataset.app));
+    });
+
+    // 子应用内可通过 postMessage({type:'go-home'}) 主动返回主页
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'go-home') goHome();
+    });
+  </script>
+</body>
+</html>

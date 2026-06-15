@@ -1,0 +1,12 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# deps / build (none expected — pure static demo)
+node_modules/
+
+# local verification artifacts
+_*.js
+_shots*/

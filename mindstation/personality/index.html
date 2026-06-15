@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d1e1ff">
+<title>心灵驿站 · 性格认知</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=ZCOOL+XiaoWei&family=Saira+Stencil+One&family=Passion+One:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-state="menu">
+<div class="stage">
+<div class="device" id="device">
+
+  <!-- ============== menu 入口页(对齐 Figma 4350:1744) ============== -->
+  <section class="scene scene-menu" data-scene="menu">
+    <button type="button" class="m-back" id="menuBack" aria-label="返回">
+      <img src="assets/menu/back.svg" alt="" draggable="false">
+    </button>
+    <h1 class="m-title">性格探索</h1>
+    <button type="button" class="m-help" id="menuHelp" aria-label="帮助"><span>？</span></button>
+
+    <div class="mp-cards">
+      <button type="button" class="mp-card mp-card-test" id="ctaStart">
+        <img class="mp-card-bg" src="assets/menu/card-test-with-illo.png" alt="" draggable="false">
+        <span class="mp-card-text">开始测试</span>
+      </button>
+      <button type="button" class="mp-card mp-card-pick" id="ctaPick">
+        <img class="mp-card-bg" src="assets/menu/card-pick-with-illo.png" alt="" draggable="false">
+        <span class="mp-card-text">选择 MBTI</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============== profile 录档(对齐 Figma 4364:2274 Enter Archives_1 / 4666:3222 Enter Archives_2) ============== -->
+  <section class="scene scene-profile" data-scene="profile" hidden>
+    <button type="button" class="pf-back" id="profileBack" aria-label="返回">
+      <img src="assets/menu/back.svg" alt="" draggable="false">
+    </button>
+    <h1 class="pf-title-top">录入档案</h1>
+    <button type="button" class="pf-next" id="pfNext" disabled>下一步</button>
+
+    <div class="pf-panel" aria-hidden="true"></div>
+    <h2 class="pf-panel-title">先完善档案哦～</h2>
+
+    <div class="pf-row pf-row-name" id="pfNameRow">
+      <span class="pf-row-label">姓名</span>
+      <input type="text" class="pf-input" id="pfName" placeholder="请输入昵称（1-6个字）" maxlength="6" autocomplete="off" spellcheck="false">
+      <span class="pf-cursor" aria-hidden="true"></span>
+    </div>
+
+    <button type="button" class="pf-row pf-row-relation" id="pfRelation">
+      <span class="pf-row-label">关系</span>
+      <span class="pf-row-value" id="pfRelationVal">未选择</span>
+      <svg class="pf-row-arrow" viewBox="0 0 12.7073 26.0001" width="9" height="22" aria-hidden="true"><path d="M2 2L10.4593 11.6498C10.7737 12.0084 10.7911 12.5392 10.5008 12.9176L2 24" fill="none" stroke="#7d7d7d" stroke-width="4" stroke-linecap="round"/></svg>
+    </button>
+
+    <!-- 关系选择弹层 — Figma 4531:541 modal_guanxi_2(默认未选态) / 4365:2324 modal_guanxi_1(已选态示意) -->
+    <div class="profile-modal" id="profileModal" hidden>
+      <div class="pm-mask"></div>
+      <div class="pm-sheet"></div>
+      <span class="pm-bar" aria-hidden="true"></span>
+      <h2 class="pm-title">选择关系标签</h2>
+      <button type="button" class="pm-confirm" id="pmConfirm">确定</button>
+      <div class="pm-chips" id="pmChips">
+        <button type="button" class="pm-chip pm-chip-self" data-rel="自己">
+          <img class="pm-chip-icon pm-chip-icon-off" src="assets/rel-self.svg" alt="">
+          <img class="pm-chip-icon pm-chip-icon-on"  src="assets/rel-self-on.svg" alt="">
+          <span class="pm-chip-text">自己</span>
+        </button>
+        <button type="button" class="pm-chip pm-chip-friend" data-rel="好友">
+          <img class="pm-chip-icon pm-chip-icon-off" src="assets/rel-friend.svg" alt="">
+          <img class="pm-chip-icon pm-chip-icon-on"  src="assets/rel-friend-on.svg" alt="">
+          <span class="pm-chip-text">好友</span>
+        </button>
+        <button type="button" class="pm-chip pm-chip-classmate" data-rel="同学">
+          <img class="pm-chip-icon pm-chip-icon-off" src="assets/rel-classmate.svg" alt="">
+          <img class="pm-chip-icon pm-chip-icon-on"  src="assets/rel-classmate-on.svg" alt="">
+          <span class="pm-chip-text">同学</span>
+        </button>
+        <button type="button" class="pm-chip pm-chip-family" data-rel="家人">
+          <img class="pm-chip-icon pm-chip-icon-off" src="assets/rel-family.svg" alt="">
+          <img class="pm-chip-icon pm-chip-icon-on"  src="assets/rel-family-on.svg" alt="">
+          <span class="pm-chip-text">家人</span>
+        </button>
+        <button type="button" class="pm-chip pm-chip-teacher" data-rel="老师">
+          <img class="pm-chip-icon pm-chip-icon-off" src="assets/rel-teacher.svg" alt="">
+          <img class="pm-chip-icon pm-chip-icon-on"  src="assets/rel-teacher-on.svg" alt="">
+          <span class="pm-chip-text">老师</span>
+        </button>
+        <button type="button" class="pm-chip pm-chip-other" data-rel="其他">
+          <img class="pm-chip-icon pm-chip-icon-off" src="assets/rel-other.svg" alt="">
+          <img class="pm-chip-icon pm-chip-icon-on"  src="assets/rel-other-on.svg" alt="">
+          <span class="pm-chip-text">其他</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== quiz 测试流程(对齐 Figma 4364:2157 / 4666:3304) ============== -->
+  <section class="scene scene-quiz" data-scene="quiz" hidden>
+    <header class="q-top">
+      <button type="button" class="q-back" id="quizBack" aria-label="返回">
+        <svg viewBox="0 0 12 22" width="10" height="18"><path d="M11 1 L1 11 L11 21" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="q-num"><b id="qIdx">1</b><span id="qTotal">/28</span></span>
+    </header>
+
+    <h2 class="q-stem" id="qStem">…</h2>
+
+    <div class="q-opts">
+      <button type="button" class="q-opt q-opt-a" id="qOptA">
+        <span class="q-opt-text" id="qOptATxt">…</span>
+      </button>
+      <button type="button" class="q-opt q-opt-b" id="qOptB">
+        <span class="q-opt-text" id="qOptBTxt">…</span>
+      </button>
+    </div>
+
+    <button type="button" class="q-prev" id="qPrev">‹ 上一题</button>
+    <button type="button" class="q-next" id="qNext">下一题 ›</button>
+
+    <div class="q-bar"><div class="q-bar-fill" id="qBarFill"></div></div>
+
+    <!-- 退出确认弹层 -->
+    <div class="quiz-exit" id="quizExit" hidden>
+      <p class="qe-title">退出后测试进度将被清空<br>确定要退出测试吗？</p>
+      <div class="qe-actions">
+        <button type="button" class="qe-btn qe-btn-cancel" id="qeCancel">确定退出</button>
+        <button type="button" class="qe-btn qe-btn-confirm" id="qeConfirm">继续测试</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== result 人格主页(单屏纵向滚动 · 像素级对齐 Figma 4654:807 1640×1954) ============== -->
+  <section class="scene scene-result" data-scene="result" hidden>
+    <div class="r-page" id="rPage">
+      <div class="r-page-inner" id="rPageInner"><!-- 由 JS 注入完整长版内容 --></div>
+    </div>
+    <div class="r-scroll-tip" id="rScrollTip" aria-hidden="true">
+      <span class="r-scroll-arrow">⌄</span>
+    </div>
+
+    <!-- 轴 pole 解读弹层 — Figma Detail Page-i/e/n/s/t/f/j/p -->
+    <div class="pd-modal" id="poleDetailModal" hidden>
+      <div class="pd-mask"></div>
+      <div class="pd-sheet">
+        <h3 class="pd-letter"></h3>
+        <span class="pd-en"></span>
+        <p class="pd-sub"></p>
+        <p class="pd-desc"></p>
+        <button type="button" class="pd-confirm" id="pdConfirm">我知道了</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== pick 选择 MBTI(对齐 Figma 4377:3245 默认 / 4377:3041 选中态) ============== -->
+  <section class="scene scene-pick" data-scene="pick" hidden>
+    <div class="pp-page" id="pickPage">
+      <div class="pp-page-inner">
+        <button type="button" class="pp-back" id="pickBack" aria-label="返回">
+          <img src="assets/menu/back.svg" alt="" draggable="false">
+        </button>
+        <h1 class="pp-title">选择人格类型</h1>
+        <button type="button" class="pp-confirm-btn" id="pickConfirm" aria-label="确定">
+          <img src="assets/pick/confirm.png" alt="" draggable="false">
+        </button>
+        <div class="pp-grid" id="pickGrid"></div>
+      </div>
+    </div>
+    <div class="pp-scroll-tip" id="pickScrollTip" aria-hidden="true">
+      <span class="pp-scroll-arrow">⌄</span>
+    </div>
+  </section>
+
+  <!-- ============== archive 档案切换 / 删除档案(对齐 Figma 4381:3733 切换 / 4741:463 删除 / 4741:519 删除确认) ============== -->
+  <section class="scene scene-archive" data-scene="archive" hidden>
+    <button type="button" class="ar-back" id="archiveBack" aria-label="返回">
+      <img src="assets/menu/back.svg" alt="" draggable="false">
+    </button>
+    <h1 class="ar-title" id="archiveTitle">档案</h1>
+    <button type="button" class="ar-confirm-btn" id="archiveConfirm" aria-label="确定">
+      <img src="assets/pick/confirm.png" alt="" draggable="false">
+    </button>
+    <div class="ar-list" id="archiveList"></div>
+    <button type="button" class="ar-trash" id="archiveTrash" aria-label="删除">
+      <img src="assets/archive/trash.svg" alt="" draggable="false">
+    </button>
+
+    <!-- 删除确认弹层 — Figma 4741:519 rgba(0,0,0,0.8) 全屏遮罩 -->
+    <div class="ar-del-confirm" id="archiveDelConfirm" hidden>
+      <div class="adc-mask"></div>
+      <p class="adc-title" id="adcTitle">确定删除两条档案吗？</p>
+      <button type="button" class="adc-btn adc-btn-cancel" id="adcCancel">取消</button>
+      <button type="button" class="adc-btn adc-btn-ok" id="adcOk">确定</button>
+    </div>
+  </section>
+
+  <!-- ============== mbti-knowledge 关于 MBTI(对齐 Figma 4666:3438) ============== -->
+  <section class="scene scene-knowledge" data-scene="knowledge" hidden>
+    <div class="kn-page">
+    <button type="button" class="kn-back" id="knowledgeBack" aria-label="返回">
+      <img src="assets/menu/back.svg" alt="" draggable="false">
+    </button>
+    <h1 class="kn-title">关于MBTI</h1>
+    <div class="kn-card">
+      <p class="kn-p kn-intro">MBTI（Myers-Briggs Type Indicator，迈尔斯 - 布里格斯类型指标）是当下应用广泛的人格认知工具，由凯瑟琳・库克・布里格斯与女儿伊莎贝尔・布里格斯・迈尔斯，基于荣格心理类型理论研发而成。</p>
+      <p class="kn-p kn-lead">它将人格划分为四大核心维度：</p>
+      <ul class="kn-dims">
+        <li class="kn-dim"><b>E/I</b> 外倾 / 内倾：代表心理能量的来源，外倾型从外界互动获取能量，内倾型从独处与内心沉淀恢复能量；</li>
+        <li class="kn-dim"><b>S/N</b> 感觉 / 直觉：代表认知偏好，感觉型关注现实细节与客观事实，直觉型看重联想灵感与未来可能；</li>
+        <li class="kn-dim"><b>T/F</b> 思考 / 情感：代表决策倾向，思考型优先依据客观逻辑判断，情感型优先遵从内心感受与价值取向；</li>
+        <li class="kn-dim"><b>J/P</b> 判断 / 感知：代表生活处事风格，判断型偏爱规划秩序，感知型习惯灵活随性。</li>
+      </ul>
+      <p class="kn-p kn-outro">四个维度自由组合，共形成 16 种人格类型，例如 INTJ（建筑师）、ENFP（活动家）、ISTJ（物流师）等。每种人格都拥有独特的思维特点、天生优势与成长方向。</p>
+    </div>
+    </div>
+  </section>
+
+  <!-- toast -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+</div><!-- /device -->
+</div><!-- /stage -->
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+/* CSS Reset & 基础样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* 外层容器：居中显示 */
+.viewport-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #111;
+}
+
+/* 物理屏幕容器：固定 1640×348 */
+.screen-container {
+  position: relative;
+  width: 1640px;
+  height: 348px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #000;
+}
+
+/* 滚动包装器 */
+.scroll-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  /* overflow-y 由 JavaScript 根据内容高度动态设置 */
+}
+
+/* 内容帧：高度由 JavaScript 动态设置 */
+.content-frame {
+  position: relative;
+  width: 1640px;
+  /* height 由 JavaScript 动态设置 */
+}
+
+/* 通用样式 */
+.page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+/* 返回按钮热区（左上角） */
+.back-button {
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 80px;
+  height: 68px;
+  cursor: pointer;
+  z-index: 50;
+}
+
+/* 点击热区通用样式 */
+.hotspot {
+  position: absolute;
+  cursor: pointer;
+}
+
+/* 文本样式 */
+.text-regular {
+  font-weight: 400;
+  word-break: break-word;
+}
+
+.text-medium {
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.text-bold {
+  font-weight: 700;
+  word-break: break-word;
+}
+
+/* 颜色变量 */
+:root {
+  --color-primary: #ec9609;
+  --color-bg-dark: #000;
+  --color-bg-gray: #23272e;
+  --color-bg-selected: #2a271c;
+  --color-text-white: #fff;
+  --color-text-gray: #7b8396;
+  --color-text-light: #cfd6e2;
+  --color-text-blue: #34557b;
+  --color-blue-bg: rgba(58, 137, 217, 0.81);
+}
+
+/* 按钮样式 */
+.button {
+  position: absolute;
+  border-radius: 63px;
+  background: var(--color-blue-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.button:active {
+  opacity: 0.8;
+}
+
+/* 选择项样式 */
+.select-item {
+  position: absolute;
+  border-radius: 14px;
+  background: var(--color-bg-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.select-item.selected {
+  background: var(--color-bg-selected);
+}
+
+.select-item .label {
+  font-size: 36px;
+  line-height: 46px;
+  color: var(--color-text-gray);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.select-item.selected .label {
+  color: var(--color-primary);
+}
+
+/* 图片样式 */
+.img-cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.img-contain {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* SVG 样式 */
+.svg-icon {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 渐变背景（扫描按钮区域） */
+.gradient-blue {
+  background: linear-gradient(114.214deg, rgb(193, 221, 255) 12.176%, rgb(92, 163, 255) 96.764%);
+}
+
+/* 阴影效果 */
+.shadow-book {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.41);
+}
+
+/* 滚动条样式 */
+.scroll-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.scroll-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 扫描页光标闪烁 */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 加载动画（扫描页） */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 分页指示器 */
+.page-indicator {
+  position: absolute;
+  display: flex;
+  gap: 8px;
+  z-index: 60;
+}
+
+.page-dot {
+  width: 64px;
+  height: 58px;
+  cursor: pointer;
+}
+
+/* 箭头导航 */
+.arrow-nav {
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  cursor: pointer;
+  z-index: 60;
+  transition: opacity 0.2s;
+}
+
+.arrow-nav:hover {
+  opacity: 0.8;
+}
