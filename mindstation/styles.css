@@ -599,6 +599,62 @@ img{display:block;user-select:none;-webkit-user-drag:none}
 .scene-daily[data-z="leo"] .daily-fav{top:1072px}
 .daily-fav img{display:block;width:197px;height:80px;pointer-events:none;user-select:none}
 
+/* 日期图标（标题右侧，根据 Figma 5188:17 设计，位置 x:702 y:111） */
+.daily-date-icon{
+  position:absolute;
+  left:702px;
+  top:111px;
+  width:43px;
+  height:43px;
+  pointer-events:none;
+  user-select:none;
+  z-index:10;
+}
+
+/* 日期显示（标题右侧，根据 Figma 5188:16 设计，位置 x:753 y:110） */
+.daily-date{
+  position:absolute;
+  left:753px;
+  top:110px;
+  font-family:'Noto Sans SC', sans-serif;
+  font-size:34px;
+  font-weight:500;
+  color:#3d3d3d;
+  letter-spacing:0.02em;
+  pointer-events:none;
+  user-select:none;
+  z-index:10;
+}
+
+/* 遮挡背景图中的原标题 */
+.daily-scroll::before{
+  content:'';
+  position:absolute;
+  left:120px;
+  top:110px;
+  width:560px;
+  height:50px;
+  background:#fff;
+  z-index:5;
+}
+
+/* 星语标题（居左显示，覆盖在遮挡层上方） */
+.daily-title{
+  position:absolute;
+  left:120px;
+  top:110px;
+  margin:0;
+  font-family:'Noto Sans SC', sans-serif;
+  font-size:34px;
+  font-weight:700;
+  color:#60261d;
+  letter-spacing:0;
+  text-align:left;
+  pointer-events:none;
+  user-select:none;
+  z-index:10;
+}
+
 /* 滚动指示（白底上不需要，隐藏） */
 .scroll-hint{display:none}
 

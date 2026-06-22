@@ -382,6 +382,13 @@ function runDailyEnter(){
   // 给 daily 场景打 data-z，CSS 据此切换收藏按钮位置（leo:1072 / 其他:1110）
   const scene = document.querySelector(".scene-daily");
   if(scene) scene.setAttribute("data-z", DAILY_TAURUS_BG.has(z) ? "taurus" : "leo");
+  // 更新日期显示
+  const dateEl = $("#dailyDate");
+  if(dateEl) dateEl.textContent = fmtDate();
+  // 更新标题显示
+  const titleEl = $("#dailyTitle");
+  const data = DAILY_DATA[z] || DAILY_DATA.leo;
+  if(titleEl) titleEl.textContent = data.quote || "";
   // 返回按钮目标：从 collect 进来则回 collect，否则默认回 reminder
   const back = $("#dailyBack");
   if(back){
@@ -538,7 +545,7 @@ function spawnMeteor(){
 // ---------- 工具 ----------
 function fmtDate(){
   const d = new Date();
-  return `${d.getMonth()+1}-${d.getDate()}`;
+  return `${d.getMonth()+1}月${d.getDate()}日`;
 }
 function numToZh(n){
   const map = ["零","一","二","三","四","五","六","七","八","九","十"];
