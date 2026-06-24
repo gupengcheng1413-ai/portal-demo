@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --font-cn:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+body{font-family:var(--font-cn);padding:50px;}
+.rs-chip{
+  height:60px;
+  border-radius:20px;
+  font-size:32px;
+  font-weight:500;
+  padding:0 22px;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(255,255,255,.9);
+  color:#015C52;
+  margin:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.rs-chip-hist::before{
+  content:"";
+  width:34px;
+  height:34px;
+  background:#ccc;
+  border-radius:50%;
+  display:inline-block;
+}
+</style>
+</head>
+<body>
+<h2>测量按钮实际宽度（修正版）</h2>
+<div class="rs-chip rs-chip-energy" id="energy">姓名能量卡</div>
+<div class="rs-chip rs-chip-hist" id="hist">历史记录</div>
+<div class="rs-chip rs-chip-again" id="again">再测一个</div>
+<script>
+const energy = document.getElementById('energy');
+const hist = document.getElementById('hist');
+const again = document.getElementById('again');
+
+console.log('=== 实际渲染宽度 ===');
+console.log('姓名能量卡:', energy.offsetWidth + 'px');
+console.log('历史记录:', hist.offsetWidth + 'px');
+console.log('再测一个:', again.offsetWidth + 'px');
+
+document.body.innerHTML += `
+<pre>
+姓名能量卡实际宽度: ${energy.offsetWidth}px
+历史记录实际宽度: ${hist.offsetWidth}px  
+再测一个实际宽度: ${again.offsetWidth}px
+</pre>`;
+</script>
+</body>
+</html>

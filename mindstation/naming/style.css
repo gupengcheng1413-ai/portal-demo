@@ -191,13 +191,13 @@ img{user-select:none}
 .rs-bg img.bg-whole{position:absolute;inset:0;width:100%;height:100%;display:block}
 .rs-bg>:not(.bg-whole){display:none}
 /* chips 现位于随滚动的 rs-head 内（右侧），不再固定 */
-.rs-chip{position:absolute;top:4px;height:60px;border-radius:20px;font-size:32px;font-weight:500;padding:0 22px;
+.rs-chip{position:absolute;top:16px;height:60px;border-radius:20px;font-size:32px;font-weight:500;padding:0 22px;
   display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.9);color:#015C52;transition:transform var(--t-fast);box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .rs-chip:active{transform:scale(.95)}
-.rs-chip-energy{right:410px}
-.rs-chip-hist{right:198px}
+.rs-chip-energy{right:355px}
+.rs-chip-hist{right:124px}
 .rs-chip-hist::before{content:"";width:34px;height:34px;background:url("assets/chip-hist.png") center/contain no-repeat}
-.rs-chip-again{right:0}
+.rs-chip-again{right:-63px}
 
 .rs-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:0 0 70px;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
 .rs-scroll::-webkit-scrollbar{width:0;height:0;display:none}
@@ -501,11 +501,60 @@ img{user-select:none}
 
 /* 能量卡内容容器 */
 .cpk2-content{
+
+/* 能量卡2的包装容器（与cpk1-card对齐） */
+.cpk2-card-wrapper{
+  position:relative;
+  width:1640px;
+  height:357px;
+}
   position:absolute;
+
+/* 能量卡2的包装容器（与cpk1-card对齐） */
+.cpk2-card-wrapper{
+  position:relative;
+  width:1640px;
+  height:357px;
+}
   inset:0;
+
+/* 能量卡2的包装容器（与cpk1-card对齐） */
+.cpk2-card-wrapper{
+  position:relative;
+  width:1640px;
+  height:357px;
+}
   display:flex;
+
+/* 能量卡2的包装容器（与cpk1-card对齐） */
+.cpk2-card-wrapper{
+  position:relative;
+  width:1640px;
+  height:357px;
+}
   align-items:center;
+
+/* 能量卡2的包装容器（与cpk1-card对齐） */
+.cpk2-card-wrapper{
+  position:relative;
+  width:1640px;
+  height:357px;
+}
   justify-content:center;
+
+/* 能量卡2的包装容器（与cpk1-card对齐） */
+.cpk2-card-wrapper{
+  position:relative;
+  width:1640px;
+  height:357px;
+}
+}
+
+/* 能量卡2的包装容器（与cpk1-card对齐） */
+.cpk2-card-wrapper{
+  position:relative;
+  width:1640px;
+  height:357px;
 }
 
 /* 能量卡图片 */

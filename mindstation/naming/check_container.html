@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+body{margin:0;padding:50px;background:#f0f0f0;}
+.container{
+  position:relative;
+  width:1640px;
+  margin:0 auto;
+  padding:14px 78px 0;
+  background:#fff;
+  border:2px solid red;
+}
+.rs-head{
+  position:relative;
+  height:68px;
+  background:#e0e0e0;
+  border:2px solid blue;
+}
+.test-chip{
+  position:absolute;
+  right:15px;
+  top:16px;
+  height:60px;
+  padding:0 22px;
+  background:#90EE90;
+  border:2px solid green;
+  display:flex;
+  align-items:center;
+}
+</style>
+</head>
+<body>
+<h2>容器结构检查</h2>
+<div class="container">
+  <div class="rs-head">
+    <div class="test-chip">测试按钮 right:15px</div>
+  </div>
+</div>
+<script>
+const container = document.querySelector('.container');
+const head = document.querySelector('.rs-head');
+const chip = document.querySelector('.test-chip');
+
+console.log('容器宽度（含padding）:', container.offsetWidth);
+console.log('rs-head宽度:', head.offsetWidth);
+console.log('按钮距离rs-head右边:', getComputedStyle(chip).right);
+
+const chipRect = chip.getBoundingClientRect();
+const containerRect = container.getBoundingClientRect();
+const distanceToContainerRight = containerRect.right - chipRect.right;
+
+console.log('按钮右边缘距离容器右边缘（实际）:', distanceToContainerRight);
+
+document.body.innerHTML += `
+<pre>
+容器总宽度: ${container.offsetWidth}px
+rs-head宽度: ${head.offsetWidth}px  
+按钮CSS right: ${getComputedStyle(chip).right}
+按钮实际距离容器右边缘: ${distanceToContainerRight.toFixed(1)}px
+</pre>`;
+</script>
+</body>
+</html>

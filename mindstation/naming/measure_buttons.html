@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+.rs-chip{
+  height:60px;
+  border-radius:20px;
+  font-size:32px;
+  font-weight:500;
+  padding:0 22px;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(255,255,255,.9);
+  color:#015C52;
+}
+.rs-chip::before{
+  content:"";
+  width:34px;
+  height:34px;
+  background:#ccc;
+}
+</style>
+</head>
+<body>
+<div class="rs-chip" id="energy">姓名能量卡</div>
+<div class="rs-chip" id="hist"><span style="display:inline-block;width:34px;height:34px;background:#ccc"></span>历史记录</div>
+<div class="rs-chip" id="again">再测一个</div>
+<script>
+console.log('姓名能量卡宽度:', document.getElementById('energy').offsetWidth);
+console.log('历史记录宽度:', document.getElementById('hist').offsetWidth);
+console.log('再测一个宽度:', document.getElementById('again').offsetWidth);
+</script>
+</body>
+</html>
