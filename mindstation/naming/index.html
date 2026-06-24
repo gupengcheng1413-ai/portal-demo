@@ -124,23 +124,19 @@
       <div class="cpk1-overlay"></div>
       <div class="cpk-scroll" id="chpuka1Scroll"><!-- renderChpuka1() 渲染 --></div>
     </div>
-  </section>
 
-  <!-- ============== 9. chpuka2 能量卡展示页 (Figma 5266:36) ============== -->
-  <section class="scene scene-chpuka2" data-scene="chpuka2" hidden>
-    <button type="button" class="cpk-back" data-go="result" aria-label="返回">
-      <img src="assets/nm-back.png" alt="" draggable="false">
-    </button>
-    <div class="cpk-card-wrap">
-      <div class="cpk-card-content"><!-- JS 渲染 --></div>
+    <!-- 能量卡展示页 — 内嵌在 result 场景内 -->
+    <div class="cpk-modal" id="chpuka2Modal" hidden>
+      <div class="cpk1-overlay"></div>
+      <div class="cpk2-content">
+        <button type="button" class="cpk2-close" id="cpk2Close" aria-label="关闭">×</button>
+        <img class="cpk2-card" src="assets/chpuka2-new-transparent.png?v=2" alt="能量卡" draggable="false">
+      </div>
     </div>
   </section>
 
-  <!-- ============== 10. chpuka3 能量卡展示页 (Figma 5269:372) ============== -->
+  <!-- ============== 10. chpuka3 能量卡展示页 (保留用于后续扩展) ============== -->
   <section class="scene scene-chpuka3" data-scene="chpuka3" hidden>
-    <button type="button" class="cpk-back" data-go="result" aria-label="返回">
-      <img src="assets/nm-back.png" alt="" draggable="false">
-    </button>
     <div class="cpk-card-wrap">
       <div class="cpk-card-content"><!-- JS 渲染 --></div>
     </div>

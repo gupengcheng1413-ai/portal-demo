@@ -99,3 +99,14 @@
   window.__NM_onChpukaEnter = onChpukaEnter;
   window.__NM_renderChpukaCard = renderChpukaCard;
 })();
+
+// 绑定 chpuka2 关闭按钮
+document.addEventListener('DOMContentLoaded', () => {
+  const cpk2Close = document.getElementById('cpk2Close');
+  if(cpk2Close){
+    cpk2Close.addEventListener('click', () => {
+      const modal = document.getElementById('chpuka2Modal');
+      if(modal) modal.hidden = true;
+    });
+  }
+});

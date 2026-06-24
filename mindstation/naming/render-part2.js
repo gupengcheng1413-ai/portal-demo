@@ -196,9 +196,13 @@
         }
       }
       else if(act === "draw-card") {
-        // chpuka1 抽取能量卡 → 随机跳转 chpuka2 或 chpuka3
-        const n = Math.floor(Math.random() * 2) + 2;
-        NM.setScene(`chpuka${n}`);
+        // 关闭 chpuka1 模态层
+        const modal1 = document.getElementById('chpuka1Modal');
+        if(modal1) modal1.hidden = true;
+
+        // 显示 chpuka2 模态层
+        const modal2 = document.getElementById('chpuka2Modal');
+        if(modal2) modal2.hidden = false;
       }
     });
 

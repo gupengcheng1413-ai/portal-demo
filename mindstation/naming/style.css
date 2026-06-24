@@ -492,37 +492,49 @@ img{user-select:none}
 .cpk1-close:hover{background:rgba(0,0,0,.8)}
 .cpk1-close:active{transform:scale(.9)}
 
-/* chpuka2/3 能量卡展示页（浮层模式，标准高度357px） */
+/* chpuka2/3 能量卡展示页 */
 .scene-chpuka2,.scene-chpuka3{
-  background:rgba(0,0,0,.5);
-  z-index:100;
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  display:flex;align-items:center;justify-content:center
+  background:rgba(0,0,0,.9);
 }
-.cpk-back{position:absolute;left:20px;top:20px;width:80px;height:68px;display:flex;align-items:center;justify-content:center;z-index:30;transition:transform var(--t-fast)}
-.cpk-back img{width:80px;height:68px;display:block}
-.cpk-back:active{transform:scale(.9)}
 
-.cpk-card-wrap{display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:20px}
-.cpk-card-content{position:relative;width:1640px;height:357px;max-width:100%;
-  background:#FFFDF6;
-  border-radius:12px;
-  box-shadow:0 24px 64px rgba(0,0,0,.3);
-  overflow:hidden}
+/* 返回按钮 */
 
-/* 卡片内部布局（数据驱动） */
-.cpk-card-inner{position:relative;width:100%;height:100%;padding:40px 60px;display:flex;flex-direction:column;justify-content:center}
-.cpk-card-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(225,230,218,.3) 0%,rgba(232,232,232,.2) 100%);z-index:0}
-.cpk-card-deco{position:absolute;right:0;top:0;width:400px;height:100%;
-  background:url("assets/chpuka2-card.png") right center/contain no-repeat;opacity:.15;z-index:1;pointer-events:none}
+/* 能量卡内容容器 */
+.cpk2-content{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-.cpk-card-title{position:relative;z-index:2;font-size:56px;font-weight:700;color:var(--ink);font-family:var(--font-display);margin-bottom:16px}
-.cpk-card-subtitle{position:relative;z-index:2;font-size:32px;font-weight:500;color:var(--ink-2);margin-bottom:24px}
-.cpk-card-desc{position:relative;z-index:2;font-size:30px;line-height:46px;color:var(--ink);font-family:var(--font-cn);margin-bottom:28px}
-.cpk-card-keywords{position:relative;z-index:2;display:flex;gap:16px;flex-wrap:wrap}
-.cpk-keyword{display:inline-block;padding:8px 20px;border-radius:20px;
-  background:rgba(110,139,105,.15);color:var(--green);font-size:28px;font-weight:500;
-  border:1px solid rgba(110,139,105,.3)}
+/* 能量卡图片 */
+.cpk2-card{
+  width:1640px;
+  height:357px;
+  display:block;
+}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* chpuka2 关闭按钮（复用 cpk1-close 样式） */
+/* chpuka2 关闭按钮（与 cpk1-close 位置一致） */
+.cpk2-close{
+  position:absolute;
+  right:20px;
+  top:20px;
+  width:48px;
+  height:48px;
+  border-radius:24px;
+  background:rgba(0,0,0,.6);
+  color:#fff;
+  font-size:32px;
+  line-height:48px;
+  text-align:center;
+  border:none;
+  cursor:pointer;
+  z-index:10;
+  transition:background var(--t-fast);
+}
+.cpk2-close:hover{background:rgba(0,0,0,.8)}
+.cpk2-close:active{transform:scale(.9)}
