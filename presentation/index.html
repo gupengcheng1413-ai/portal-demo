@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5.6寸长条屏 · 产品演示</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  background: #0a0a0f;
+  color: #e8e8ec;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Mesh Gradient Background ===== */
+.bg-mesh {
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(99,102,241,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 70%, rgba(6,182,212,.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(168,85,247,.06) 0%, transparent 60%),
+    #0a0a0f;
+}
+
+/* ===== Floating Particles ===== */
+.particles {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;
+}
+.particles span {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: rgba(255,255,255,.4);
+  border-radius: 50%;
+  animation: float-up linear infinite;
+}
+@keyframes float-up {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+/* ===== Slide Container ===== */
+.deck {
+  position: relative; z-index: 2;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+}
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 80px;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.slide.active {
+  opacity: 1; transform: translateX(0);
+  pointer-events: auto;
+}
+.slide.prev {
+  opacity: 0; transform: translateX(-60px);
+}
+
+/* ===== Typography ===== */
+.slide h1 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 24px;
+}
+.slide h2 {
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  color: #f0f0f5;
+  margin-bottom: 20px;
+}
+.slide p, .slide li {
+  font-size: clamp(16px, 1.8vw, 22px);
+  line-height: 1.7;
+  color: rgba(255,255,255,.72);
+  max-width: 800px;
+  text-align: center;
+}
+.slide ul {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 12px;
+  max-width: 700px;
+}
+.slide li::before {
+  content: '›';
+  margin-right: 12px;
+  color: #06b6d4;
+  font-weight: 700;
+}
+
+/* ===== Glass Card ===== */
+.glass {
+  background: rgba(255,255,255,.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px;
+  padding: 40px 48px;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* ===== Device Mockup ===== */
+.device-frame {
+  position: relative;
+  width: min(90vw, 820px);
+  aspect-ratio: 1640 / 348;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,.1);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.05),
+    0 20px 60px rgba(0,0,0,.5),
+    0 0 80px rgba(99,102,241,.08);
+  margin: 24px auto;
+}
+.device-frame img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.device-frame iframe {
+  width: 100%; height: 100%;
+  border: 0; display: block;
+}
+
+/* ===== Feature Grid ===== */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 900px; width: 100%;
+  margin-top: 32px;
+}
+.feat-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  transition: transform .3s ease, border-color .3s ease;
+}
+.feat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99,102,241,.3);
+}
+.feat-card .icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  display: block;
+}
+.feat-card h3 {
+  font-size: 18px; font-weight: 600;
+  color: #f0f0f5;
+  margin-bottom: 8px;
+}
+.feat-card p {
+  font-size: 14px; color: rgba(255,255,255,.55);
+  text-align: center;
+}
+
+/* ===== Spec Badge ===== */
+.spec-badge {
+  display: inline-flex;
+  align-items: center; gap: 8px;
+  background: rgba(6,182,212,.1);
+  border: 1px solid rgba(6,182,212,.25);
+  border-radius: 100px;
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #67e8f9;
+  margin-bottom: 28px;
+}
+.spec-badge::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: #06b6d4;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.7); }
+}
+
+/* ===== Stagger Entrance ===== */
+.slide.active .stagger { animation: fade-up .5s ease both; }
+.slide.active .stagger:nth-child(1) { animation-delay: .1s; }
+.slide.active .stagger:nth-child(2) { animation-delay: .2s; }
+.slide.active .stagger:nth-child(3) { animation-delay: .3s; }
+.slide.active .stagger:nth-child(4) { animation-delay: .4s; }
+.slide.active .stagger:nth-child(5) { animation-delay: .5s; }
+.slide.active .stagger:nth-child(6) { animation-delay: .6s; }
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Progress Bar ===== */
+.progress {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 10;
+  display: flex; gap: 8px; align-items: center;
+  padding: 10px 20px;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(10px);
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.06);
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  transition: all .3s ease;
+  cursor: pointer;
+}
+.dot.active {
+  background: #06b6d4;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ===== Page Counter ===== */
+.page-num {
+  position: fixed; bottom: 32px; right: 40px;
+  z-index: 10;
+  font-size: 13px;
+  color: rgba(255,255,255,.35);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Keyboard Hint ===== */
+.kbd-hint {
+  position: fixed; bottom: 32px; left: 40px;
+  z-index: 10;
+  font-size: 12px;
+  color: rgba(255,255,255,.25);
+}
+.kbd-hint kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 11px;
+  margin: 0 2px;
+}
+
+/* ===== Demo Label ===== */
+.demo-label {
+  position: absolute;
+  top: 12px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: rgba(255,255,255,.45);
+  background: rgba(0,0,0,.4);
+  padding: 4px 16px;
+  border-radius: 100px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .slide { padding: 40px 24px; }
+  .glass { padding: 28px 20px; }
+  .features { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="particles" id="particles"></div>
+
+<div class="deck" id="deck">
+
+  <!-- Slide 0: Cover -->
+  <section class="slide active">
+    <div class="spec-badge stagger">5.6 寸长条屏 · 1640×348</div>
+    <h1 class="stagger">智能硬件交互演示</h1>
+    <p class="stagger">三款教育 + 心灵场景 Demo · 纯前端实现 · 像素级还原 Figma 设计稿</p>
+    <div class="device-frame stagger" style="margin-top:40px">
+      <img src="../assets/home-bg.png" alt="主页预览">
+    </div>
+  </section>
+
+  <!-- Slide 1: Product Overview -->
+  <section class="slide">
+    <h2 class="stagger">产品概览</h2>
+    <p class="stagger" style="margin-bottom:32px">面向桌面学习场景的长条屏设备，三大核心应用模块</p>
+    <div class="features">
+      <div class="feat-card stagger">
+        <span class="icon">📖</span>
+        <h3>查词翻译</h3>
+        <p>中英互译 · 生词本 · 收藏管理</p>
+      </div>
+      <div class="feat-card stagger">
+        <span class="icon">✨</span>
+        <h3>心灵驿站</h3>
+        <p>每日星语 · 灵感锦囊 · 性格认知 · 姓名寓意</p>
+      </div>
+      <div class="feat-card stagger">
+        <span class="icon">📝</span>
+        <h3>句子讲解</h3>
+        <p>扫描识别 · AI 解析 · 多维度讲解</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 2: Tech Spec -->
+  <section class="slide">
+    <h2 class="stagger">技术规格</h2>
+    <div class="glass stagger">
+      <ul>
+        <li class="stagger">物理分辨率 1640×348 · 5.6 寸超宽比例</li>
+        <li class="stagger">纯 HTML / CSS / JS · 零构建依赖</li>
+        <li class="stagger">自适应缩放（contain 模式，任意屏幕完整显示）</li>
+        <li class="stagger">Portal 主页 iframe 隔离 · postMessage 通信</li>
+        <li class="stagger">动效：星空粒子 · 数字滚动 · stagger 入场 · 流星</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Slide 3: Fenping Demo -->
+  <section class="slide">
+    <div class="spec-badge stagger">App 1</div>
+    <h2 class="stagger">查词翻译</h2>
+    <p class="stagger" style="margin-bottom:20px">React 构建 · 中英互译 · 生词收藏 · 历史记录</p>
+    <div class="device-frame stagger">
+      <img src="../fenping/assets/11189d211f8570a51f483619c4bc58ae5d4cf053-WppzO_Fz.png" alt="查词翻译截图">
+    </div>
+  </section>
+
+  <!-- Slide 4: MindStation Demo -->
+  <section class="slide">
+    <div class="spec-badge stagger">App 2</div>
+    <h2 class="stagger">心灵驿站</h2>
+    <p class="stagger" style="margin-bottom:20px">四大子模块 · 星座绑定 · 每日运势 · 丰富动效</p>
+    <div class="device-frame stagger">
+      <img src="../mindstation/daily-words/assets/illustrations/home-bg.png" alt="心灵驿站截图">
+    </div>
+  </section>
+
+  <!-- Slide 5: Jiangjuzi Demo -->
+  <section class="slide">
+    <div class="spec-badge stagger">App 3</div>
+    <h2 class="stagger">句子讲解</h2>
+    <p class="stagger" style="margin-bottom:20px">扫描识别 · 教材选择 · AI 解析 · 多页详解</p>
+    <div class="device-frame stagger">
+      <img src="../jiangjuzi/assets/images/3d72b1599c125aeb13373d75b3ad8d676cf287ef.png" alt="句子讲解截图">
+    </div>
+  </section>
+
+  <!-- Slide 6: Design Highlights -->
+  <section class="slide">
+    <h2 class="stagger">设计亮点</h2>
+    <div class="features">
+      <div class="feat-card stagger">
+        <span class="icon">🌌</span>
+        <h3>星空粒子系统</h3>
+        <p>Canvas 60fps · 呼吸透明度 · sin 抖动</p>
+      </div>
+      <div class="feat-card stagger">
+        <span class="icon">🎨</span>
+        <h3>主题色系统</h3>
+        <p>星座绑定主题 · 动态渐变切换</p>
+      </div>
+      <div class="feat-card stagger">
+        <span class="icon">🔄</span>
+        <h3>状态机路由</h3>
+        <p>URL hash 直达 · 历史栈 · 生命周期</p>
+      </div>
+      <div class="feat-card stagger">
+        <span class="icon">♿</span>
+        <h3>无障碍适配</h3>
+        <p>ARIA 标注 · 键盘导航 · reduced-motion</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 7: Live Demo -->
+  <section class="slide" id="slide-live">
+    <div class="spec-badge stagger">Live Demo</div>
+    <h2 class="stagger">实时演示</h2>
+    <div class="device-frame stagger" style="position:relative">
+      <span class="demo-label">点击卡片进入子应用</span>
+      <iframe id="liveFrame" src="" title="实时演示"></iframe>
+    </div>
+    <p class="stagger" style="margin-top:16px;font-size:14px;color:rgba(255,255,255,.4)">子应用内交互完整可用</p>
+  </section>
+
+  <!-- Slide 8: Summary -->
+  <section class="slide">
+    <h1 class="stagger">Thank You</h1>
+    <p class="stagger" style="margin-bottom:32px">三款 Demo 完整交付 · 纯前端实现 · 可直接部署</p>
+    <div class="glass stagger" style="text-align:center">
+      <p style="font-size:16px;color:rgba(255,255,255,.5)">
+        python3 -m http.server 8080<br>
+        <span style="color:#67e8f9">http://localhost:8080</span>
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<!-- Progress -->
+<div class="progress" id="progress"></div>
+<div class="page-num" id="pageNum"></div>
+<div class="kbd-hint"><kbd>←</kbd> <kbd>→</kbd> 翻页</div>
+
+<script>
+// ===== Particles =====
+(function initParticles() {
+  const container = document.getElementById('particles');
+  const count = 30;
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement('span');
+    span.style.left = Math.random() * 100 + '%';
+    span.style.width = span.style.height = (1 + Math.random() * 2) + 'px';
+    span.style.animationDuration = (8 + Math.random() * 12) + 's';
+    span.style.animationDelay = (Math.random() * 10) + 's';
+    container.appendChild(span);
+  }
+})();
+
+// ===== Slide Engine =====
+const slides = document.querySelectorAll('.slide');
+const progress = document.getElementById('progress');
+const pageNum = document.getElementById('pageNum');
+let current = 0;
+
+// Build dots
+slides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.addEventListener('click', () => goTo(i));
+  progress.appendChild(dot);
+});
+
+function goTo(index) {
+  if (index < 0 || index >= slides.length || index === current) return;
+  const dir = index > current ? 1 : -1;
+  slides[current].className = 'slide' + (dir > 0 ? ' prev' : '');
+  slides[index].className = 'slide active';
+  current = index;
+  updateUI();
+  // Live demo iframe
+  if (index === 7) {
+    document.getElementById('liveFrame').src = '../index.html';
+  } else {
+    document.getElementById('liveFrame').src = '';
+  }
+}
+
+function updateUI() {
+  const dots = progress.querySelectorAll('.dot');
+  dots.forEach((d, i) => d.className = 'dot' + (i === current ? ' active' : ''));
+  pageNum.textContent = (current + 1) + ' / ' + slides.length;
+}
+updateUI();
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault();
+    goTo(current + 1);
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    goTo(current - 1);
+  }
+});
+
+// Touch swipe
+let startX = 0;
+document.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].clientX - startX;
+  if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+});
+
+// Mouse wheel
+let wheelLock = false;
+document.addEventListener('wheel', (e) => {
+  if (wheelLock) return;
+  if (Math.abs(e.deltaY) > 30) {
+    wheelLock = true;
+    goTo(current + (e.deltaY > 0 ? 1 : -1));
+    setTimeout(() => { wheelLock = false; }, 800);
+  }
+});
+</script>
+</body>
+</html>

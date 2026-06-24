@@ -3,14 +3,14 @@ const SCREEN_W = 1640;
 const SCREEN_H = 348;
 
 // ==================== result-the 三页帧高（源稿 THE_HEIGHTS） ====================
-const THE_HEIGHTS = [1180, 1006, 1196];
+const THE_HEIGHTS = [932, 932, 932]; // 左右分屏统一高度
 
 // ==================== 每页 Figma 帧高 ====================
 // 来源：App.tsx FRAME_H（由 calc(50%) 锚点与绝对像素交叉推导）
 const FRAME_HEIGHTS = {
   'juzi-shouye': 348,
   'scan': 348,
-  'result-book': 1022,
+  'result-book': 932, // 左右分屏单句结果页
   'lishi': 410,
   'jianjie': 348,
   'chooes-3': 1089,
@@ -18,6 +18,7 @@ const FRAME_HEIGHTS = {
   'hunhe': 348,
   'result-AI': 1395,
   'result-the': THE_HEIGHTS[0],
+  'result-split': 932, // 左右分屏句子讲解页
 };
 
 // ==================== 共享 SVG 路径 ====================
@@ -46,6 +47,7 @@ const state = {
   selectedGrade: '二年级',
   selectedVersion: '外研版',
   selectedVolume: '下册',
+  selectedSentenceId: 1, // 当前选中的句子ID
 };
 
 // 渲染器注册表（各页面文件填充）

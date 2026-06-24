@@ -96,6 +96,12 @@ function initEvents() {
     if (action === 'the-page') { state.theIndex = parseInt(target.dataset.index, 10); render(); return; }
     if (action === 'the-prev') { if (state.theIndex > 0) { state.theIndex--; render(); } return; }
     if (action === 'the-next') { if (state.theIndex < THE_HEIGHTS.length - 1) { state.theIndex++; render(); } return; }
+
+    if (action === 'select-sentence') {
+      state.selectedSentenceId = parseInt(target.dataset.sentenceId, 10);
+      render();
+      return;
+    }
   });
 }
 

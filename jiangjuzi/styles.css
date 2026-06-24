@@ -248,3 +248,33 @@ html, body {
 .arrow-nav:hover {
   opacity: 0.8;
 }
+
+/* 句子列表项样式 */
+.sentence-item {
+  transition: all 0.3s ease;
+}
+
+.sentence-item:hover {
+  opacity: 1 !important;
+  transform: translateX(5px);
+}
+
+/* 左侧句子列表滚动条 */
+#sentenceList::-webkit-scrollbar {
+  width: 6px;
+}
+
+#sentenceList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 3px;
+}
+
+#sentenceList::-webkit-scrollbar-thumb {
+  background: rgba(52, 248, 255, 0.3);
+  border-radius: 3px;
+}
+
+#sentenceList::-webkit-scrollbar-thumb:hover {
+  background: rgba(52, 248, 255, 0.5);
+}
+
