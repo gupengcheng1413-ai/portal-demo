@@ -261,7 +261,7 @@
     });
 
     // ============================================================
-    //  能量卡渲染到 HTML
+    //  能量卡渲染到图片上的文字层
     // ============================================================
     function renderEnergyCardToImage(data) {
       const container = document.getElementById('cpk2CardContent');
@@ -273,11 +273,7 @@
       // 移除加载状态
       container.classList.remove('loading');
 
-      // 应用主题色（背景渐变）
-      const color = data.color || '#6E8B69';
-      container.style.background = `linear-gradient(135deg, ${color} 0%, ${adjustColor(color, -20)} 100%)`;
-
-      // 渲染内容
+      // 渲染文字内容（叠加在图片上）
       const html = `
         <h2 class="cpk2-title">${escapeHtml(data.title)}</h2>
         <p class="cpk2-subtitle">${escapeHtml(data.subtitle)}</p>
@@ -296,15 +292,6 @@
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
-    }
-
-    // 辅助函数：调整颜色亮度
-    function adjustColor(hex, percent) {
-      const num = parseInt(hex.replace('#', ''), 16);
-      const r = Math.max(0, Math.min(255, ((num >> 16) & 0xff) + percent));
-      const g = Math.max(0, Math.min(255, ((num >> 8) & 0xff) + percent));
-      const b = Math.max(0, Math.min(255, (num & 0xff) + percent));
-      return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
     }
 
     // 通用 data-go 路由
