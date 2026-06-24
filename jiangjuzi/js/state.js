@@ -3,7 +3,7 @@ const SCREEN_W = 1640;
 const SCREEN_H = 348;
 
 // ==================== result-the 三页帧高（源稿 THE_HEIGHTS） ====================
-const THE_HEIGHTS = [932, 932, 932]; // 左右分屏统一高度
+const THE_HEIGHTS = [941, 846, 917]; // 新设计稿高度
 
 // ==================== 每页 Figma 帧高 ====================
 // 来源：App.tsx FRAME_H（由 calc(50%) 锚点与绝对像素交叉推导）
@@ -16,7 +16,7 @@ const FRAME_HEIGHTS = {
   'chooes-3': 1089,
   'yinwen-chaci': 348,
   'hunhe': 348,
-  'result-AI': 1395,
+  'result-AI': 1022,  // 左右分屏句子讲解页（Figma 5226-813）
   'result-the': THE_HEIGHTS[0],
   'result-split': 932, // 左右分屏句子讲解页
 };

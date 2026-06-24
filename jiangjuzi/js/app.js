@@ -93,7 +93,13 @@ function initEvents() {
       return;
     }
 
-    if (action === 'the-page') { state.theIndex = parseInt(target.dataset.index, 10); render(); return; }
+    if (action === 'the-page') {
+      const newIndex = parseInt(target.dataset.index, 10);
+      if (state.theIndex === newIndex) return; // 点击当前句子，不重新渲染
+      state.theIndex = newIndex;
+      render();
+      return;
+    }
     if (action === 'the-prev') { if (state.theIndex > 0) { state.theIndex--; render(); } return; }
     if (action === 'the-next') { if (state.theIndex < THE_HEIGHTS.length - 1) { state.theIndex++; render(); } return; }
 
