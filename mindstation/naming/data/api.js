@@ -169,6 +169,73 @@
     fetchHero: fetchHero,
     fetchCoreDetail: fetchCoreDetail,
     fetchCulture: fetchCulture,
-    fetchExtraFinal: fetchExtraFinal
+    fetchExtraFinal: fetchExtraFinal,
+    // 能量卡 API
+    fetchEnergyCard: fetchEnergyCard
   };
+
+  // ============================================================
+  //  能量卡 API - 根据姓名和日期生成能量卡
+  // ============================================================
+  async function fetchEnergyCard(name, date) {
+    var s = (name || "").trim();
+    if (!s || s.length < 2) return { status: "invalid" };
+
+    // 默认使用今天日期
+    var d = date || getToday();
+
+    // 检查缓存（按姓名+日期缓存）
+    var cacheKey = "energy:" + s + ":" + d;
+    var cached = energyCacheGet(cacheKey);
+    if (cached) {
+      console.log("[energy-card] cache hit for", s, d);
+      return { status: "ok", data: cached };
+    }
+
+    // 调用后端 API
+    try {
+      var url = WORKER_URL + "energy-card?name=" + encodeURIComponent(s) + "&date=" + d;
+      var resp = await fetch(url);
+      var result = await resp.json();
+
+      if (result.status === "ok" && result.data) {
+        // 缓存结果
+        energyCacheSet(cacheKey, result.data);
+        return result;
+      }
+
+      return result;
+    } catch (e) {
+      console.error("[energy-card] fetch error:", e);
+      return { status: "error", message: "网络异常" };
+    }
+  }
+
+  // 获取今天日期（YYYY-MM-DD）
+  function getToday() {
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return year + "-" + month + "-" + day;
+  }
+
+  // 能量卡缓存（独立的缓存空间）
+  function energyCacheGet(key) {
+    try {
+      var item = localStorage.getItem("ec_v" + CACHE_VERSION + "_" + key);
+      return item ? JSON.parse(item) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function energyCacheSet(key, data) {
+    try {
+      localStorage.setItem("ec_v" + CACHE_VERSION + "_" + key, JSON.stringify(data));
+    } catch (e) {
+      console.warn("[energy-card] cache set failed");
+    }
+  }
 })(window);
+

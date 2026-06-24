@@ -3,7 +3,9 @@
 // 运行环境 Node.js 20；环境变量 DEEPSEEK_KEY 放密钥
 // 两段式：?part=core 只生成核心模块(含判定)；?part=extra 只生成外围模块。
 //   前端先取 core(~12s 出结果页)，再异步取 extra 补到底部。无 part 走完整单请求(兼容)。
+// 能量卡：?name=xxx&date=YYYY-MM-DD 生成每日能量卡
 const http = require("http");
+const energyCard = require("./energy-card-prompt.js");
 
 const WORDS = [
   "习近平", "法轮功", "台独", "藏独",
@@ -166,6 +168,14 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "OPTIONS") { res.writeHead(204, CORS); res.end(); return; }
 
     const u = new URL(req.url, "http://localhost");
+    const pathname = u.pathname;
+
+    // 能量卡路由
+    if (pathname === "/energy-card") {
+      return handleEnergyCard(u, send);
+    }
+
+    // 原有姓名寓意路由
     const name = clean(u.searchParams.get("name"));
     const part = u.searchParams.get("part"); // "hero" | "core" | "culture" | "extra" | null(完整，兼容)
     if (!name || name.length < 2) return send({ status: "error", message: "姓名无效" });
@@ -246,6 +256,104 @@ const server = http.createServer(async (req, res) => {
     try { send({ status: "error", message: "生成失败" }); } catch (_) {}
   }
 });
+
+// ============================================================
+//  能量卡路由处理
+// ============================================================
+async function handleEnergyCard(urlObj, send) {
+  try {
+    const name = clean(urlObj.searchParams.get("name"));
+    const date = urlObj.searchParams.get("date") || getToday();
+
+    // 验证参数
+    if (!name || name.length < 2) {
+      return send({ status: "error", message: "姓名无效" });
+    }
+    if (hitBlocklist(name)) {
+      return send({ status: "blocked", reason: "内容不当" });
+    }
+
+    // 验证日期格式 YYYY-MM-DD
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return send({ status: "error", message: "日期格式无效，需要YYYY-MM-DD" });
+    }
+
+    console.log("[energy-card] generating for name=", name, "date=", date);
+
+    // 生成能量卡
+    const systemPrompt = energyCard.getSystemPrompt();
+    const userPrompt = energyCard.getUserPrompt(name, date);
+
+    // 调用DeepSeek API
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30秒超时
+
+    try {
+      const resp = await fetch("https://api.deepseek.com/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.DEEPSEEK_KEY}`
+        },
+        body: JSON.stringify({
+          model: "deepseek-chat",
+          response_format: { type: "json_object" },
+          max_tokens: 800,
+          temperature: 0.7,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt }
+          ]
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeout);
+
+      if (!resp.ok) {
+        console.error("[energy-card] API error:", resp.status, resp.statusText);
+        return send({ status: "error", message: "AI服务异常" });
+      }
+
+      const result = await resp.json();
+      const content = result.choices?.[0]?.message?.content;
+
+      if (!content) {
+        console.error("[energy-card] no content in response");
+        return send({ status: "error", message: "生成失败" });
+      }
+
+      const data = JSON.parse(content);
+
+      // 验证返回数据结构
+      if (!data.title || !data.subtitle || !data.description || !data.keywords || !data.color) {
+        console.error("[energy-card] incomplete data:", data);
+        return send({ status: "error", message: "生成内容不完整" });
+      }
+
+      console.log("[energy-card] success for", name, date);
+      return send({ status: "ok", data });
+
+    } catch (err) {
+      clearTimeout(timeout);
+      if (err.name === "AbortError") {
+        console.error("[energy-card] timeout");
+        return send({ status: "error", message: "生成超时" });
+      }
+      throw err;
+    }
+
+  } catch (e) {
+    console.error("[energy-card] error:", e.message);
+    return send({ status: "error", message: "生成失败" });
+  }
+}
+
+// 获取今天的日期（UTC+8）
+function getToday() {
+  const d = new Date(Date.now() + 8 * 3600000);
+  return d.toISOString().split('T')[0];
+}
 
 const port = process.env.FC_SERVER_PORT || 9000;
 server.listen(port, "0.0.0.0", () => console.log("naming web function listening on", port));

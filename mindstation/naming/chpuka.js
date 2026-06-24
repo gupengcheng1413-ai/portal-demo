@@ -49,11 +49,11 @@
       <div class="cpk-card-inner">
         <div class="cpk-card-bg"></div>
         <div class="cpk-card-deco"></div>
-        <h2 class="cpk-card-title">${NM.esc(data.title || "")}</h2>
-        <p class="cpk-card-subtitle">${NM.esc(data.subtitle || "")}</p>
-        <div class="cpk-card-desc">${NM.esc(data.description || "")}</div>
+        <h2 class="cpk-card-title">${data.title}</h2>
+        <p class="cpk-card-subtitle">${data.subtitle}</p>
+        <p class="cpk-card-desc">${data.description}</p>
         <div class="cpk-card-keywords">
-          ${(data.keywords || []).map(k => `<span class="cpk-keyword">${NM.esc(k)}</span>`).join("")}
+          ${data.keywords.map(kw => `<span class="cpk-keyword">${kw}</span>`).join('')}
         </div>
       </div>
     `;
@@ -70,34 +70,35 @@
       const scroll = document.querySelector("#chpuka1Scroll");
       if(scroll) scroll.scrollTop = 0;
     }
-    if(scene === "chpuka2"){
-      // TODO: 从后端获取数据
-      // 暂时使用示例数据
-      const mockData = {
-        title: "创新之光",
-        subtitle: "突破常规，引领潮流",
-        description: "你的名字蕴含着创新与突破的力量，如同晨光划破黑暗，照亮前行的道路。",
-        keywords: ["创新", "领导力", "智慧", "远见"],
-        color: "#6E8B69"
-      };
-      renderChpukaCard("chpuka2", mockData);
-    }
-    if(scene === "chpuka3"){
-      // chpuka3 同 chpuka2，暂用不同示例数据
-      const mockData = {
-        title: "温润如玉",
-        subtitle: "内敛沉稳，厚积薄发",
-        description: "你的名字如同美玉，外表温润内里坚韧，散发着宁静而持久的力量。",
-        keywords: ["温和", "坚韧", "智慧", "包容"],
-        color: "#718B6C"
-      };
-      renderChpukaCard("chpuka3", mockData);
-    }
+    // chpuka2 不在这里处理，由 draw-card 事件触发 API 调用
   }
 
   // 暴露接口
   window.__NM_onChpukaEnter = onChpukaEnter;
   window.__NM_renderChpukaCard = renderChpukaCard;
+
+  // ============================================================
+  //  能量卡生成 API 调用
+  // ============================================================
+  async function generateEnergyCard(name) {
+    const API = window.NAMING_DATA;
+    if (!API || !API.fetchEnergyCard) {
+      console.error('[energy-card] API not loaded');
+      return null;
+    }
+
+    // 调用 API（自动使用今天日期）
+    const result = await API.fetchEnergyCard(name);
+
+    if (result.status === 'ok' && result.data) {
+      return result.data;
+    }
+
+    console.error('[energy-card] API error:', result);
+    return null;
+  }
+
+  window.__NM_generateEnergyCard = generateEnergyCard;
 })();
 
 // 绑定 chpuka2 关闭按钮

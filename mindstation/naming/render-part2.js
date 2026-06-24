@@ -200,11 +200,76 @@
         const modal1 = document.getElementById('chpuka1Modal');
         if(modal1) modal1.hidden = true;
 
-        // 显示 chpuka2 模态层
+        // 获取当前姓名
+        const currentName = NM.state?.name || '';
+
+        // 调用能量卡生成 API
+        const generateCard = window.__NM_generateEnergyCard;
+        if (!generateCard) {
+          console.error('[draw-card] API not available');
+          return;
+        }
+
+        // 显示加载状态
         const modal2 = document.getElementById('chpuka2Modal');
-        if(modal2) modal2.hidden = false;
+        const cardContent = document.querySelector('.cpk2-card');
+        if (modal2 && cardContent) {
+          modal2.hidden = false;
+          cardContent.style.opacity = '0.5';
+          cardContent.style.filter = 'blur(4px)';
+        }
+
+        // 异步生成能量卡
+        generateCard(currentName).then(data => {
+          if (data && modal2) {
+            // 渲染能量卡到 chpuka2Modal 内的卡片上
+            renderEnergyCardToImage(data);
+
+            // 恢复显示
+            if (cardContent) {
+              cardContent.style.opacity = '1';
+              cardContent.style.filter = 'none';
+            }
+          } else {
+            // API 失败，使用兜底数据
+            console.warn('[draw-card] using fallback data');
+            const fallbackData = {
+              title: "能量启航",
+              subtitle: "新的一天，新的开始",
+              description: "你的名字蕴含着独特的力量，今天是展现自我的好时机。",
+              keywords: ["自信", "前行", "成长"],
+              color: "#6E8B69"
+            };
+            renderEnergyCardToImage(fallbackData);
+
+            if (cardContent) {
+              cardContent.style.opacity = '1';
+              cardContent.style.filter = 'none';
+            }
+          }
+        }).catch(err => {
+          console.error('[draw-card] error:', err);
+          if (cardContent) {
+            cardContent.style.opacity = '1';
+            cardContent.style.filter = 'none';
+          }
+        });
       }
     });
+
+    // ============================================================
+    //  能量卡渲染到图片上（临时方案：直接显示图片，不渲染数据）
+    // ============================================================
+    function renderEnergyCardToImage(data) {
+      // TODO: 当前chpuka2使用的是固定图片
+      // 未来可以考虑：
+      // 1. 用canvas动态绘制文字到图片上
+      // 2. 或者改用HTML渲染的卡片（类似chpuka1的设计）
+      console.log('[energy-card] data received:', data);
+
+      // 暂时只记录数据，图片保持原样
+      // 如果需要显示文字，需要修改HTML结构使用renderChpukaCard()
+    }
 
     // 通用 data-go 路由
     document.body.addEventListener("click", e => {
