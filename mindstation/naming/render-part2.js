@@ -212,24 +212,18 @@
 
         // 显示加载状态
         const modal2 = document.getElementById('chpuka2Modal');
-        const cardContent = document.querySelector('.cpk2-card');
+        const cardContent = document.getElementById('cpk2CardContent');
         if (modal2 && cardContent) {
           modal2.hidden = false;
-          cardContent.style.opacity = '0.5';
-          cardContent.style.filter = 'blur(4px)';
+          cardContent.classList.add('loading');
+          cardContent.innerHTML = '<p style="font-size:32px;color:#fff;">生成中...</p>';
         }
 
         // 异步生成能量卡
         generateCard(currentName).then(data => {
           if (data && modal2) {
-            // 渲染能量卡到 chpuka2Modal 内的卡片上
+            // 渲染能量卡
             renderEnergyCardToImage(data);
-
-            // 恢复显示
-            if (cardContent) {
-              cardContent.style.opacity = '1';
-              cardContent.style.filter = 'none';
-            }
           } else {
             // API 失败，使用兜底数据
             console.warn('[draw-card] using fallback data');
@@ -241,34 +235,64 @@
               color: "#6E8B69"
             };
             renderEnergyCardToImage(fallbackData);
-
-            if (cardContent) {
-              cardContent.style.opacity = '1';
-              cardContent.style.filter = 'none';
-            }
           }
         }).catch(err => {
           console.error('[draw-card] error:', err);
+          // 显示错误提示
+          const cardContent = document.getElementById('cpk2CardContent');
           if (cardContent) {
-            cardContent.style.opacity = '1';
-            cardContent.style.filter = 'none';
+            cardContent.classList.remove('loading');
+            cardContent.innerHTML = '<p style="font-size:32px;color:#fff;">生成失败，请重试</p>';
           }
         });
       }
     });
 
     // ============================================================
-    //  能量卡渲染到图片上（临时方案：直接显示图片，不渲染数据）
+    //  能量卡渲染到 HTML
     // ============================================================
     function renderEnergyCardToImage(data) {
-      // TODO: 当前chpuka2使用的是固定图片
-      // 未来可以考虑：
-      // 1. 用canvas动态绘制文字到图片上
-      // 2. 或者改用HTML渲染的卡片（类似chpuka1的设计）
-      console.log('[energy-card] data received:', data);
+      const container = document.getElementById('cpk2CardContent');
+      if (!container) {
+        console.error('[energy-card] container not found');
+        return;
+      }
 
-      // 暂时只记录数据，图片保持原样
-      // 如果需要显示文字，需要修改HTML结构使用renderChpukaCard()
+      // 移除加载状态
+      container.classList.remove('loading');
+
+      // 应用主题色（背景渐变）
+      const color = data.color || '#6E8B69';
+      container.style.background = `linear-gradient(135deg, ${color} 0%, ${adjustColor(color, -20)} 100%)`;
+
+      // 渲染内容
+      const html = `
+        <h2 class="cpk2-title">${escapeHtml(data.title)}</h2>
+        <p class="cpk2-subtitle">${escapeHtml(data.subtitle)}</p>
+        <p class="cpk2-description">${escapeHtml(data.description)}</p>
+        <div class="cpk2-keywords">
+          ${data.keywords.map(kw => `<span class="cpk2-keyword">${escapeHtml(kw)}</span>`).join('')}
+        </div>
+      `;
+      container.innerHTML = html;
+
+      console.log('[energy-card] rendered:', data.title);
+    }
+
+    // 辅助函数：HTML 转义
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 辅助函数：调整颜色亮度
+    function adjustColor(hex, percent) {
+      const num = parseInt(hex.replace('#', ''), 16);
+      const r = Math.max(0, Math.min(255, ((num >> 16) & 0xff) + percent));
+      const g = Math.max(0, Math.min(255, ((num >> 8) & 0xff) + percent));
+      const b = Math.max(0, Math.min(255, (num & 0xff) + percent));
+      return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
     }
 
     // 通用 data-go 路由
