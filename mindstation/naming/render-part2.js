@@ -196,12 +196,20 @@
         }
       }
       else if(act === "draw-card") {
+        console.log('[draw-card] triggered');
+        e.preventDefault();
+        e.stopPropagation();
+
         // 关闭 chpuka1 模态层
         const modal1 = document.getElementById('chpuka1Modal');
-        if(modal1) modal1.hidden = true;
+        if(modal1) {
+          modal1.hidden = true;
+          console.log('[draw-card] closed chpuka1Modal');
+        }
 
         // 获取当前姓名
         const currentName = NM.state?.name || '';
+        console.log('[draw-card] current name:', currentName);
 
         // 调用能量卡生成 API
         const generateCard = window.__NM_generateEnergyCard;
@@ -217,6 +225,10 @@
           modal2.hidden = false;
           cardContent.classList.add('loading');
           cardContent.innerHTML = '<p style="font-size:32px;color:#fff;">生成中...</p>';
+          console.log('[draw-card] showing chpuka2Modal with loading state');
+        } else {
+          console.error('[draw-card] modal2 or cardContent not found');
+          return;
         }
 
         // 异步生成能量卡
