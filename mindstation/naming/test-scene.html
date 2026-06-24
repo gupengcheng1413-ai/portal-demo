@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>场景切换测试</title>
+<style>
+body{margin:0;padding:20px;font-family:sans-serif}
+button{margin:10px;padding:10px 20px;font-size:16px}
+#log{margin-top:20px;padding:10px;background:#f5f5f5;white-space:pre-wrap;font-family:monospace;font-size:12px;min-height:300px;position:relative;z-index:10000}
+iframe{position:fixed;top:0;left:0;width:70%;height:100%;border:none;z-index:1}
+#controls{position:fixed;right:0;top:0;width:30%;height:100%;background:white;padding:20px;box-sizing:border-box;overflow:auto;z-index:10000}
+</style>
+</head>
+<body>
+<div id="controls">
+<h1>场景切换测试</h1>
+<button onclick="test()">测试完整流程</button>
+<button onclick="checkScenes()">检查场景状态</button>
+<button onclick="checkResult()">检查 result 内容</button>
+<div id="log"></div>
+</div>
+
+<script>
+const log = (msg) => {
+  const el = document.getElementById('log');
+  el.textContent += new Date().toLocaleTimeString() + ' - ' + msg + '\n';
+};
+
+async function test(){
+  log('开始测试...');
+
+  // 1. 打开主页
+  log('1. 加载页面');
+  let iframe = document.querySelector('iframe');
+  if(iframe) iframe.remove();
+
+  iframe = document.createElement('iframe');
+  iframe.src = 'http://localhost:18765/index.html';
+  document.body.appendChild(iframe);
+
+  await new Promise(r => setTimeout(r, 2000));
+
+  // 2. 提交姓名
+  log('2. 提交姓名"雷军"');
+  iframe.contentWindow.__NM.submitName('雷军');
+  await new Promise(r => setTimeout(r, 3000));
+
+  const scenes1 = Array.from(iframe.contentDocument.querySelectorAll('.scene')).map(s => ({
+    scene: s.dataset.scene,
+    hidden: s.hidden,
+    display: getComputedStyle(s).display
+  }));
+  log('result 状态: ' + JSON.stringify(scenes1.find(s => s.scene === 'result')));
+
+  // 3. 点击能量卡
+  log('3. 点击能量卡按钮');
+  iframe.contentDocument.querySelector('[data-act="energy-card"]').click();
+  await new Promise(r => setTimeout(r, 2000));
+
+  const scenes2 = Array.from(iframe.contentDocument.querySelectorAll('.scene'))
+    .filter(s => !s.hidden)
+    .map(s => s.dataset.scene);
+  log('显示的场景: ' + scenes2.join(', '));
+
+  // 4. 关闭 chpuka1
+  log('4. 关闭 chpuka1');
+  iframe.contentDocument.querySelector('.cpk1-close').click();
+  await new Promise(r => setTimeout(r, 2000));
+
+  const scenes3 = Array.from(iframe.contentDocument.querySelectorAll('.scene')).map(s => ({
+    scene: s.dataset.scene,
+    hidden: s.hidden,
+    zIndex: s.style.zIndex,
+    display: getComputedStyle(s).display,
+    opacity: getComputedStyle(s).opacity,
+    classes: s.className
+  }));
+
+  log('最终场景状态:');
+  scenes3.forEach(s => {
+    if(!s.hidden){
+      log(`  ${s.scene}: hidden=${s.hidden}, zIndex=${s.zIndex}, display=${s.display}, opacity=${s.opacity}`);
+      log(`    classes: ${s.classes}`);
+    }
+  });
+
+  const resultContent = iframe.contentDocument.querySelector('.scene-result .rs-scroll');
+  log('result 内容长度: ' + (resultContent ? resultContent.innerHTML.length : 0));
+
+  // 检查遮罩层
+  const overlay = iframe.contentDocument.querySelector('.cpk1-overlay');
+  if(overlay){
+    const overlayStyle = iframe.contentWindow.getComputedStyle(overlay);
+    log('遮罩层信息:');
+    log('  display: ' + overlayStyle.display);
+    log('  background: ' + overlayStyle.backgroundColor);
+    log('  z-index: ' + overlayStyle.zIndex);
+    log('  opacity: ' + overlayStyle.opacity);
+  } else {
+    log('遮罩层不存在！');
+  }
+
+  // 检查 result 的实际渲染位置
+  const resultRect = iframe.contentDocument.querySelector('.scene-result').getBoundingClientRect();
+  log('result 位置: top=' + resultRect.top + ', left=' + resultRect.left);
+
+  const chpuka1Rect = iframe.contentDocument.querySelector('.scene-chpuka1').getBoundingClientRect();
+  log('chpuka1 位置: top=' + chpuka1Rect.top + ', left=' + chpuka1Rect.left);
+
+  // 检查当前 state
+  const currentScene = iframe.contentWindow.__NM.state.scene;
+  log('当前 state.scene: ' + currentScene);
+
+  log('测试完成！iframe 保持显示，可手动检查');
+}
+
+function checkScenes(){
+  const iframe = document.querySelector('iframe');
+  if(!iframe){
+    log('请先运行测试');
+    return;
+  }
+
+  const scenes = Array.from(iframe.contentDocument.querySelectorAll('.scene')).map(s => ({
+    scene: s.dataset.scene,
+    hidden: s.hidden,
+    display: getComputedStyle(s).display,
+    zIndex: s.style.zIndex || getComputedStyle(s).zIndex
+  }));
+
+  log('当前场景状态:');
+  scenes.forEach(s => log(`  ${s.scene}: hidden=${s.hidden}, display=${s.display}, zIndex=${s.zIndex}`));
+}
+
+function checkResult(){
+  const iframe = document.querySelector('iframe');
+  if(!iframe){
+    log('请先运行测试');
+    return;
+  }
+
+  const result = iframe.contentDocument.querySelector('.scene-result');
+  const scroll = iframe.contentDocument.querySelector('.scene-result .rs-scroll');
+
+  log('result 元素信息:');
+  log('  存在: ' + !!result);
+  log('  hidden: ' + result.hidden);
+  log('  display: ' + getComputedStyle(result).display);
+  log('  visibility: ' + getComputedStyle(result).visibility);
+  log('  opacity: ' + getComputedStyle(result).opacity);
+  log('  zIndex: ' + (result.style.zIndex || getComputedStyle(result).zIndex));
+  log('  背景色: ' + getComputedStyle(result).backgroundColor);
+  log('  内容长度: ' + (scroll ? scroll.innerHTML.length : 0));
+  log('  子元素数: ' + (scroll ? scroll.children.length : 0));
+}
+</script>
+</body>
+</html>

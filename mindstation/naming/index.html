@@ -118,6 +118,32 @@
   <!-- ============== 7. result 结果页 (数据驱动 DOM) ============== -->
   <section class="scene scene-result" data-scene="result" hidden>
     <div class="rs-scroll" id="resultScroll"><!-- renderResult() 渲染 --></div>
+
+    <!-- 能量卡浮层 — 内嵌在 result 场景内 -->
+    <div class="cpk-modal" id="chpuka1Modal" hidden>
+      <div class="cpk1-overlay"></div>
+      <div class="cpk-scroll" id="chpuka1Scroll"><!-- renderChpuka1() 渲染 --></div>
+    </div>
+  </section>
+
+  <!-- ============== 9. chpuka2 能量卡展示页 (Figma 5266:36) ============== -->
+  <section class="scene scene-chpuka2" data-scene="chpuka2" hidden>
+    <button type="button" class="cpk-back" data-go="result" aria-label="返回">
+      <img src="assets/nm-back.png" alt="" draggable="false">
+    </button>
+    <div class="cpk-card-wrap">
+      <div class="cpk-card-content"><!-- JS 渲染 --></div>
+    </div>
+  </section>
+
+  <!-- ============== 10. chpuka3 能量卡展示页 (Figma 5269:372) ============== -->
+  <section class="scene scene-chpuka3" data-scene="chpuka3" hidden>
+    <button type="button" class="cpk-back" data-go="result" aria-label="返回">
+      <img src="assets/nm-back.png" alt="" draggable="false">
+    </button>
+    <div class="cpk-card-wrap">
+      <div class="cpk-card-content"><!-- JS 渲染 --></div>
+    </div>
   </section>
 
   <div class="toast" id="toast" aria-live="polite"></div>
@@ -128,8 +154,10 @@
 <script src="data/names.js?v=2"></script>
 <script src="data/names-part2.js?v=2"></script>
 <script src="data/api.js?v=2"></script>
+<script src="html2canvas.min.js"></script>
 <script src="script.js?v=2"></script>
 <script src="render.js?v=2"></script>
 <script src="render-part2.js?v=2"></script>
+<script src="chpuka.js?v=1"></script>
 </body>
 </html>

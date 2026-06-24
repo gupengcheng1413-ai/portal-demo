@@ -431,26 +431,38 @@ img{user-select:none}
 
 
 /* ============================================================
-   8. chpuka 能量卡场景（模态层，内嵌在 result 内）
+   8. chpuka 能量卡场景（新设计 - 标准高度卡片）
    ============================================================ */
 
-/* 模态层容器 */
-.cpk-modal{
+/* chpuka1 介绍页（浮层模式，居中显示） */
+.scene-chpuka1{
+  z-index:100;
   position:absolute;
-  inset:0;
-  z-index:60;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:transparent !important;
+  pointer-events:none;
 }
+
+/* 移除模糊效果的伪元素 */
 
 /* 半透明遮罩层 */
 .cpk1-overlay{
   position:absolute;
-  inset:0;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
   background:rgba(0,0,0,.8);
   pointer-events:auto;
+  z-index:1;
 }
 
 .cpk-scroll{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .cpk-scroll > *{pointer-events:auto}
+
 /* chpuka1 卡片容器 */
 .cpk1-card{
   position:relative;

@@ -41,12 +41,39 @@
     if(!nxt) return;
     const cur = $(`.scene[data-scene="${state.scene}"]`);
     clearTimeout(sceneT);                 // 取消上一次未完成的过渡，杜绝孤儿定时器竞态
+
+    // chpuka 场景作为浮层，不隐藏底层场景
+    const isOverlay = name.startsWith("chpuka");
+    const wasOverlay = state.scene.startsWith("chpuka");
+
     state.prevScene = state.scene;
     state.scene = name;
+
     if(cur && cur !== nxt && !cur.hidden) cur.classList.add("is-leaving");
     sceneT = setTimeout(() => {
-      // 强制隐藏除目标外的所有场景，防止滞后定时器残留旧场景（如快速 loading→blocked）
-      $$(".scene").forEach(s => { if(s !== nxt){ s.hidden = true; s.classList.remove("is-leaving","is-entering"); } });
+      // chpuka 浮层模式：保持 result 场景可见，隐藏其他场景
+      if(isOverlay){
+        $$(".scene").forEach(s => {
+          if(s !== nxt && s.dataset.scene !== "result"){
+            s.hidden = true;
+            s.classList.remove("is-leaving","is-entering");
+          } else if(s.dataset.scene === "result"){
+            // 确保 result 场景显示且在底层
+            s.hidden = false;
+          }
+        });
+      } else {
+        // 普通场景：隐藏所有其他场景（包括 chpuka）
+        $$(".scene").forEach(s => {
+          if(s !== nxt){
+            s.hidden = true;
+            s.classList.remove("is-leaving","is-entering");
+          } else {
+            // 清理 nxt 场景的遗留动画类（避免 is-leaving 残留）
+            s.classList.remove("is-leaving","is-entering");
+          }
+        });
+      }
       nxt.hidden = false;
       nxt.classList.remove("is-entering"); void nxt.offsetWidth;
       nxt.classList.add("is-entering");

@@ -111,6 +111,7 @@
       <h1 class="nm-title">姓名寓意</h1>
       <button type="button" class="rs-chip rs-chip-hist" data-go="history">已测姓名</button>
       <button type="button" class="rs-chip rs-chip-again" data-act="again">再测一个</button>
+      <button type="button" class="rs-chip rs-chip-energy" data-act="energy-card">姓名能量卡</button>
     </div>`;
     return bg + `<div class="rs-wrap">${head}${inner}</div>`;
   }
@@ -183,6 +184,22 @@
       else if(act === "keyboard") NM.gotoConfirm(true);
       else if(act === "retry")    NM.setScene("input");   // blocked 换一个 → 回 naming 首页(扫描/键盘选择)
       else if(act === "again")    NM.setScene("input");   // result 再测一个
+      else if(act === "energy-card"){
+        // 显示能量卡模态层（不切换场景）
+        const modal = document.getElementById('chpuka1Modal');
+        if(modal){
+          modal.hidden = false;
+          // 渲染内容
+          if(window.__NM_onChpukaEnter){
+            window.__NM_onChpukaEnter('chpuka1');
+          }
+        }
+      }
+      else if(act === "draw-card") {
+        // chpuka1 抽取能量卡 → 随机跳转 chpuka2 或 chpuka3
+        const n = Math.floor(Math.random() * 2) + 2;
+        NM.setScene(`chpuka${n}`);
+      }
     });
 
     // 通用 data-go 路由
