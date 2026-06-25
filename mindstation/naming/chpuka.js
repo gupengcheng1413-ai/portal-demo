@@ -1,8 +1,15 @@
 // 姓名能量卡 — 三场景渲染与交互
-(() => {
+(function() {
   "use strict";
-  const NM = window.__NM;
-  if(!NM) return;
+
+  // 等待 __NM 初始化
+  function initChpuka() {
+    const NM = window.__NM;
+    if(!NM) {
+      console.warn('[chpuka] __NM not ready, retrying...');
+      setTimeout(initChpuka, 100);
+      return;
+    }
 
   // ============================================================
   //  chpuka1 介绍页渲染（新设计 1640x357）
@@ -99,6 +106,10 @@
   }
 
   window.__NM_generateEnergyCard = generateEnergyCard;
+  }
+
+  // 启动初始化
+  initChpuka();
 })();
 
 // 绑定 chpuka2 关闭按钮
