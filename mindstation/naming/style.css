@@ -611,6 +611,7 @@ img{user-select:none}
   position:absolute;
   inset:0;
   pointer-events:none;
+  z-index:1;
 }
 
 .cpk2-ellipse{
@@ -663,6 +664,7 @@ img{user-select:none}
   color:#5A4A3A;
   text-shadow:0 2px 4px rgba(0,0,0,0.1);
   line-height:1;
+  z-index:2;
 }
 
 /* 中间：正文内容 */
@@ -676,6 +678,7 @@ img{user-select:none}
   line-height:1.65;
   color:#4A3A2A;
   text-align:justify;
+  z-index:2;
 }
 
 /* 右侧区域：能量指数 + 古诗句 */
@@ -686,6 +689,7 @@ img{user-select:none}
   display:flex;
   align-items:center;
   gap:15px;
+  z-index:2;
 }
 
 .cpk2-energy-label{
@@ -725,6 +729,7 @@ img{user-select:none}
   line-height:1.75;
   text-align:left;
   color:#5A4A3A;
+  z-index:2;
 }
 
 /* 加载状态 */

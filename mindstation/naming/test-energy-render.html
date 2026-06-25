@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>能量卡渲染测试</title>
+<style>
+body { font-family: monospace; padding: 20px; }
+#result { background: #f5f5f5; padding: 20px; white-space: pre-wrap; }
+button { padding: 10px 20px; margin: 5px; font-size: 16px; }
+</style>
+</head>
+<body>
+<h1>能量卡渲染测试</h1>
+
+<button onclick="test1()">测试1: 检查DOM元素</button>
+<button onclick="test2()">测试2: 更新内容并检查</button>
+<button onclick="test3()">测试3: 检查loading状态</button>
+
+<h2>测试结果：</h2>
+<div id="result"></div>
+
+<script>
+function log(msg) {
+  document.getElementById('result').textContent += msg + '\n';
+}
+
+function test1() {
+  document.getElementById('result').textContent = '';
+  log('=== 测试1: 检查DOM元素 ===\n');
+
+  const container = document.getElementById('cpk2CardContent');
+  log('cpk2CardContent 存在: ' + !!container);
+
+  const title = document.getElementById('cpk2Title');
+  log('cpk2Title 存在: ' + !!title);
+  if (title) log('  当前内容: "' + title.textContent + '"');
+
+  const content = document.getElementById('cpk2Content');
+  log('cpk2Content 存在: ' + !!content);
+  if (content) log('  当前内容: "' + content.textContent.substring(0, 50) + '..."');
+
+  const stars = document.getElementById('cpk2Stars');
+  log('cpk2Stars 存在: ' + !!stars);
+  if (stars) log('  子元素数量: ' + stars.children.length);
+
+  const poem = document.getElementById('cpk2Poem');
+  log('cpk2Poem 存在: ' + !!poem);
+  if (poem) log('  当前内容: "' + poem.textContent.substring(0, 30) + '..."');
+}
+
+function test2() {
+  document.getElementById('result').textContent = '';
+  log('=== 测试2: 更新内容并检查 ===\n');
+
+  const testData = {
+    title: '测试',
+    content: '这是一段测试内容，用于验证渲染是否正常工作。',
+    energyLevel: 3,
+    poem: '天行健，君子以自强不息',
+    source: '《周易》'
+  };
+
+  log('更新前:');
+  const title = document.getElementById('cpk2Title');
+  log('  标题: "' + (title ? title.textContent : 'null') + '"');
+
+  // 更新内容
+  if (title) title.textContent = testData.title;
+
+  const content = document.getElementById('cpk2Content');
+  if (content) content.textContent = testData.content;
+
+  const stars = document.getElementById('cpk2Stars');
+  if (stars) {
+    const starsHtml = Array(5).fill(0).map((_, i) =>
+      `<span class="cpk2-star ${i < testData.energyLevel ? 'filled' : 'empty'}"></span>`
+    ).join('');
+    stars.innerHTML = starsHtml;
+  }
+
+  const poem = document.getElementById('cpk2Poem');
+  if (poem) {
+    poem.innerHTML = `「 ${testData.poem} 」<br>—— ${testData.source}`;
+  }
+
+  log('\n更新后:');
+  log('  标题: "' + (title ? title.textContent : 'null') + '"');
+  log('  正文: "' + (content ? content.textContent.substring(0, 30) : 'null') + '..."');
+  log('  星星数量: ' + (stars ? stars.children.length : 0));
+  log('  古诗句: "' + (poem ? poem.textContent.substring(0, 20) : 'null') + '..."');
+
+  log('\n✓ 内容更新完成，请检查页面上方的能量卡是否显示了新内容');
+}
+
+function test3() {
+  document.getElementById('result').textContent = '';
+  log('=== 测试3: 检查loading状态 ===\n');
+
+  const container = document.getElementById('cpk2CardContent');
+  if (!container) {
+    log('错误: cpk2CardContent 不存在');
+    return;
+  }
+
+  log('当前classList: ' + container.className);
+  log('包含loading: ' + container.classList.contains('loading'));
+
+  log('\n添加loading...');
+  container.classList.add('loading');
+  log('添加后classList: ' + container.className);
+
+  setTimeout(() => {
+    log('\n2秒后移除loading...');
+    container.classList.remove('loading');
+    log('移除后classList: ' + container.className);
+    log('\n✓ loading状态切换完成，观察能量卡是否有"生成中..."遮罩');
+  }, 2000);
+}
+</script>
+
+<!-- 加载主页面的样式和脚本 -->
+<link rel="stylesheet" href="style.css">
+
+<!-- 嵌入能量卡HTML -->
+<div style="margin-top: 40px; display: flex; justify-content: center; transform: scale(0.6); transform-origin: top center;">
+  <div class="cpk2-card-html" id="cpk2CardContent">
+    <div class="cpk2-bg-decor">
+      <div class="cpk2-ellipse cpk2-ellipse-1"></div>
+      <div class="cpk2-ellipse cpk2-ellipse-2"></div>
+      <div class="cpk2-ellipse cpk2-ellipse-3"></div>
+      <div class="cpk2-ellipse cpk2-ellipse-4"></div>
+    </div>
+    <div class="cpk2-title-vertical" id="cpk2Title">坚持</div>
+    <div class="cpk2-content-text" id="cpk2Content">
+      此卡昭示着不屈的意志，如山石般屹立，如古松般长青。坚持是通往成功的桥梁，每一次不放弃的努力，都在让未来的你更加强大。今日若遇阻碍，勿忘初心。
+    </div>
+    <div class="cpk2-energy-section">
+      <span class="cpk2-energy-label">能量指数</span>
+      <div class="cpk2-stars" id="cpk2Stars">
+        <span class="cpk2-star filled"></span>
+        <span class="cpk2-star filled"></span>
+        <span class="cpk2-star filled"></span>
+        <span class="cpk2-star filled"></span>
+        <span class="cpk2-star empty"></span>
+      </div>
+    </div>
+    <div class="cpk2-poem" id="cpk2Poem">
+      「 锲而不舍，金石可镂 」<br>
+      —— 《荀子·劝学》
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
