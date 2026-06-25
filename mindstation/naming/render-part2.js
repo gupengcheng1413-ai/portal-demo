@@ -207,99 +207,21 @@
           console.log('[draw-card] closed chpuka1Modal');
         }
 
-        // 获取当前姓名
-        const currentName = NM.state?.currentName || NM.state?.name || '';
-        console.log('[draw-card] current name:', currentName);
-
-        if (!currentName) {
-          console.error('[draw-card] no name in state, cannot generate card');
-          return;
-        }
-
-        // 调用能量卡生成 API
-        const generateCard = window.__NM_generateEnergyCard;
-        if (!generateCard) {
-          console.error('[draw-card] API not available');
-          return;
-        }
-
-        // 显示加载状态
+        // 直接显示 chpuka2Modal，使用写死的数据
         const modal2 = document.getElementById('chpuka2Modal');
-        const cardContent = document.getElementById('cpk2CardContent');
-        if (modal2 && cardContent) {
+        if (modal2) {
           modal2.hidden = false;
-          cardContent.classList.add('loading');
-          cardContent.innerHTML = '<p style="font-size:32px;color:#fff;">生成中...</p>';
-          console.log('[draw-card] showing chpuka2Modal with loading state');
-        } else {
-          console.error('[draw-card] modal2 or cardContent not found');
-          return;
+          console.log('[draw-card] showing chpuka2Modal with static content');
         }
 
-        // 异步生成能量卡
-        generateCard(currentName).then(data => {
-          if (data && modal2) {
-            // 渲染能量卡
-            renderEnergyCardToImage(data);
-          } else {
-            // API 失败，使用兜底数据
-            console.warn('[draw-card] using fallback data');
-            const fallbackData = {
-              title: "坚持",
-              content: "此卡昭示着不屈的意志，如山石般屹立，如古松般长青。坚持是通往成功的桥梁，每一次不放弃的努力，都在让未来的你更加强大。今日若遇阻碍，勿忘初心。",
-              energyLevel: 4,
-              poem: "锲而不舍，金石可镂",
-              source: "《荀子·劝学》"
-            };
-            renderEnergyCardToImage(fallbackData);
-          }
-        }).catch(err => {
-          console.error('[draw-card] error:', err);
-          // 显示错误提示
-          const cardContent = document.getElementById('cpk2CardContent');
-          if (cardContent) {
-            cardContent.classList.remove('loading');
-            cardContent.innerHTML = '<p style="font-size:32px;color:#fff;">生成失败，请重试</p>';
-          }
-        });
+        // 使用写死的能量卡数据（现在只是显示静态图片，无需数据渲染）
+        console.log('[draw-card] showing static energy card image');
       }
     });
 
     // ============================================================
-    //  能量卡渲染（更新HTML元素内容）
+    //  能量卡渲染函数已移除（现在使用静态图片）
     // ============================================================
-    function renderEnergyCardToImage(data) {
-      console.log('[energy-card] rendering data:', data);
-
-      // 更新标题
-      const titleEl = document.getElementById('cpk2Title');
-      if (titleEl) titleEl.textContent = data.title;
-
-      // 更新正文
-      const contentEl = document.getElementById('cpk2Content');
-      if (contentEl) contentEl.textContent = data.content;
-
-      // 更新星星
-      const starsEl = document.getElementById('cpk2Stars');
-      if (starsEl) {
-        const stars = Array(5).fill(0).map((_, i) =>
-          `<span class="cpk2-star ${i < data.energyLevel ? 'filled' : 'empty'}"></span>`
-        ).join('');
-        starsEl.innerHTML = stars;
-      }
-
-      // 更新古诗句
-      const poemEl = document.getElementById('cpk2Poem');
-      if (poemEl) {
-        poemEl.innerHTML = `「 ${escapeHtml(data.poem)} 」<br>—— ${escapeHtml(data.source)}`;
-      }
-
-      // 移除加载状态
-      const container = document.getElementById('cpk2CardContent');
-      if (container) container.classList.remove('loading');
-
-      console.log('[energy-card] rendered:', data.title);
-    }
 
     // 辅助函数：HTML 转义
     function escapeHtml(text) {

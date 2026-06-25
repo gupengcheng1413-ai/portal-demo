@@ -592,155 +592,16 @@ img{user-select:none}
   opacity:0.6;
 }
 /* ============================================================
-   能量卡HTML实现 - 按 Figma 设计稿 5288:272
+   能量卡图片实现 - 使用设计稿透明底图片
    ============================================================ */
 
-/* cpk2 能量卡容器 */
-.cpk2-card-html{
-  position:relative;
+/* cpk2 能量卡图片 */
+.cpk2-card-image{
+  display:block;
   width:1640px;
   height:357px;
-  background:linear-gradient(135deg, #E8DCC8 0%, #D4C5AD 100%);
-  border-radius:24px;
-  overflow:hidden;
-  box-shadow:0 8px 32px rgba(0,0,0,0.15);
+  object-fit:contain;
 }
-
-/* 背景装饰层 */
-.cpk2-bg-decor{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:1;
-}
-
-.cpk2-ellipse{
-  position:absolute;
-  border-radius:50%;
-  opacity:0.15;
-}
-
-.cpk2-ellipse-1{
-  width:240px;
-  height:258px;
-  background:#B8A68D;
-  left:810px;
-  top:58px;
-}
-
-.cpk2-ellipse-2{
-  width:245px;
-  height:188px;
-  background:#C4B5A0;
-  left:741px;
-  top:144px;
-}
-
-.cpk2-ellipse-3{
-  width:329px;
-  height:255px;
-  background:#D0C0A8;
-  left:347px;
-  top:52px;
-}
-
-.cpk2-ellipse-4{
-  width:310px;
-  height:202px;
-  background:#BCA992;
-  left:370px;
-  top:114px;
-}
-
-/* 左侧：竖排标题 */
-.cpk2-title-vertical{
-  position:absolute;
-  left:246px;
-  top:74px;
-  writing-mode:vertical-rl;
-  font-size:90px;
-  font-weight:900;
-  letter-spacing:8px;
-  color:#5A4A3A;
-  text-shadow:0 2px 4px rgba(0,0,0,0.1);
-  line-height:1;
-  z-index:2;
-}
-
-/* 中间：正文内容 */
-.cpk2-content-text{
-  position:absolute;
-  left:337px;
-  top:92px;
-  width:553px;
-  font-size:28px;
-  font-weight:400;
-  line-height:1.65;
-  color:#4A3A2A;
-  text-align:justify;
-  z-index:2;
-}
-
-/* 右侧区域：能量指数 + 古诗句 */
-.cpk2-energy-section{
-  position:absolute;
-  right:293px;
-  top:76px;
-  display:flex;
-  align-items:center;
-  gap:15px;
-  z-index:2;
-}
-
-.cpk2-energy-label{
-  font-size:28px;
-  font-weight:500;
-  color:#5A4A3A;
-}
-
-.cpk2-stars{
-  display:flex;
-  gap:11px;
-}
-
-.cpk2-star{
-  width:33px;
-  height:33px;
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-}
-
-.cpk2-star.filled{
-  background-image:url("assets/star-filled.png");
-}
-
-.cpk2-star.empty{
-  background-image:url("assets/star-empty.png");
-}
-
-/* 古诗句（右下角） */
-.cpk2-poem{
-  position:absolute;
-  right:237px;
-  bottom:91px;
-  font-size:24px;
-  font-weight:400;
-  line-height:1.75;
-  text-align:left;
-  color:#5A4A3A;
-  z-index:2;
-}
-
-/* 加载状态 */
-.cpk2-card-html.loading::after{
-  content:'生成中...';
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(255,255,255,0.8);
   font-size:32px;
   color:#5A4A3A;
   z-index:10;
