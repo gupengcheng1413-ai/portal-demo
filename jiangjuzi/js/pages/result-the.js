@@ -26,12 +26,17 @@ window.RESULT_THE = window.RESULT_THE || [];
         return;
       }
 
-      // 计算累积滚动位置（使用中点阈值避免边界跳跃）
-      const midpoints = [];
+      // 计算分割线位置作为阈值（分割线超过屏幕中间时切换）
+      const containerHeight = 348; // 右侧容器高度
+      const midLine = containerHeight / 2; // 屏幕中间位置 174px
+      const thresholds = [];
       let cumulative = 0;
+
       for (let i = 0; i < THE_HEIGHTS.length - 1; i++) {
         cumulative += THE_HEIGHTS[i];
-        midpoints.push(cumulative - THE_HEIGHTS[i] / 2);
+        // 分割线位置 - 屏幕中间 = 阈值
+        thresholds.push(cumulative - midLine);
+        cumulative += 1; // 加上分割线高度
       }
 
       // 监听右侧滚动，自动切换左侧高亮（带防抖）
@@ -47,10 +52,10 @@ window.RESULT_THE = window.RESULT_THE || [];
           const scrollTop = rightScrollContainer.scrollTop;
           let newIndex = 0;
 
-          // 使用中点阈值判断区域，避免边界跳跃
-          if (scrollTop < midpoints[0]) {
+          // 使用分割线阈值：分割线超过屏幕中间时切换
+          if (scrollTop < thresholds[0]) {
             newIndex = 0;
-          } else if (scrollTop < midpoints[1]) {
+          } else if (scrollTop < thresholds[1]) {
             newIndex = 1;
           } else {
             newIndex = 2;
