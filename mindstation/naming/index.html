@@ -131,9 +131,41 @@
       <div class="cpk2-content">
         <div class="cpk2-card-wrapper">
           <button type="button" class="cpk2-close" id="cpk2Close" aria-label="关闭">×</button>
-          <img class="cpk2-card-bg" src="assets/chpuka2-new-transparent.png?v=2" alt="能量卡" draggable="false">
-          <div class="cpk2-card-text" id="cpk2CardContent">
-            <!-- AI生成的文字内容叠加在图片上 -->
+          <!-- 用HTML/CSS实现能量卡设计 -->
+          <div class="cpk2-card-html" id="cpk2CardContent">
+            <!-- 背景装饰层 -->
+            <div class="cpk2-bg-decor">
+              <div class="cpk2-ellipse cpk2-ellipse-1"></div>
+              <div class="cpk2-ellipse cpk2-ellipse-2"></div>
+              <div class="cpk2-ellipse cpk2-ellipse-3"></div>
+              <div class="cpk2-ellipse cpk2-ellipse-4"></div>
+            </div>
+
+            <!-- 左侧：竖排标题 -->
+            <div class="cpk2-title-vertical" id="cpk2Title">坚持</div>
+
+            <!-- 中间：正文内容 -->
+            <div class="cpk2-content-text" id="cpk2Content">
+              此卡昭示着不屈的意志，如山石般屹立，如古松般长青。坚持是通往成功的桥梁，每一次不放弃的努力，都在让未来的你更加强大。今日若遇阻碍，勿忘初心。
+            </div>
+
+            <!-- 右上：能量指数 + 星星 -->
+            <div class="cpk2-energy-section">
+              <span class="cpk2-energy-label">能量指数</span>
+              <div class="cpk2-stars" id="cpk2Stars">
+                <span class="cpk2-star filled"></span>
+                <span class="cpk2-star filled"></span>
+                <span class="cpk2-star filled"></span>
+                <span class="cpk2-star filled"></span>
+                <span class="cpk2-star empty"></span>
+              </div>
+            </div>
+
+            <!-- 右下：古诗句 -->
+            <div class="cpk2-poem" id="cpk2Poem">
+              「 锲而不舍，金石可镂 」<br>
+              —— 《荀子·劝学》
+            </div>
           </div>
         </div>
       </div>

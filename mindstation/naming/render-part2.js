@@ -266,139 +266,39 @@
     });
 
     // ============================================================
-    //  能量卡渲染到图片上（使用Canvas动态绘制文字）
+    //  能量卡渲染（更新HTML元素内容）
     // ============================================================
     function renderEnergyCardToImage(data) {
-      const container = document.getElementById('cpk2CardContent');
-      if (!container) {
-        console.error('[energy-card] container not found');
-        return;
+      console.log('[energy-card] rendering data:', data);
+
+      // 更新标题
+      const titleEl = document.getElementById('cpk2Title');
+      if (titleEl) titleEl.textContent = data.title;
+
+      // 更新正文
+      const contentEl = document.getElementById('cpk2Content');
+      if (contentEl) contentEl.textContent = data.content;
+
+      // 更新星星
+      const starsEl = document.getElementById('cpk2Stars');
+      if (starsEl) {
+        const stars = Array(5).fill(0).map((_, i) =>
+          `<span class="cpk2-star ${i < data.energyLevel ? 'filled' : 'empty'}"></span>`
+        ).join('');
+        starsEl.innerHTML = stars;
+      }
+
+      // 更新古诗句
+      const poemEl = document.getElementById('cpk2Poem');
+      if (poemEl) {
+        poemEl.innerHTML = `「 ${escapeHtml(data.poem)} 」<br>—— ${escapeHtml(data.source)}`;
       }
 
       // 移除加载状态
-      container.classList.remove('loading');
+      const container = document.getElementById('cpk2CardContent');
+      if (container) container.classList.remove('loading');
 
-      // 创建canvas来绘制能量卡
-      const canvas = document.createElement('canvas');
-      canvas.width = 1640;
-      canvas.height = 357;
-      const ctx = canvas.getContext('2d');
-
-      // 加载背景图片
-      const bgImg = new Image();
-      bgImg.onload = function() {
-        // 绘制背景
-        ctx.drawImage(bgImg, 0, 0, 1640, 357);
-
-        // 设置文字颜色为白色
-        ctx.fillStyle = '#ffffff';
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 2;
-
-        // 1. 绘制竖排标题（左侧）
-        ctx.save();
-        ctx.font = 'bold 100px "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.textAlign = 'center';
-
-        const titleChars = data.title.split('');
-        const titleX = 150;
-        let titleY = 150;
-        titleChars.forEach(char => {
-          ctx.fillText(char, titleX, titleY);
-          titleY += 110;
-        });
-        ctx.restore();
-
-        // 2. 绘制正文内容（中间）
-        ctx.save();
-        ctx.font = '28px "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.textAlign = 'left';
-
-        const contentX = 300;
-        let contentY = 100;
-        const maxWidth = 600;
-        const lineHeight = 50;
-
-        // 自动换行
-        const words = data.content;
-        let line = '';
-        let lines = [];
-        for (let i = 0; i < words.length; i++) {
-          const testLine = line + words[i];
-          const metrics = ctx.measureText(testLine);
-          if (metrics.width > maxWidth && line !== '') {
-            lines.push(line);
-            line = words[i];
-          } else {
-            line = testLine;
-          }
-        }
-        lines.push(line);
-
-        lines.forEach(l => {
-          ctx.fillText(l, contentX, contentY);
-          contentY += lineHeight;
-        });
-        ctx.restore();
-
-        // 3. 绘制能量指数标签（右上）
-        ctx.save();
-        ctx.font = '28px "PingFang SC", "Microsoft YaHei", sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText('能量指数', 975, 110);
-        ctx.restore();
-
-        // 4. 绘制星星（右上）
-        const starImg = new Image();
-        const starEmptyImg = new Image();
-        let starsLoaded = 0;
-
-        function drawStars() {
-          const starX = 1135;
-          const starY = 84;
-          const starGap = 45;
-
-          for (let i = 0; i < 5; i++) {
-            const img = i < data.energyLevel ? starImg : starEmptyImg;
-            ctx.drawImage(img, starX + i * starGap, starY, 33, 33);
-          }
-
-          // 5. 绘制古诗句（右下）
-          ctx.save();
-          ctx.font = '24px "PingFang SC", "Microsoft YaHei", serif';
-          ctx.textAlign = 'left';
-          ctx.fillText(`「 ${data.poem} 」`, 956, 200);
-          ctx.fillText(`—— ${data.source}`, 956, 240);
-          ctx.restore();
-
-          // 将canvas转为图片显示
-          const resultImg = document.createElement('img');
-          resultImg.src = canvas.toDataURL('image/png');
-          resultImg.className = 'cpk2-card-bg';
-          resultImg.style.width = '1640px';
-
-          container.innerHTML = '';
-          container.appendChild(resultImg);
-
-          console.log('[energy-card] rendered:', data.title);
-        }
-
-        starImg.onload = function() {
-          starsLoaded++;
-          if (starsLoaded === 2) drawStars();
-        };
-        starEmptyImg.onload = function() {
-          starsLoaded++;
-          if (starsLoaded === 2) drawStars();
-        };
-
-        starImg.src = 'assets/star-filled.png';
-        starEmptyImg.src = 'assets/star-empty.png';
-      };
-
-      bgImg.src = 'assets/chpuka2-new-transparent.png?v=2';
+      console.log('[energy-card] rendered:', data.title);
     }
 
     // 辅助函数：HTML 转义
