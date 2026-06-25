@@ -728,6 +728,15 @@ img{user-select:none}
 }
 
 /* 加载状态 */
-.cpk2-card-html.loading{
-  opacity:0.6;
+.cpk2-card-html.loading::after{
+  content:'生成中...';
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.8);
+  font-size:32px;
+  color:#5A4A3A;
+  z-index:10;
 }
