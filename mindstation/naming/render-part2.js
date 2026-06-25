@@ -208,8 +208,13 @@
         }
 
         // 获取当前姓名
-        const currentName = NM.state?.name || '';
+        const currentName = NM.state?.currentName || NM.state?.name || '';
         console.log('[draw-card] current name:', currentName);
+
+        if (!currentName) {
+          console.error('[draw-card] no name in state, cannot generate card');
+          return;
+        }
 
         // 调用能量卡生成 API
         const generateCard = window.__NM_generateEnergyCard;
