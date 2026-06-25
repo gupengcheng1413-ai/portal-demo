@@ -239,6 +239,27 @@
       NM.setScene(go);
     });
 
+    // 重新生成按钮处理
+    document.body.addEventListener("click", e => {
+      const btn = e.target.closest("[data-action='regenerate']");
+      if(!btn) return;
+      const module = btn.dataset.module;
+      console.log('[regenerate] module:', module);
+
+      // 获取当前姓名
+      const currentName = NM.state?.currentName || NM.state?.name || '';
+      if(!currentName) {
+        console.error('[regenerate] no name in state');
+        return;
+      }
+
+      // TODO: 调用后端API重新生成对应模块
+      // 这里需要根据module类型调用不同的API端点
+      // module可能的值: 'poem', 'english', 'fact'
+      console.log('[regenerate] regenerating', module, 'for', currentName);
+      NM.toast('重新生成功能开发中...');
+    });
+
     // history：点卡片重看 / 长按置顶 / 清空
     const list = $("#histList");
     if(list){

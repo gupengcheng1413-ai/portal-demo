@@ -34,6 +34,11 @@
     </section>`;
   }
 
+  // ===== 重新生成按钮 =====
+  function regenButton(module){
+    return `<button type="button" class="regen-btn" data-action="regenerate" data-module="${module}">重新生成</button>`;
+  }
+
   // ===== 嵌字诗（角标 + 双联田字格 + IP；容器自适应高度） =====
   // ===== 嵌字诗（卷轴装饰=整图截图 poem-scroll.png；诗句=DOM文字叠在田字格区，可改） =====
   function mPoem(d){
@@ -41,9 +46,7 @@
     const half = Math.ceil(ls.length/2);
     const cells = ls.map((l,i) =>
       `<div class="ln${i<half?" l":""}">${esc(l)}</div>`).join("");
-    return `<section class="rs-poem">
-      <div class="rs-poem-grid">${cells}</div>
-    </section>`;
+    return `<section class="rs-poem"><div class="rs-poem-grid">${cells}</div></section>${regenButton('poem')}`;
   }
 
   // ===== 逐字解析（印章字固定 + 出处/释义自适应；flex 流式） =====
@@ -140,13 +143,13 @@
         <div class="src">${esc(e.src)}</div>
         <div class="map">${esc(e.map)}</div>
       </div>`).join("");
-    return sechead("英文名灵感") + `<div class="rs-en">${en}${corners}</div>`;
+    return sechead("英文名灵感") + `<div class="rs-en">${en}${corners}</div>${regenButton('english')}`;
   }
 
   // ===== 冷知识 =====
   function mFact(d){
     return sechead("冷知识") +
-      `<div class="rs-card rs-fact"><div class="t">${esc(d.fact)}</div>${corners}</div>`;
+      `<div class="rs-card rs-fact"><div class="t">${esc(d.fact)}</div>${corners}</div>${regenButton('fact')}`;
   }
 
   window.__NM_modules = { sechead, corners, tones, mHeroCn, mPoem, mAnalysis, mBlessing,
