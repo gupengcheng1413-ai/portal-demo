@@ -93,11 +93,25 @@ function initEvents() {
       return;
     }
 
-    if (action === 'the-page') {
-      const newIndex = parseInt(target.dataset.index, 10);
-      if (state.theIndex === newIndex) return; // 点击当前句子，不重新渲染
-      state.theIndex = newIndex;
-      render();
+    // 打通滚动：点击左侧句子，右侧滚动到对应位置
+    if (action === 'the-scroll') {
+      const targetIndex = parseInt(target.dataset.index, 10);
+      const scrollContainer = document.querySelector('[data-scroll-container]');
+      if (!scrollContainer) {
+        console.warn('the-scroll: scroll container not found');
+        return;
+      }
+
+      // 计算目标滚动位置（使用 THE_HEIGHTS 累加）
+      let scrollTop = 0;
+      for (let i = 0; i < targetIndex; i++) {
+        scrollTop += THE_HEIGHTS[i];
+      }
+
+      scrollContainer.scrollTo({
+        top: scrollTop,
+        behavior: 'smooth'
+      });
       return;
     }
     if (action === 'the-prev') { if (state.theIndex > 0) { state.theIndex--; render(); } return; }
