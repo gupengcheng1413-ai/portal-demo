@@ -278,11 +278,11 @@
       // 移除加载状态
       container.classList.remove('loading');
 
-      // 渲染星星
+      // 渲染星星（使用设计稿图标）
       const stars = Array(5).fill(0).map((_, i) =>
         i < data.energyLevel
-          ? '<span class="cpk2-star filled">★</span>'
-          : '<span class="cpk2-star empty">☆</span>'
+          ? '<span class="cpk2-star filled"></span>'
+          : '<span class="cpk2-star empty"></span>'
       ).join('');
 
       // 渲染文字内容（按 Figma 设计稿布局）

@@ -658,18 +658,19 @@ img{user-select:none}
 }
 
 .cpk2-star{
-  font-size:32px;
-  line-height:1;
+  width:33px;
+  height:33px;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
 }
 
 .cpk2-star.filled{
-  color:#FFD700;
-  text-shadow:0 2px 4px rgba(0,0,0,0.4);
+  background-image:url("assets/star-filled.png");
 }
 
 .cpk2-star.empty{
-  color:rgba(255,255,255,0.3);
-  text-shadow:0 2px 4px rgba(0,0,0,0.4);
+  background-image:url("assets/star-empty.png");
 }
 
 /* 古诗句（右下角） */
