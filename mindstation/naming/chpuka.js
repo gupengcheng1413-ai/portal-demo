@@ -2,13 +2,14 @@
 (function() {
   "use strict";
 
-  // 等待 __NM 初始化
+  // 延迟初始化，确保所有脚本加载完成
   function initChpuka() {
+    console.log('[chpuka] attempting to initialize...');
+
     const NM = window.__NM;
     if(!NM) {
-      console.warn('[chpuka] __NM not ready, retrying...');
-      setTimeout(initChpuka, 100);
-      return;
+      console.warn('[chpuka] __NM not ready, will retry...');
+      return false;
     }
 
     console.log('[chpuka] initializing...');
@@ -100,13 +101,23 @@
 
     window.__NM_generateEnergyCard = generateEnergyCard;
     console.log('[chpuka] initialized, __NM_generateEnergyCard:', !!window.__NM_generateEnergyCard);
+
+    return true;
   }
 
-  // 启动初始化
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initChpuka);
-  } else {
-    initChpuka();
+  // 尝试初始化，如果失败则在DOMContentLoaded后重试
+  if (!initChpuka()) {
+    console.log('[chpuka] delaying initialization until DOMContentLoaded');
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('[chpuka] DOMContentLoaded, retrying initialization');
+      if (!initChpuka()) {
+        // 最后的重试
+        setTimeout(() => {
+          console.log('[chpuka] final retry');
+          initChpuka();
+        }, 500);
+      }
+    });
   }
 })();
 
