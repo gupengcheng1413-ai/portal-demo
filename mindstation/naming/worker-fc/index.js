@@ -325,8 +325,8 @@ async function handleEnergyCard(urlObj, send) {
 
       const data = JSON.parse(content);
 
-      // 验证返回数据结构
-      if (!data.title || !data.subtitle || !data.description || !data.keywords || !data.color) {
+      // 验证返回数据结构（新版：title, content, energyLevel, poem, source）
+      if (!data.title || !data.content || !data.energyLevel || !data.poem || !data.source) {
         console.error("[energy-card] incomplete data:", data);
         return send({ status: "error", message: "生成内容不完整" });
       }

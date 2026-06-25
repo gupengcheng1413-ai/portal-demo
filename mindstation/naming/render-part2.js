@@ -240,11 +240,11 @@
             // API 失败，使用兜底数据
             console.warn('[draw-card] using fallback data');
             const fallbackData = {
-              title: "能量启航",
-              subtitle: "新的一天，新的开始",
-              description: "你的名字蕴含着独特的力量，今天是展现自我的好时机。",
-              keywords: ["自信", "前行", "成长"],
-              color: "#6E8B69"
+              title: "坚持",
+              content: "此卡昭示着不屈的意志，如山石般屹立，如古松般长青。坚持是通往成功的桥梁，每一次不放弃的努力，都在让未来的你更加强大。今日若遇阻碍，勿忘初心。",
+              energyLevel: 4,
+              poem: "锲而不舍，金石可镂",
+              source: "《荀子·劝学》"
             };
             renderEnergyCardToImage(fallbackData);
           }
@@ -261,7 +261,7 @@
     });
 
     // ============================================================
-    //  能量卡渲染到图片上的文字层
+    //  能量卡渲染到图片上的文字层（新版：按 Figma 设计稿布局）
     // ============================================================
     function renderEnergyCardToImage(data) {
       const container = document.getElementById('cpk2CardContent');
@@ -273,14 +273,22 @@
       // 移除加载状态
       container.classList.remove('loading');
 
-      // 渲染文字内容（叠加在图片上）
+      // 渲染星星
+      const stars = Array(5).fill(0).map((_, i) =>
+        i < data.energyLevel
+          ? '<span class="cpk2-star filled">★</span>'
+          : '<span class="cpk2-star empty">☆</span>'
+      ).join('');
+
+      // 渲染文字内容（按 Figma 设计稿布局）
       const html = `
-        <h2 class="cpk2-title">${escapeHtml(data.title)}</h2>
-        <p class="cpk2-subtitle">${escapeHtml(data.subtitle)}</p>
-        <p class="cpk2-description">${escapeHtml(data.description)}</p>
-        <div class="cpk2-keywords">
-          ${data.keywords.map(kw => `<span class="cpk2-keyword">${escapeHtml(kw)}</span>`).join('')}
+        <div class="cpk2-title-vertical">${escapeHtml(data.title)}</div>
+        <div class="cpk2-content-text">${escapeHtml(data.content)}</div>
+        <div class="cpk2-energy-section">
+          <span class="cpk2-energy-label">能量指数</span>
+          <div class="cpk2-stars">${stars}</div>
         </div>
+        <div class="cpk2-poem">「 ${escapeHtml(data.poem)} 」 —— ${escapeHtml(data.source)}</div>
       `;
       container.innerHTML = html;
 
