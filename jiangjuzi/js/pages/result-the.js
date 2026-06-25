@@ -118,12 +118,12 @@ window.RESULT_THE = window.RESULT_THE || [];
   <div data-scroll-container style="position:absolute;left:656px;top:0;width:984px;height:348px;overflow-y:auto;overflow-x:hidden;background:#000;">
     <!-- 句子1讲解 -->
     <img alt="" src="the1_right.png" style="display:block;width:984px;height:${THE_HEIGHTS[0]}px;">
-    <!-- 分割线（复用直线 10 样式） -->
-    <div style="width:100%;height:1px;background:linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(84,84,84,1) 50%, rgba(0,0,0,1) 100%);"></div>
+    <!-- 分割线（复用直线 10 样式，缩小渐变范围增强可见度） -->
+    <div style="width:100%;height:1px;background:linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(84,84,84,1) 10%, rgba(84,84,84,1) 90%, rgba(0,0,0,1) 100%);"></div>
     <!-- 句子2讲解 -->
     <img alt="" src="the2_right.png" style="display:block;width:984px;height:${THE_HEIGHTS[1]}px;">
-    <!-- 分割线（复用直线 10 样式） -->
-    <div style="width:100%;height:1px;background:linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(84,84,84,1) 50%, rgba(0,0,0,1) 100%);"></div>
+    <!-- 分割线（复用直线 10 样式，缩小渐变范围增强可见度） -->
+    <div style="width:100%;height:1px;background:linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(84,84,84,1) 10%, rgba(84,84,84,1) 90%, rgba(0,0,0,1) 100%);"></div>
     <!-- 句子3讲解 -->
     <img alt="" src="the3_right.png" style="display:block;width:984px;height:${THE_HEIGHTS[2]}px;">
   </div>
