@@ -1,0 +1,56 @@
+/* ============================================================
+   AI Chat 静态页面 - 直接显示完整设计稿
+   ============================================================ */
+
+/* 场景容器 */
+.scene-ai-chat {
+  background: #F5F5F5;
+  overflow: hidden;
+}
+
+/* 滚动容器 */
+.aic-page {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.aic-page::-webkit-scrollbar {
+  display: none;
+}
+
+/* 完整设计稿图片 */
+.aic-full-design {
+  width: 1640px;
+  height: auto;
+  display: block;
+}
+
+/* 返回按钮热区（覆盖在图片左上角）*/
+.aic-back-hotspot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: 68px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/* 麦克风按钮热区（覆盖在图片右下角）*/
+.aic-mic-hotspot {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  width: 80px;
+  height: 80px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  z-index: 100;
+}

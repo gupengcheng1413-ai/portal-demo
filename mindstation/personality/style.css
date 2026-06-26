@@ -792,7 +792,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* 副标题 — Figma 4654:858 (131,229) 36/46 #3c3c3c Bold 双行 */
 .rp-subtitle-block{display:none}
 .rp-subtitle{
-  position:absolute;left:131px;top:229px;
+  position:absolute;left:131px;top:190px;
   width:404px;
   font-family:var(--font-cn);font-size:36px;font-weight:700;
   color:#3c3c3c;line-height:46px;letter-spacing:0;
@@ -1581,4 +1581,460 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .rp-top-new-plus{width:21px;height:21px;display:block}
 .rp-top-new-plus img{width:100%;height:100%;display:block;pointer-events:none;-webkit-user-drag:none}
 .rp-top-new:hover{filter:brightness(1.04)}
+
+
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+/* ============================================================
+   AI Chat 静态页面 - 直接显示完整设计稿
+   ============================================================ */
+
+/* 场景容器 */
+.scene-ai-chat {
+  background: #F5F5F5;
+  overflow: hidden;
+}
+
+/* 滚动容器 */
+.aic-page {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.aic-page::-webkit-scrollbar {
+  display: none;
+}
+
+/* 完整设计稿图片 */
+.aic-full-design {
+  width: 1640px;
+  height: auto;
+  display: block;
+}
+
+/* 返回按钮热区（覆盖在图片左上角）*/
+.aic-back-hotspot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: 68px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/* 麦克风按钮热区（覆盖在图片右下角）*/
+.aic-mic-hotspot {
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  width: 80px;
+  height: 80px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/* 危机帮助卡片 */
+.aic-crisis-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  background: #FFFFFF;
+  border-radius: 40px;
+  padding: 40px;
+  box-shadow: 0px 8px 40px rgba(71, 75, 115, 0.25);
+  z-index: 200;
+}
+
+.aic-crisis-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: rgba(71, 75, 115, 0.9);
+  margin: 0 0 20px 0;
+}
+
+.aic-crisis-desc {
+  font-size: 24px;
+  line-height: 1.6;
+  color: rgba(71, 75, 115, 0.7);
+  margin: 0 0 24px 0;
+}
+
+.aic-crisis-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+
+.aic-crisis-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(71, 75, 115, 0.1);
+  font-size: 22px;
+  color: rgba(71, 75, 115, 0.8);
+}
+
+.aic-crisis-list li:last-child {
+  border-bottom: none;
+}
+
+.aic-crisis-list strong {
+  color: #949BFF;
+  font-weight: 600;
+}
+
+.aic-crisis-footer {
+  font-size: 20px;
+  color: rgba(71, 75, 115, 0.6);
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.aic-crisis-close {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(138.04deg, #949BFF 4.26%, #D2B2FF 98.82%);
+  border: 0;
+  border-radius: 24px;
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  box-shadow: 0px 4px 20px rgba(148, 155, 255, 0.3);
+}
+
+.aic-crisis-close:hover {
+  opacity: 0.9;
+}
+
+.aic-crisis-close:active {
+  transform: scale(0.98);
+}
+}
+
+.aic-thinking-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.aic-thinking-avatar::before {
+  content: "✨";
+}
+
+.aic-thinking-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.aic-thinking-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.aic-thinking-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  animation: thinkingDot 1.4s infinite;
+}
+
+.aic-thinking-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.aic-thinking-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.aic-thinking-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes thinkingDot {
+  0%, 80%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* ============ 底部输入区域 ============ */
+.aic-input-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
+}
+
+.aic-input {
+  flex: 1;
+  height: 56px;
+  padding: 0 24px;
+  padding-right: 64px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 28px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.aic-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.aic-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.aic-send {
+  position: absolute;
+  right: 32px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  border: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  transition: transform 0.2s, opacity 0.2s;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.aic-send:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+.aic-send:active {
+  transform: scale(0.92);
+}
+
+.aic-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.aic-send svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ============ 加载动画 ============ */
+.aic-loading {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 50;
+}
+
+.aic-loading-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.aic-loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  animation: loadingDot 1.4s infinite;
+}
+
+.aic-loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.aic-loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.aic-loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loadingDot {
+  0%, 80%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.aic-loading-text {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+/* ============ 危机帮助卡片 ============ */
+.aic-crisis-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 24px;
+  padding: 32px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 200;
+}
+
+.aic-crisis-content {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.aic-crisis-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.aic-crisis-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.aic-crisis-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+
+.aic-crisis-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.aic-crisis-list li:last-child {
+  border-bottom: none;
+}
+
+.aic-crisis-list strong {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+}
+
+.aic-crisis-footer {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.aic-crisis-close {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.aic-crisis-close:hover {
+  opacity: 0.9;
+}
+
+.aic-crisis-close:active {
+  transform: scale(0.98);
+}
+/* Result页面AI入口按钮 */
+.rp-ai-entry{
+  position:absolute;left:131px;top:286px;
+  width:389px;height:68px;
+  background:transparent;
+  border:0;
+  padding:0;
+  cursor:pointer;
+  transition:transform var(--t-fast),opacity var(--t-fast);
+  z-index:15;
+}
+.rp-ai-entry img{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.rp-ai-entry:hover{
+  transform:translateY(-2px);
+  opacity:0.95;
+}
+.rp-ai-entry:active{
+  transform:translateY(0);
+}
+.rp-ai-icon{
+  display:none;
+}
+.rp-ai-text{
+  display:none;
+}
 .rp-top-new:active{transform:scale(.97)}

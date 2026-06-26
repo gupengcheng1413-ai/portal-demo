@@ -38,7 +38,15 @@ const state = {
   // 从"新建档案"入口进入 → 完成后强制追加新档案, 不覆盖原档案
   forceNewArchive: false,
   // result 页点"新建档案"进 menu 时的上下文快照; 在 menu 点返回可还原并回 result
-  newArchiveReturn: null
+  newArchiveReturn: null,
+  // AI对话状态
+  aiChat: {
+    active: false,
+    history: [],  // [{role: 'user'|'ai', content: '...', timestamp: ...}]
+    currentType: null,
+    isLoading: false,
+    fcUrl: 'https://t-mvp-liefcrkzog.cn-hangzhou.fcapp.run/personality-ai-chat'
+  }
 };
 
 // ---------- 自适应缩放 ----------
@@ -95,6 +103,7 @@ function onSceneEnter(name){
   if(name === "pick")    renderPick();
   if(name === "archive") renderArchive();
   if(name === "result")  renderResult(state.currentType);
+  if(name === "ai-chat") renderAIChat(state.currentType);
 }
 
 // ---------- 计分核心 ----------
@@ -408,6 +417,11 @@ function renderResult(type){
     <!-- 重新测试 CTA — Figma 4663:1026/1027 -->
     <button type="button" class="rp-retest" id="rpRetest">重新测试</button>
 
+    <!-- AI探索入口 — Figma 4654:807 Group 355 -->
+    <button type="button" class="rp-ai-entry" id="rpAIEntry">
+      <img src="assets/ai-entry-button.png" alt="问 和朋友吵架怎么办?" draggable="false">
+    </button>
+
     <!-- divider 1 -->
     <span class="rp-divider rp-divider-v90" style="top:361px"></span>
 
@@ -462,6 +476,10 @@ function renderResult(type){
     state.answers = [];
     state.quizFrom = "result";
     setScene("quiz");
+  });
+  $("#rpAIEntry")?.addEventListener("click", () => {
+    // 进入AI对话场景
+    setScene("ai-chat");
   });
   $("#rpTopSwitch")?.addEventListener("click", () => openArchive());
   $("#rpTopNew")?.addEventListener("click", () => startNewArchive());
@@ -1159,6 +1177,59 @@ async function boot(){
     onSceneEnter("menu");
   }
 }
+
+// ==================== AI对话功能 ====================
+
+// 危机关键词检测
+const CRISIS_KEYWORDS = [
+  '自杀', '想死', '不想活', '结束生命', '了结',
+  '杀人', '杀了他', '弄死', '报复',
+  '霸凌', '被打', '家暴', '轻生'
+];
+
+// ==================== AI Chat 静态页面 - 直接显示完整设计稿 ====================
+
+// 渲染静态AI对话页面
+function renderAIChat(mbtiType) {
+  if (!mbtiType) return;
+
+  state.aiChat.currentType = mbtiType;
+  state.aiChat.active = true;
+
+  const inner = document.getElementById("aicPageInner");
+  if (!inner) return;
+
+  // 渲染完整设计稿图片
+  inner.innerHTML = `
+    <!-- 完整设计稿 -->
+    <img src="assets/ai-chat/full-design.png" alt="AI对话" class="aic-full-design">
+
+    <!-- 返回按钮热区 -->
+    <button type="button" class="aic-back-hotspot" id="aicBack" aria-label="返回"></button>
+
+    <!-- 麦克风按钮热区 -->
+    <button type="button" class="aic-mic-hotspot" id="aicMic" aria-label="语音"></button>
+  `;
+
+  // 绑定返回按钮
+  const backBtn = document.getElementById('aicBack');
+  if (backBtn) {
+    backBtn.onclick = () => {
+      state.aiChat.active = false;
+      setScene("result");
+    };
+  }
+
+  // 麦克风按钮（暂时无功能）
+  const micBtn = document.getElementById('aicMic');
+  if (micBtn) {
+    micBtn.onclick = () => {
+      console.log('麦克风按钮点击');
+    };
+  }
+}
+
+// ==================== 启动 ====================
 
 if(document.readyState === "loading"){
   document.addEventListener("DOMContentLoaded", boot, { once:true });
