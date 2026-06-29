@@ -1048,12 +1048,21 @@ body[data-state="guide"][data-guide-step="4"] .gstep--4 {
   color: var(--cream); letter-spacing: 2px;
   z-index: 5;
 }
+/* Vector 88/89：文字上的手绘高亮笔触。按 Figma 节点渲染边界(含描边外扩)定位。
+   88 node box 359,132 / render 381x32(外扩~4) → 355,128
+   89 node box 488,177 / render 67x59(外扩~5.5/7) → 482,170
+   置于文字之下(z-index 4)，作为高亮垫在「情绪如瀚海行舟」下方。 */
+.g-vec { position: absolute; pointer-events: none; z-index: 4; }
+.g-vec--88 { left: 355px; top: 128px; width: 381px; height: 32px; }   /* 5312:347 描边38%已烤入alpha */
+.g-vec--89 { left: 482px; top: 170px; width: 67px;  height: 59px; }   /* 5312:354 描边60%已烤入alpha */
 /* step2 元素依次淡入上浮 */
 .gstep--2 .g-illus--boat { animation: g-fade-up .7s var(--ease-out) .05s both; }
 .gstep--2 .g-name        { animation: g-fade-up .6s var(--ease-out) .15s both; }
 .gstep--2 .g-line--a     { animation: g-fade-up .6s var(--ease-out) .28s both; }
 .gstep--2 .g-line--b     { animation: g-fade-up .6s var(--ease-out) .40s both; }
 .gstep--2 .g-tip         { animation: g-fade-in .6s var(--ease-out) .60s both; }
+.gstep--2 .g-vec--88     { animation: g-fade-in .6s var(--ease-out) .50s both; }
+.gstep--2 .g-vec--89     { animation: g-fade-in .6s var(--ease-out) .55s both; }
 @keyframes g-fade-up {
   0%   { opacity: 0; transform: translateY(16px); }
   100% { opacity: 1; transform: translateY(0); }
