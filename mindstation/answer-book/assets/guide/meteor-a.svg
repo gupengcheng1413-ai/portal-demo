@@ -1,0 +1,13 @@
+<svg width="94" height="96" viewBox="0 0 94 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#mga)">
+<path d="M81.2761 42.8277L52.1816 79.1982L67.0885 43.5883L48.3804 8.30006L81.2761 42.8277ZM34.2772 44.1065C34.0111 39.143 37.819 34.9036 42.7824 34.6375C47.7459 34.3714 51.9853 38.1794 52.2514 43.1428C52.5175 48.1062 48.7095 52.3456 43.7461 52.6117C38.7827 52.8778 34.5433 49.0699 34.2772 44.1065ZM12.3087 45.2843C12.1313 41.9753 14.6699 39.1491 17.9789 38.9717C21.2879 38.7943 24.1141 41.3329 24.2915 44.6418C24.4689 47.9508 21.9303 50.7771 18.6214 50.9545C15.3124 51.1319 12.4861 48.5933 12.3087 45.2843Z" fill="url(#mgl)"/>
+</g>
+<defs>
+<filter id="mga" x="0" y="0" width="93.6" height="95.5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feGaussianBlur stdDeviation="0.6"/>
+</filter>
+<linearGradient id="mgl" x1="112.435" y1="22.64" x2="-71.565" y2="32.64" gradientUnits="userSpaceOnUse">
+<stop stop-color="white" stop-opacity="0.42"/><stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>

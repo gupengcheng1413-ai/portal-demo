@@ -76,29 +76,40 @@
           <p class="g-tip">点击继续</p>
         </div>
 
-        <!-- ---------- step 3：无需纠结 · 你是勇敢的舵手 ---------- -->
+        <!-- ---------- step 3：无需纠结（shot list3-1，半句副标题，无舵/流星） ---------- -->
         <div class="gstep gstep--3" data-step="3" aria-hidden="true">
-          <img class="g-illus g-illus--sit" src="assets/guide/girl-sit.png" alt="" />
-          <img class="g-illus g-illus--rudder" src="assets/guide/boat-rudder.png" alt="" />
-          <h2 class="g-title">无需纠结</h2>
-          <!-- 文字补全：先“重要的是···”，再淡入“你是勇敢的舵手” -->
-          <p class="g-sub">
-            <span class="g-sub__head">重要的是</span><span class="g-sub__tail">你是勇敢的舵手</span>
-          </p>
+          <img class="g-illus g-illus--sit g-illus--sit-a" src="assets/guide/girl-sit.png" alt="" />
+          <h2 class="g-title g-title--3a">无需纠结</h2>
+          <p class="g-sub g-sub--a">重要的是···</p>
         </div>
 
-        <!-- ---------- step 4：所以，请深呼吸 → 衔接 question ---------- -->
+        <!-- ---------- step 4：你是勇敢的舵手（shot list3-2，完整句+舵+流星） ---------- -->
         <div class="gstep gstep--4" data-step="4" aria-hidden="true">
+          <img class="g-illus g-illus--sit g-illus--sit-b" src="assets/guide/girl-sit.png" alt="" />
+          <img class="g-illus g-illus--rudder" src="assets/guide/boat-rudder.png" alt="" />
+          <h2 class="g-title g-title--3b">无需纠结</h2>
+          <p class="g-sub g-sub--b">重要的是你是勇敢的舵手</p>
+          <!-- 流星装饰（Union 5322:57，白色拖尾，右下） -->
+          <img class="g-meteor g-meteor--a" src="assets/guide/meteor-a.svg" alt="" aria-hidden="true" />
+        </div>
+
+        <!-- ---------- step 5：所以，请深呼吸（shot list4，发光球）→ 衔接 question ---------- -->
+        <div class="gstep gstep--5" data-step="5" aria-hidden="true">
           <img class="g-illus g-illus--orb" src="assets/guide/girl-orb.png" alt="" />
           <h2 class="g-title g-title--breathe">所以，请深呼吸</h2>
           <p class="g-orb-line g-orb-line--a">默念你的问题</p>
           <p class="g-orb-line g-orb-line--b">点击寻找灵感</p>
+          <!-- 流星装饰（Union 5313:509，白色拖尾，朝上） -->
+          <img class="g-meteor g-meteor--b" src="assets/guide/meteor-b.svg" alt="" aria-hidden="true" />
         </div>
 
         <!-- 方向箭头（点击继续 / 进入主页；位置随步骤切换） -->
         <button type="button" class="g-arrow" data-guide="next" aria-label="继续">
           <img src="assets/guide/arrow.svg" alt="" draggable="false" />
         </button>
+
+        <!-- 黑场转场遮罩（仅 3-1 → 3-2 切换时淡入/淡出） -->
+        <div class="g-blackout" aria-hidden="true"></div>
       </section>
 
       <!-- ========== S1 入口菜单 ========== -->

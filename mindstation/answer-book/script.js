@@ -341,43 +341,77 @@
   //  首次引导动画（小友 · 4 步）
   // ========================================================
   const GUIDE_KEY = 'ab_guide_seen';   // localStorage：是否看过引导
-  const GUIDE_STEPS = 4;
+  const GUIDE_STEPS = 5;               // 1开场 2小友 3无需纠结(3-1半句) 4勇敢的舵手(3-2) 5深呼吸
   const GUIDE_STEP1_AUTO = 1600;       // step1 开场气泡浮现后自动进 step2 的时长
+  const GUIDE_STEP3_AUTO = 2000;       // step3(3-1) 停留时长，到时进 step4(3-2)
+  const GUIDE_BLACK_FADE = 900;        // 黑场淡入/淡出时长（与 .g-blackout transition 一致）
+  // 需要自动翻页的步骤 → 停留时长(ms)；其余步骤靠点击箭头推进
+  const GUIDE_AUTO = { 1: GUIDE_STEP1_AUTO, 3: GUIDE_STEP3_AUTO };
   let guideStep = 1;
   let guideAutoTimer = null;
+  let guideTransiting = false;         // 黑场转场进行中，忽略重复推进
+  const guideBlackTimers = [];
   const skipBtn = document.querySelector('.g-skip');
+
+  const clearGuideTimers = () => {
+    clearTimeout(guideAutoTimer);
+    while (guideBlackTimers.length) clearTimeout(guideBlackTimers.pop());
+  };
+
+  // 黑场转场：盖黑 → 全黑时执行 onBlack → 撤黑。所有步骤切换共用。
+  const blackoutTo = (onBlack) => {
+    if (guideTransiting) return;
+    guideTransiting = true;
+    clearTimeout(guideAutoTimer);        // 暂停自动定时器，转场期间不重入
+    body.dataset.guideTrans = 'black';
+    guideBlackTimers.push(setTimeout(() => {
+      onBlack();                         // 全黑时切换，外观无交叉淡变
+      guideBlackTimers.push(setTimeout(() => {
+        delete body.dataset.guideTrans;  // 撤黑，露出新内容
+        guideTransiting = false;
+      }, 30));
+    }, GUIDE_BLACK_FADE));
+  };
 
   const setGuideStep = (n) => {
     guideStep = n;
     body.dataset.guideStep = String(n);
+    // 自动翻页步骤：停留指定时长后经黑场转场推进到下一步
+    clearGuideTimers();
+    if (GUIDE_AUTO[n]) {
+      guideAutoTimer = setTimeout(() => {
+        if (body.dataset.state !== 'guide' || guideStep !== n) return;
+        blackoutTo(() => setGuideStep(n + 1));
+      }, GUIDE_AUTO[n]);
+    }
   };
 
   // 引导走完 / 跳过 → 记录已看过，淡出引导进 menu
   const finishGuide = () => {
-    clearTimeout(guideAutoTimer);
+    clearGuideTimers();
+    delete body.dataset.guideTrans;
+    guideTransiting = false;
     try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {}
     setState('menu');
   };
 
-  // 推进到下一步；最后一步后进入主流程
+  // 推进到下一步；最后一步后进入主流程。每步切换均经黑场转场。
   const guideNext = () => {
-    clearTimeout(guideAutoTimer);
+    if (guideTransiting) return;
     if (guideStep >= GUIDE_STEPS) {
-      finishGuide();
+      blackoutTo(finishGuide);
     } else {
-      setGuideStep(guideStep + 1);
+      blackoutTo(() => setGuideStep(guideStep + 1));
     }
   };
 
-  // 启动引导：step1 开场后自动进 step2，其余靠点击箭头推进
+  // 启动引导：step1 开场后自动进 step2，step3 自动进 step4，其余靠点击箭头推进
   const startGuide = (seenBefore) => {
-    setGuideStep(1);
+    guideTransiting = false;
+    setGuideStep(1);   // setGuideStep 内部已挂 step1 的自动推进定时器
     setState('guide');
     // 二次进入显示跳过按钮；首次隐藏，强制走完
     if (seenBefore && skipBtn) skipBtn.classList.add('is-show');
-    guideAutoTimer = setTimeout(() => {
-      if (body.dataset.state === 'guide' && guideStep === 1) setGuideStep(2);
-    }, GUIDE_STEP1_AUTO);
   };
 
 
