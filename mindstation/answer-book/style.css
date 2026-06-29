@@ -1031,8 +1031,8 @@ body[data-guide-trans="black"] .gstep { transition: none; }
                    /* Figma 层级：女孩图为该帧最顶层。滤镜(contrast-0.6/saturation-0.25/
                       exposure+0.16/shadows+0.85)已按真值反解烤入PNG，保留alpha，CSS不再加filter */
 .g-illus--sit-a  { left: 123px; top: 4px;  opacity: .88; }                    /* 5322:14 shot3-1 opacity-88 */
-.g-illus--sit-b  { left: 110px; top: 0;    opacity: .20; }                    /* 5322:52 shot3-2 opacity-20 */
-.g-illus--rudder { left: 833px; top: -208px; width: 556px; height: 556px; opacity: .73; }  /* 5323:66 opacity-73 */
+.g-illus--sit-b  { left: 110px; top: 0;    opacity: .10; }                    /* 5322:52 shot3-2，20%再减半 */
+.g-illus--rudder { left: 833px; top: -208px; width: 556px; height: 556px; opacity: 1; z-index: 9; }  /* Figma层级：舵在文字上方 */
 /* 发光球：5324:266 原始 RGBA 透明资源直接用，960x1280 竖图大部分在画布上方 */
 .g-illus--orb    { left: 660px; top: -518px; width: 960px; height: 1280px;
                    opacity: .88; }                                              /* 5324:266 opacity-88 */
@@ -1109,8 +1109,13 @@ body[data-guide-trans="black"] .gstep { transition: none; }
 .gstep--3 .g-sub--a       { animation: g-fade-in .5s var(--ease-out) .30s both; }
 
 /* step4（shot3-2）：女孩 + 舵 + 标题 + 完整副标题 + 流星 */
-.gstep--4 .g-illus--sit-b { animation: g-fade-up .7s var(--ease-out) .05s both; }
-.gstep--4 .g-illus--rudder { animation: g-fade-in .8s var(--ease-out) .35s both; }
+.gstep--4 .g-illus--sit-b { animation: g-fade-up-sitb .7s var(--ease-out) .05s both; }
+@keyframes g-fade-up-sitb {
+  0%   { opacity: 0;   transform: translateY(16px); }
+  100% { opacity: .10; transform: translateY(0); }   /* 终态停在 10%，不被淡到 1 */
+}
+.gstep--4 .g-illus--rudder { animation: g-fade-in-rudder .8s var(--ease-out) .35s both; }
+@keyframes g-fade-in-rudder { 0% { opacity: 0; } 100% { opacity: 1; } }
 .gstep--4 .g-title--3b    { animation: g-fade-up .6s var(--ease-out) .15s both; }
 .gstep--4 .g-sub--b       { animation: g-fade-in .5s var(--ease-out) .30s both; }
 .gstep--4 .g-meteor--a    { animation: g-fade-in .8s var(--ease-out) .50s both; }
