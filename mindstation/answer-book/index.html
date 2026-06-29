@@ -9,11 +9,16 @@
   <link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body data-state="question">
+<body data-state="guide" data-guide-step="1">
 <script>
-// 默认 data-state="question" 避免 menu 闪现；如果没有 skip-menu 参数，IIFE 启动时会切回 menu
+// 默认 data-state="guide" 播放引导动画，避免 menu/question 闪现。
+// 启动决策（是否跳过引导 / 是否显示跳过按钮）全部交给 script.js 的 IIFE。
 (function(){
-  if (new URLSearchParams(location.search).get('skip-menu') !== '1') {
+  var q = new URLSearchParams(location.search);
+  // ?skip-menu=1 直接进 question（同时跳过引导）
+  if (q.get('skip-menu') === '1') {
+    document.body.dataset.state = 'question';
+  } else if (q.get('skip-guide') === '1') {
     document.body.dataset.state = 'menu';
   }
 })();
@@ -29,6 +34,69 @@
         <img class="env__glow env__glow--1" src="assets/ellipse-glow-1.svg" alt="" />
         <img class="env__glow env__glow--2" src="assets/ellipse-glow-2.svg" alt="" />
       </div>
+
+      <!-- ========== S0 首次引导动画（小友 · 4 步） ========== -->
+      <!-- Figma: shot list1~4  node 5312:232 / 5312:273 / 5312:363→5322:15 / 5313:465 -->
+      <section id="screen-guide" class="screen screen--guide" aria-label="引导">
+
+        <!-- 引导专属固定背景（4 步共用，转场时不动） -->
+        <div class="g-env" aria-hidden="true">
+          <div class="g-env__grad"></div>
+          <img class="g-env__tex g-env__tex--2" src="assets/guide/bg-texture-2.png" alt="" />
+          <img class="g-env__tex g-env__tex--1" src="assets/guide/bg-texture-1.png" alt="" />
+          <div class="g-env__band g-env__band--1"></div>
+          <div class="g-env__band g-env__band--2"></div>
+        </div>
+
+        <!-- 跳过按钮（二次进入才显示，首次隐藏；JS 控制 .is-show） -->
+        <button type="button" class="g-skip" data-guide="skip" aria-label="跳过引导">
+          <span>跳过</span>
+        </button>
+
+        <!-- 装饰星星（贯穿前 3 步，随步骤微移） -->
+        <img class="g-star" src="assets/guide/star.svg" alt="" aria-hidden="true" />
+
+        <!-- ---------- step 1：开场（金色卷轴气泡浮现） ---------- -->
+        <div class="gstep gstep--1" data-step="1" aria-hidden="true">
+          <div class="g-bubble--empty"></div>
+        </div>
+
+        <!-- ---------- step 2：小友 · 情绪如瀚海行舟 ---------- -->
+        <div class="gstep gstep--2" data-step="2" aria-hidden="true">
+          <img class="g-bubble" src="assets/guide/scroll-bubble.png" alt="" />
+          <!-- Group 314：倒影副图(底层,33%透明,旋转180°) + 主图(镜像) -->
+          <img class="g-illus g-illus--boat-reflect" src="assets/guide/girl-boat-reflect.png" alt="" />
+          <img class="g-illus g-illus--boat" src="assets/guide/girl-boat.png" alt="" />
+          <p class="g-name">小友</p>
+          <p class="g-line g-line--a">情绪如瀚海行舟</p>
+          <p class="g-line g-line--b">晴雨皆是暂况</p>
+          <p class="g-tip">点击继续</p>
+        </div>
+
+        <!-- ---------- step 3：无需纠结 · 你是勇敢的舵手 ---------- -->
+        <div class="gstep gstep--3" data-step="3" aria-hidden="true">
+          <img class="g-illus g-illus--sit" src="assets/guide/girl-sit.png" alt="" />
+          <img class="g-illus g-illus--rudder" src="assets/guide/boat-rudder.png" alt="" />
+          <h2 class="g-title">无需纠结</h2>
+          <!-- 文字补全：先“重要的是···”，再淡入“你是勇敢的舵手” -->
+          <p class="g-sub">
+            <span class="g-sub__head">重要的是</span><span class="g-sub__tail">你是勇敢的舵手</span>
+          </p>
+        </div>
+
+        <!-- ---------- step 4：所以，请深呼吸 → 衔接 question ---------- -->
+        <div class="gstep gstep--4" data-step="4" aria-hidden="true">
+          <img class="g-illus g-illus--orb" src="assets/guide/girl-orb.png" alt="" />
+          <h2 class="g-title g-title--breathe">所以，请深呼吸</h2>
+          <p class="g-orb-line g-orb-line--a">默念你的问题</p>
+          <p class="g-orb-line g-orb-line--b">点击寻找灵感</p>
+        </div>
+
+        <!-- 方向箭头（点击继续 / 进入主页；位置随步骤切换） -->
+        <button type="button" class="g-arrow" data-guide="next" aria-label="继续">
+          <img src="assets/guide/arrow.svg" alt="" draggable="false" />
+        </button>
+      </section>
 
       <!-- ========== S1 入口菜单 ========== -->
       <section id="screen-menu" class="screen screen--menu">

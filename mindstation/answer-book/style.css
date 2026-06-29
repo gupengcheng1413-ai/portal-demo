@@ -128,6 +128,7 @@ body[data-state="depleted"] .env { opacity: 1; }
   opacity: 0; pointer-events: none;
   transition: opacity .55s var(--ease-out);
 }
+body[data-state="guide"]    #screen-guide    { opacity: 1; pointer-events: auto; }
 body[data-state="menu"]     #screen-menu     { opacity: 1; pointer-events: auto; }
 body[data-state="question"] #screen-question { opacity: 1; pointer-events: auto; }
 body[data-state="loading"]  #screen-question { opacity: 1; pointer-events: none; filter: brightness(.85); }
@@ -889,6 +890,243 @@ body[data-state="depleted"] .answer { animation: answer-rise .9s cubic-bezier(.2
   pointer-events: none;
   font-family: monospace;
 }
+
+/* ========================================================
+   S0 首次引导动画（小友 · 4 步）
+   画布 1640×348，坐标 1:1 还原 Figma shot list1~4
+   ======================================================== */
+.screen--guide { background: #000; overflow: hidden; }
+
+/* ---------- 引导专属固定背景（4 步共用，转场不动） ---------- */
+.g-env { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.g-env__grad {
+  position: absolute; inset: 0;
+  background: linear-gradient(76.99deg, #4b2900 1.4%, #000 76.7%);
+}
+.g-env__stars {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: .5; mix-blend-mode: lighten;
+}
+/* Figma 背景纹理（船帆/海面卷轴氛围，lighten 混合，4 步共用） */
+.g-env__tex {
+  position: absolute; top: 0; height: 348px;
+  mix-blend-mode: lighten; pointer-events: none;
+}
+.g-env__tex--2 { left: 0;    width: 1272px; }   /* Group27 @x=0 */
+.g-env__tex--1 { left: -14px; width: 1258px; }  /* Group26 @x=-14 */
+/* 两条暖色光带（Ellipse1/2，斜向掠过） */
+.g-env__band {
+  position: absolute;
+  width: 980px; height: 200px;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: .26;
+  transform: rotate(-18deg);
+}
+.g-env__band--1 {
+  left: -60px; top: 150px;
+  background: radial-gradient(ellipse at center, rgba(255,170,80,.7), transparent 70%);
+}
+.g-env__band--2 {
+  left: -120px; top: 110px;
+  background: radial-gradient(ellipse at center, rgba(255,120,40,.55), transparent 70%);
+}
+
+/* ---------- 跳过按钮（二次进入显示，Figma 5329:4 @1492,16 128×50） ---------- */
+.g-skip {
+  position: absolute; right: 20px; top: 16px;
+  width: 128px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,222,170,.45);
+  border-radius: 25px;
+  color: var(--cream); font-family: var(--font-cn);
+  font-size: 26px; letter-spacing: 4px;
+  cursor: pointer; z-index: 40;
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s var(--ease-out), transform .15s var(--ease-out), background .2s;
+}
+.g-skip.is-show { opacity: 1; pointer-events: auto; }
+.g-skip:hover  { background: rgba(255,255,255,.16); }
+.g-skip:active { transform: scale(.94); }
+
+/* ---------- 装饰星星（Star 2，~118px，慢速呼吸自转） ---------- */
+.g-star {
+  position: absolute; left: 834px; top: 88px;
+  width: 118px; height: 118px;
+  z-index: 6; pointer-events: none;
+  opacity: 0;
+  transition: left .7s var(--ease-out), top .7s var(--ease-out), opacity .55s var(--ease-out);
+  animation: g-star-spin 9s linear infinite;
+}
+@keyframes g-star-spin {
+  0%   { transform: rotate(8deg)  scale(1); }
+  50%  { transform: rotate(20deg) scale(1.08); }
+  100% { transform: rotate(8deg)  scale(1); }
+}
+/* 星星随步骤换位（shot1/2 在 834,88；shot3 移到 964,32） */
+body[data-state="guide"][data-guide-step="1"] .g-star,
+body[data-state="guide"][data-guide-step="2"] .g-star { left: 858px; top: 88px; opacity: 1; }
+body[data-state="guide"][data-guide-step="3"] .g-star { left: 988px; top: 32px;  opacity: 1; }
+body[data-state="guide"][data-guide-step="4"] .g-star { opacity: 0; }
+
+/* ---------- step 容器：默认隐藏，按 data-guide-step 淡入 ---------- */
+.gstep {
+  position: absolute; inset: 0; z-index: 10;
+  opacity: 0; pointer-events: none;
+  transition: opacity .6s var(--ease-out);
+}
+body[data-state="guide"][data-guide-step="1"] .gstep--1,
+body[data-state="guide"][data-guide-step="2"] .gstep--2,
+body[data-state="guide"][data-guide-step="3"] .gstep--3,
+body[data-state="guide"][data-guide-step="4"] .gstep--4 {
+  opacity: 1; pointer-events: auto;
+}
+
+/* ---------- 公共：对话气泡卡片（scroll-bubble，Group315） ----------
+   Figma 真值：x=232 y=-69 w=1164.78 h=485.33（坐标驱动，1:1 映射） */
+.g-bubble {
+  position: absolute; left: 232px; top: -69px;
+  width: 1164.78px; height: 485.33px;
+  pointer-events: none;
+  z-index: 1;          /* 黄色卡片置于底层 */
+}
+.g-bubble--empty {
+  /* step1 开场空气泡：Figma 5312:267，34% 不透明暖色渐变圆角矩形 */
+  position: absolute; left: 287px; top: 67px;
+  width: 1227px; height: 670px;
+  border-radius: 42px;
+  background: linear-gradient(128deg,
+              rgba(255, 218, 155, 0.34) 10.6%,
+              rgba(203, 151, 60, 0.34) 79.2%);
+  pointer-events: none;
+}
+/* ---------- 公共：插画 ----------
+   混合模式 + 不透明度全部取自 Figma 真值（图片 fill 层的 opacity-*）：
+   这些 jimeng 图本身是亮色/白底，设计用低不透明度让其淡淡融入暗背景，呈朦胧剪影。
+   素材保留纯图（克隆导出，未烤混合），opacity 在此用 CSS 还原，避免烤入黑底。 */
+.g-illus { position: absolute; pointer-events: none; z-index: 2; }   /* 插画居中层，压在卡片之上、文字之下 */
+/* 撑船女孩：Group 314 的两张图片资源直接使用（原图自带 alpha 透明通道，无需抠图）。
+   主图 5320:2: left682 top78 342x342, 变换 -scale-y-100 rotate-180 = 水平镜像。
+   倒影 5322:3: left757 top243 241x241, 旋转180°, opacity 0.33。 */
+.g-illus--boat   { left: 682px; top: 78px;   width: 342px; height: 342px; }   /* 5320:2 原图方向(朝右) */
+.g-illus--boat-reflect { position: absolute; left: 757px; top: 243px;
+                   width: 241px; height: 241px; pointer-events: none;
+                   transform: rotate(180deg); opacity: .33; z-index: 2; }  /* 5322:3 倒影 */
+.g-illus--sit    { left: 110px; top: 0;      width: 449px; height: 449px; opacity: .20; }  /* 5322:52 opacity-20 */
+.g-illus--rudder { left: 833px; top: -208px; width: 556px; height: 556px; opacity: .73; }  /* 5323:66 opacity-73 */
+/* 发光球：lighten 混合 + opacity .88，960x1280 竖图大部分在画布上方 */
+.g-illus--orb    { left: 660px; top: -518px; width: 960px; height: 1280px;
+                   mix-blend-mode: lighten; opacity: .88; }                                /* 5324:266 opacity-88 */
+
+/* ========== step 1：开场气泡浮现 ========== */
+.gstep--1 .g-bubble--empty { animation: g-bubble-rise .8s var(--ease-out) both; }
+@keyframes g-bubble-rise {
+  0%   { opacity: 0; transform: translateY(26px) scale(.96); }
+  100% { opacity: .96; transform: translateY(0) scale(1); }
+}
+
+/* ========== step 2：小友 · 情绪如瀚海行舟 ========== */
+.g-name {
+  position: absolute; left: 352px; top: 54px;
+  font-family: var(--font-cn); font-weight: 700;
+  font-size: 46px; color: rgba(144, 84, 0, 0.82); letter-spacing: 2px;  /* #905400 82% */
+  z-index: 5;          /* 文字置于最上层 */
+}
+.g-line {
+  position: absolute; left: 352px;
+  font-family: var(--font-cn); font-weight: 500;
+  font-size: 30px; color: rgba(51, 32, 6, 0.73); letter-spacing: 1.5px;  /* #332006 73% */
+  z-index: 5;
+}
+.g-line--a { top: 126px; }
+.g-line--b { top: 184px; }
+.g-tip {
+  position: absolute; left: 1224px; top: 219px;
+  font-family: var(--font-cn); font-size: 30px;
+  color: var(--cream); letter-spacing: 2px;
+  z-index: 5;
+}
+/* step2 元素依次淡入上浮 */
+.gstep--2 .g-illus--boat { animation: g-fade-up .7s var(--ease-out) .05s both; }
+.gstep--2 .g-name        { animation: g-fade-up .6s var(--ease-out) .15s both; }
+.gstep--2 .g-line--a     { animation: g-fade-up .6s var(--ease-out) .28s both; }
+.gstep--2 .g-line--b     { animation: g-fade-up .6s var(--ease-out) .40s both; }
+.gstep--2 .g-tip         { animation: g-fade-in .6s var(--ease-out) .60s both; }
+@keyframes g-fade-up {
+  0%   { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes g-fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+/* ========== step 3：无需纠结 · 你是勇敢的舵手 ========== */
+.g-title {
+  position: absolute;
+  font-family: var(--font-cn); font-weight: 700;
+  color: #ffcb82; letter-spacing: 2px;
+}
+.gstep--3 .g-title {
+  left: 438px; top: 115px;
+  font-size: 40px; width: 240px; text-align: center;
+}
+.g-sub {
+  position: absolute; left: 548px; top: 238px;
+  font-family: var(--font-cn); font-weight: 500;
+  font-size: 30px; color: #ffc97e; letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+/* 文字补全：head 先出，tail（你是勇敢的舵手）延迟淡入 */
+.g-sub__tail { opacity: 0; }
+.gstep--3 .g-illus--sit    { animation: g-fade-up .7s var(--ease-out) .05s both; }
+.gstep--3 .g-illus--rudder { animation: g-fade-in .8s var(--ease-out) .35s both; }
+.gstep--3 .g-title         { animation: g-fade-up .6s var(--ease-out) .15s both; }
+.gstep--3 .g-sub__head     { animation: g-fade-in .5s var(--ease-out) .30s both; }
+.gstep--3 .g-sub__tail     { animation: g-type-in .6s var(--ease-out) .95s forwards; }
+@keyframes g-type-in {
+  0%   { opacity: 0; transform: translateX(-6px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* ========== step 4：所以，请深呼吸 → 衔接 question ========== */
+.g-title--breathe {
+  left: 50%; top: 163px; transform: translateX(-50%);
+  font-size: 40px; width: 340px; text-align: center;
+}
+/* 发光球上的提示文字（深棕，因落在亮区） */
+.g-orb-line {
+  position: absolute; left: 1051px;
+  font-family: var(--font-cn); font-weight: 500;
+  font-size: 30px; color: #5a2901; letter-spacing: 1px;
+}
+.g-orb-line--a { top: 157px; }
+.g-orb-line--b { top: 200px; }
+.gstep--4 .g-illus--orb      { animation: g-fade-in .9s var(--ease-out) .05s both; }
+.gstep--4 .g-title--breathe  { animation: g-fade-up .7s var(--ease-out) .25s both; }
+.gstep--4 .g-orb-line--a     { animation: g-fade-up .6s var(--ease-out) .45s both; }
+.gstep--4 .g-orb-line--b     { animation: g-fade-up .6s var(--ease-out) .58s both; }
+
+/* ---------- 方向箭头（点击继续 / 进入），随步骤切位置 ---------- */
+.g-arrow {
+  position: absolute;
+  width: 72px; height: 72px;
+  padding: 0; border: 0; background: transparent;
+  cursor: pointer; z-index: 30;
+  opacity: 0; pointer-events: none;
+  transition: left .5s var(--ease-out), top .5s var(--ease-out),
+              opacity .5s var(--ease-out), transform .18s var(--ease-out);
+  animation: g-arrow-bob 1.8s var(--ease-out) infinite;
+}
+.g-arrow img { width: 100%; height: 100%; display: block; }
+@keyframes g-arrow-bob {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(7px); }
+}
+.g-arrow:active { transform: scale(.9); }
+/* step1 无箭头（自动推进）；step2/3/4 显示并定位 */
+body[data-state="guide"][data-guide-step="2"] .g-arrow { left: 1256px; top: 250px; opacity: 1; pointer-events: auto; }
+body[data-state="guide"][data-guide-step="3"] .g-arrow { left: 1380px; top: 210px; opacity: 1; pointer-events: auto; }
+body[data-state="guide"][data-guide-step="4"] .g-arrow { left: 1116px; top: 258px; opacity: 1; pointer-events: auto; }
 
 /* ========================================================
    动效降级

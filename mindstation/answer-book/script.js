@@ -3,7 +3,7 @@
    ========================================================= */
 
 (() => {
-  const STATES = ['menu', 'question', 'loading', 'answer', 'depleted'];
+  const STATES = ['guide', 'menu', 'question', 'loading', 'answer', 'depleted'];
   const MAX_ASKS = 10;
 
   const ANSWERS = [
@@ -337,6 +337,50 @@
     body.dataset.state = s;
   };
 
+  // ========================================================
+  //  首次引导动画（小友 · 4 步）
+  // ========================================================
+  const GUIDE_KEY = 'ab_guide_seen';   // localStorage：是否看过引导
+  const GUIDE_STEPS = 4;
+  const GUIDE_STEP1_AUTO = 1600;       // step1 开场气泡浮现后自动进 step2 的时长
+  let guideStep = 1;
+  let guideAutoTimer = null;
+  const skipBtn = document.querySelector('.g-skip');
+
+  const setGuideStep = (n) => {
+    guideStep = n;
+    body.dataset.guideStep = String(n);
+  };
+
+  // 引导走完 / 跳过 → 记录已看过，淡出引导进 menu
+  const finishGuide = () => {
+    clearTimeout(guideAutoTimer);
+    try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {}
+    setState('menu');
+  };
+
+  // 推进到下一步；最后一步后进入主流程
+  const guideNext = () => {
+    clearTimeout(guideAutoTimer);
+    if (guideStep >= GUIDE_STEPS) {
+      finishGuide();
+    } else {
+      setGuideStep(guideStep + 1);
+    }
+  };
+
+  // 启动引导：step1 开场后自动进 step2，其余靠点击箭头推进
+  const startGuide = (seenBefore) => {
+    setGuideStep(1);
+    setState('guide');
+    // 二次进入显示跳过按钮；首次隐藏，强制走完
+    if (seenBefore && skipBtn) skipBtn.classList.add('is-show');
+    guideAutoTimer = setTimeout(() => {
+      if (body.dataset.state === 'guide' && guideStep === 1) setGuideStep(2);
+    }, GUIDE_STEP1_AUTO);
+  };
+
+
   // ---------- 字符切分（用于答案逐字动画） ----------
   const splitChars = (el, text, baseDelay = 0) => {
     el.innerHTML = '';
@@ -408,6 +452,15 @@
 
   // ---------- 事件绑定 ----------
   document.addEventListener('click', (e) => {
+    // 引导层：方向箭头推进 / 跳过
+    const gTarget = e.target.closest('[data-guide]');
+    if (gTarget && body.dataset.state === 'guide') {
+      const g = gTarget.dataset.guide;
+      if (g === 'next') guideNext();
+      else if (g === 'skip') finishGuide();
+      return;
+    }
+
     const target = e.target.closest('[data-action]');
     if (!target) return;
     const action = target.dataset.action;
@@ -459,14 +512,31 @@
       case 'R':
         reset();
         break;
+      case 'g':
+      case 'G':
+        // 调试：重播引导（含跳过按钮）
+        startGuide(true);
+        break;
+      case 'n':
+      case 'N':
+        if (body.dataset.state === 'guide') guideNext();
+        break;
     }
   });
 
   // ---------- 初始：预填一个答案以便 #3 键直接看到 ----------
   writeAnswer(ANSWERS[0]);
 
-  // ---------- 启动参数：?skip-menu=1 跳过入口菜单，直接进 question ----------
-  if (new URLSearchParams(location.search).get('skip-menu') === '1') {
-    setState('question');
-  }
+  // ---------- 启动决策 ----------
+  // 优先级：?skip-menu=1（直接进 question） > ?skip-guide=1（跳过引导进 menu）
+  //        > 首次/二次进入播放引导
+  (function bootstrap() {
+    const q = new URLSearchParams(location.search);
+    if (q.get('skip-menu') === '1') { setState('question'); return; }
+    if (q.get('skip-guide') === '1') { setState('menu'); return; }
+
+    let seen = false;
+    try { seen = localStorage.getItem(GUIDE_KEY) === '1'; } catch (e) {}
+    startGuide(seen);   // 首次 seen=false 不显示跳过；二次 seen=true 显示跳过
+  })();
 })();
