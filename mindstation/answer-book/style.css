@@ -1027,10 +1027,9 @@ body[data-guide-trans="black"] .gstep { transition: none; }
 .g-illus--boat-reflect { position: absolute; left: 757px; top: 243px;
                    width: 241px; height: 241px; pointer-events: none;
                    transform: rotate(180deg); opacity: .33; z-index: 2; }  /* 5322:3 倒影 */
-.g-illus--sit    { width: 449px; height: 449px; z-index: 9;
-                   /* Figma 层级：女孩图为该帧最顶层（盖在光晕/文字之上）。
-                      还原 IMAGE 填充滤镜 contrast-0.6 saturation-0.25 exposure+0.16 shadows+0.85 */
-                   filter: contrast(.42) saturate(.65) brightness(1.18) hue-rotate(-4deg); }
+.g-illus--sit    { width: 449px; height: 449px; z-index: 9; }
+                   /* Figma 层级：女孩图为该帧最顶层。滤镜(contrast-0.6/saturation-0.25/
+                      exposure+0.16/shadows+0.85)已按真值反解烤入PNG，保留alpha，CSS不再加filter */
 .g-illus--sit-a  { left: 123px; top: 4px;  opacity: .88; }                    /* 5322:14 shot3-1 opacity-88 */
 .g-illus--sit-b  { left: 110px; top: 0;    opacity: .20; }                    /* 5322:52 shot3-2 opacity-20 */
 .g-illus--rudder { left: 833px; top: -208px; width: 556px; height: 556px; opacity: .73; }  /* 5323:66 opacity-73 */
