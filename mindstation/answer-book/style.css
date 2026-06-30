@@ -1139,10 +1139,17 @@ body[data-guide-trans="black"] .gstep { transition: none; }
 }
 .g-orb-line--a { top: 157px; width: 199px; } /* Figma 5313:502 */
 .g-orb-line--b { top: 200px; width: 222px; } /* Figma 5324:267 */
-.gstep--5 .g-illus--orb      { animation: g-fade-in .9s var(--ease-out) .05s both; }
-.gstep--5 .g-title--breathe  { animation: g-fade-up .7s var(--ease-out) .25s both; }
-.gstep--5 .g-orb-line--a     { animation: g-fade-up .6s var(--ease-out) .45s both; }
-.gstep--5 .g-orb-line--b     { animation: g-fade-up .6s var(--ease-out) .58s both; }
+.gstep--5 .g-illus--orb      { animation: g-fade-in .9s var(--ease-out) 1s both; }
+body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-title--breathe  { opacity: 0; animation: g-fade-in .8s var(--ease-out) 2s both; }
+body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--a     { opacity: 0; animation: g-fade-in .7s var(--ease-out) 3.2s both; }
+body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--b     { opacity: 0; animation: g-fade-in .7s var(--ease-out) 4.2s both; }
+
+/* 使用 visibility 的淡入动画（避免父容器 opacity 影响） */
+@keyframes g-fade-in-vis {
+  0% { visibility: visible; opacity: 0; }
+  1% { visibility: visible; }
+  100% { visibility: visible; opacity: 1; }
+}
 
 /* 流星装饰（Union）：白色拖尾+两圆点。SVG viewBox 含外扩，按节点 path
    边界回退定位。a=shot3-2 右下水平拖尾，b=step5 朝上拖尾。 */
@@ -1160,8 +1167,9 @@ body[data-guide-trans="black"] .gstep { transition: none; }
   padding: 0;
   transition: transform .15s var(--ease-out);
 }
-.gstep--5 .g-meteor--clickable {
-  animation: g-fade-in .8s var(--ease-out) .5s both, g-arrow-bob 1.8s var(--ease-out) .5s infinite;
+body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-meteor--clickable {
+  opacity: 0;
+  animation: g-fade-in .8s var(--ease-out) 5s both, g-arrow-bob 1.8s var(--ease-out) 5s infinite;
 }
 .g-meteor--clickable img { width: 100%; height: 100%; display: block; }
 .g-meteor--clickable:active { transform: scale(.9); }
