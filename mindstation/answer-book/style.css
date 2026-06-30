@@ -1165,11 +1165,20 @@ body[data-guide-trans="black"] .gstep { transition: none; }
   0%,100% { transform: translateY(0); }
   50%     { transform: translateY(7px); }
 }
+@keyframes g-arrow-bob-right {
+  0%,100% { transform: rotate(-90deg) translateY(0); }
+  50%     { transform: rotate(-90deg) translateY(7px); }  /* 旋转后 translateY 变成横向移动 */
+}
 .g-arrow:active { transform: scale(.9); }
 /* step1 无箭头（自动推进）；step2/3/4 显示并定位 */
 body[data-state="guide"][data-guide-step="2"] .g-arrow { left: 1256px; top: 250px; opacity: 1; pointer-events: auto; }
 /* step3(3-1) 自动翻页，不显示箭头 */
-body[data-state="guide"][data-guide-step="4"] .g-arrow { left: 1380px; top: 210px; opacity: 1; pointer-events: auto; }
+body[data-state="guide"][data-guide-step="4"] .g-arrow {
+  left: 1399px; top: 200px; /* meteor-a 原位置 */
+  opacity: 1; pointer-events: auto;
+  transform: rotate(-90deg); /* 向右 */
+  animation: g-arrow-bob-right 1.8s var(--ease-out) infinite; /* 向右时用左右浮动 */
+}
 body[data-state="guide"][data-guide-step="5"] .g-arrow { left: 1116px; top: 258px; opacity: 1; pointer-events: auto; }
 
 /* ========================================================
