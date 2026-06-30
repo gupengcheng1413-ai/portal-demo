@@ -1140,7 +1140,7 @@ body[data-guide-trans="black"] .gstep { transition: none; }
 .g-orb-line--a { top: 157px; width: 199px; } /* Figma 5313:502 */
 .g-orb-line--b { top: 200px; width: 222px; } /* Figma 5324:267 */
 .gstep--5 .g-illus--orb      { animation: g-fade-in .9s var(--ease-out) 1s both; }
-body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-title--breathe  { opacity: 0; animation: g-fade-in .8s var(--ease-out) 2s both; }
+body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-title--breathe  { opacity: 0; animation: g-fade-in .8s var(--ease-out) 1.2s both; }
 body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--a     { opacity: 0; animation: g-fade-in .7s var(--ease-out) 3.2s both; }
 body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--b     { opacity: 0; animation: g-fade-in .7s var(--ease-out) 4.2s both; }
 
