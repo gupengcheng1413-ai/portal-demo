@@ -1134,9 +1134,11 @@ body[data-guide-trans="black"] .gstep { transition: none; }
   position: absolute; left: 1051px;
   font-family: var(--font-cn); font-weight: 500;
   font-size: 30px; color: #5a2901; letter-spacing: 1px;
+  white-space: nowrap; /* 防止换行 */
+  z-index: 15; /* 确保在发光球图片上方 */
 }
-.g-orb-line--a { top: 157px; }
-.g-orb-line--b { top: 200px; }
+.g-orb-line--a { top: 157px; width: 199px; } /* Figma 5313:502 */
+.g-orb-line--b { top: 200px; width: 222px; } /* Figma 5324:267 */
 .gstep--5 .g-illus--orb      { animation: g-fade-in .9s var(--ease-out) .05s both; }
 .gstep--5 .g-title--breathe  { animation: g-fade-up .7s var(--ease-out) .25s both; }
 .gstep--5 .g-orb-line--a     { animation: g-fade-up .6s var(--ease-out) .45s both; }
@@ -1146,8 +1148,23 @@ body[data-guide-trans="black"] .gstep { transition: none; }
    边界回退定位。a=shot3-2 右下水平拖尾，b=step5 朝上拖尾。 */
 .g-meteor { position: absolute; pointer-events: none; z-index: 3; }
 .g-meteor--a { left: 1399px; top: 200px; width: 94px; height: 96px; }   /* 5322:57 path@1411,208 */
-.g-meteor--b { left: 1104px; top: 260px; width: 109px; height: 96px; }  /* 5313:509 path@1116,268 */
+.g-meteor--b { left: 1104px; top: 240px; width: 109px; height: 96px; }  /* 5313:509 path@1116,268，向上移20px避免浮动溢出 */
 .gstep--5 .g-meteor--b { animation: g-fade-in .8s var(--ease-out) .5s both; }
+
+/* step5 红色箭头作为动态按钮 */
+.g-meteor--clickable {
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: transform .15s var(--ease-out);
+}
+.gstep--5 .g-meteor--clickable {
+  animation: g-fade-in .8s var(--ease-out) .5s both, g-arrow-bob 1.8s var(--ease-out) .5s infinite;
+}
+.g-meteor--clickable img { width: 100%; height: 100%; display: block; }
+.g-meteor--clickable:active { transform: scale(.9); }
 
 /* ---------- 方向箭头（点击继续 / 进入），随步骤切位置 ---------- */
 .g-arrow {
@@ -1179,7 +1196,7 @@ body[data-state="guide"][data-guide-step="4"] .g-arrow {
   transform: rotate(-90deg); /* 向右 */
   animation: g-arrow-bob-right 1.8s var(--ease-out) infinite; /* 向右时用左右浮动 */
 }
-body[data-state="guide"][data-guide-step="5"] .g-arrow { left: 1116px; top: 258px; opacity: 1; pointer-events: auto; }
+/* step5 使用红色箭头 meteor-b，不显示白色 g-arrow */
 
 /* ========================================================
    动效降级

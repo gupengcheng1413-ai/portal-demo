@@ -403,7 +403,7 @@
     delete body.dataset.guideTrans;
     guideTransiting = false;
     try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) {}
-    setState('menu');
+    setState('question');  // 跳过 menu 过渡页，直接进入灵感锦囊主页（question 状态）
   };
 
   // 推进到下一步；最后一步后进入主流程。每步切换均经黑场转场。
