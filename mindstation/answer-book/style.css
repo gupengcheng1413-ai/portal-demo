@@ -1107,6 +1107,8 @@ body[data-guide-trans="black"] .gstep { transition: none; }
 .gstep--3 .g-illus--sit-a { animation: g-fade-up .7s var(--ease-out) .05s both; }
 .gstep--3 .g-title--3a    { animation: g-fade-up .6s var(--ease-out) .15s both; }
 .gstep--3 .g-sub--a       { animation: g-fade-in .5s var(--ease-out) .30s both; }
+/* 黑场前淡出：由 JS 在合适时机添加 .fadeout-before-black 类触发 */
+.fadeout-before-black { animation: g-fadeout-before-black .3s ease-in both !important; }
 
 /* step4（shot3-2）：女孩 + 舵 + 标题 + 完整副标题 + 流星 */
 .gstep--4 .g-illus--sit-b { animation: g-fade-up-sitb .7s var(--ease-out) .05s both; }
@@ -1116,6 +1118,7 @@ body[data-guide-trans="black"] .gstep { transition: none; }
 }
 .gstep--4 .g-illus--rudder { animation: g-fade-in-rudder .8s var(--ease-out) .35s both; }
 @keyframes g-fade-in-rudder { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes g-fadeout-before-black { 0% { opacity: 1; } 100% { opacity: 0; } }  /* 黑场前文案淡出 */
 .gstep--4 .g-title--3b    { animation: g-fade-up .6s var(--ease-out) .15s both; }
 .gstep--4 .g-sub--b       { animation: g-fade-in .5s var(--ease-out) .30s both; }
 .gstep--4 .g-meteor--a    { animation: g-fade-in .8s var(--ease-out) .50s both; }

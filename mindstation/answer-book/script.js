@@ -379,6 +379,17 @@
     // 自动翻页步骤：停留指定时长后经黑场转场推进到下一步
     clearGuideTimers();
     if (GUIDE_AUTO[n]) {
+      const FADEOUT_BEFORE_BLACK = 300;  // 黑场前文案淡出时长
+      // 提前触发文案淡出
+      guideBlackTimers.push(setTimeout(() => {
+        if (body.dataset.state !== 'guide' || guideStep !== n) return;
+        const stepEl = document.querySelector(`.gstep--${n}`);
+        if (stepEl) {
+          stepEl.querySelectorAll('.g-title, .g-sub').forEach(el =>
+            el.classList.add('fadeout-before-black'));
+        }
+      }, GUIDE_AUTO[n] - FADEOUT_BEFORE_BLACK));
+      // 黑场转场
       guideAutoTimer = setTimeout(() => {
         if (body.dataset.state !== 'guide' || guideStep !== n) return;
         blackoutTo(() => setGuideStep(n + 1));
