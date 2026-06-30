@@ -9,7 +9,7 @@
   <link href="https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@400;500;700&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body data-state="guide" data-guide-step="1">
+<body data-state="guide" data-guide-step="2">
 <script>
 // 默认 data-state="guide" 播放引导动画，避免 menu/question 闪现。
 // 启动决策（是否跳过引导 / 是否显示跳过按钮）全部交给 script.js 的 IIFE。
@@ -55,11 +55,6 @@
 
         <!-- 装饰星星（贯穿前 3 步，随步骤微移） -->
         <img class="g-star" src="assets/guide/star.svg" alt="" aria-hidden="true" />
-
-        <!-- ---------- step 1：开场（金色卷轴气泡浮现） ---------- -->
-        <div class="gstep gstep--1" data-step="1" aria-hidden="true">
-          <div class="g-bubble--empty"></div>
-        </div>
 
         <!-- ---------- step 2：小友 · 情绪如瀚海行舟 ---------- -->
         <div class="gstep gstep--2" data-step="2" aria-hidden="true">

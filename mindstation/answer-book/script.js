@@ -341,13 +341,12 @@
   //  首次引导动画（小友 · 4 步）
   // ========================================================
   const GUIDE_KEY = 'ab_guide_seen';   // localStorage：是否看过引导
-  const GUIDE_STEPS = 5;               // 1开场 2小友 3无需纠结(3-1半句) 4勇敢的舵手(3-2) 5深呼吸
-  const GUIDE_STEP1_AUTO = 1600;       // step1 开场气泡浮现后自动进 step2 的时长
+  const GUIDE_STEPS = 5;               // 2小友 3无需纠结(3-1半句) 4勇敢的舵手(3-2) 5深呼吸
   const GUIDE_STEP3_AUTO = 2000;       // step3(3-1) 停留时长，到时进 step4(3-2)
   const GUIDE_BLACK_FADE = 900;        // 黑场淡入/淡出时长（与 .g-blackout transition 一致）
   // 需要自动翻页的步骤 → 停留时长(ms)；其余步骤靠点击箭头推进
-  const GUIDE_AUTO = { 1: GUIDE_STEP1_AUTO, 3: GUIDE_STEP3_AUTO };
-  let guideStep = 1;
+  const GUIDE_AUTO = { 3: GUIDE_STEP3_AUTO };
+  let guideStep = 2;
   let guideAutoTimer = null;
   let guideTransiting = false;         // 黑场转场进行中，忽略重复推进
   const guideBlackTimers = [];
@@ -416,10 +415,10 @@
     }
   };
 
-  // 启动引导：step1 开场后自动进 step2，step3 自动进 step4，其余靠点击箭头推进
+  // 启动引导：从 step2 开始，step3 自动进 step4，其余靠点击箭头推进
   const startGuide = (seenBefore) => {
     guideTransiting = false;
-    setGuideStep(1);   // setGuideStep 内部已挂 step1 的自动推进定时器
+    setGuideStep(2);
     setState('guide');
     // 二次进入显示跳过按钮；首次隐藏，强制走完
     if (seenBefore && skipBtn) skipBtn.classList.add('is-show');

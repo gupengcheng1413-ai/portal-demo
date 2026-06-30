@@ -966,7 +966,6 @@ body[data-state="depleted"] .answer { animation: answer-rise .9s cubic-bezier(.2
   100% { transform: rotate(8deg)  scale(1); }
 }
 /* 星星随步骤换位（shot1/2 在 834,88；shot3 移到 964,32） */
-body[data-state="guide"][data-guide-step="1"] .g-star,
 body[data-state="guide"][data-guide-step="2"] .g-star { left: 858px; top: 88px; opacity: 1; }
 body[data-state="guide"][data-guide-step="3"] .g-star,
 body[data-state="guide"][data-guide-step="4"] .g-star { left: 988px; top: 32px;  opacity: 1; }  /* Star2 两帧同位 */
@@ -978,7 +977,6 @@ body[data-state="guide"][data-guide-step="5"] .g-star { opacity: 0; }
   opacity: 0; pointer-events: none;
   transition: opacity .6s var(--ease-out);
 }
-body[data-state="guide"][data-guide-step="1"] .gstep--1,
 body[data-state="guide"][data-guide-step="2"] .gstep--2,
 body[data-state="guide"][data-guide-step="3"] .gstep--3,
 body[data-state="guide"][data-guide-step="4"] .gstep--4,
@@ -1005,16 +1003,6 @@ body[data-guide-trans="black"] .gstep { transition: none; }
   pointer-events: none;
   z-index: 1;          /* 黄色卡片置于底层 */
 }
-.g-bubble--empty {
-  /* step1 开场空气泡：Figma 5312:267，34% 不透明暖色渐变圆角矩形 */
-  position: absolute; left: 287px; top: 67px;
-  width: 1227px; height: 670px;
-  border-radius: 42px;
-  background: linear-gradient(128deg,
-              rgba(255, 218, 155, 0.34) 10.6%,
-              rgba(203, 151, 60, 0.34) 79.2%);
-  pointer-events: none;
-}
 /* ---------- 公共：插画 ----------
    混合模式 + 不透明度全部取自 Figma 真值（图片 fill 层的 opacity-*）：
    这些 jimeng 图本身是亮色/白底，设计用低不透明度让其淡淡融入暗背景，呈朦胧剪影。
@@ -1036,13 +1024,6 @@ body[data-guide-trans="black"] .gstep { transition: none; }
 /* 发光球：5324:266 原始 RGBA 透明资源直接用，960x1280 竖图大部分在画布上方 */
 .g-illus--orb    { left: 660px; top: -518px; width: 960px; height: 1280px;
                    opacity: .88; }                                              /* 5324:266 opacity-88 */
-
-/* ========== step 1：开场气泡浮现 ========== */
-.gstep--1 .g-bubble--empty { animation: g-bubble-rise .8s var(--ease-out) both; }
-@keyframes g-bubble-rise {
-  0%   { opacity: 0; transform: translateY(26px) scale(.96); }
-  100% { opacity: .96; transform: translateY(0) scale(1); }
-}
 
 /* ========== step 2：小友 · 情绪如瀚海行舟 ========== */
 .g-name {
@@ -1195,7 +1176,7 @@ body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-meteor--clickable {
   50%     { transform: rotate(-90deg) translateY(7px); }  /* 旋转后 translateY 变成横向移动 */
 }
 .g-arrow:active { transform: scale(.9); }
-/* step1 无箭头（自动推进）；step2/3/4 显示并定位 */
+/* step2/4 显示箭头并定位；step3 自动推进无箭头 */
 body[data-state="guide"][data-guide-step="2"] .g-arrow { left: 1256px; top: 250px; opacity: 1; pointer-events: auto; }
 /* step3(3-1) 自动翻页，不显示箭头 */
 body[data-state="guide"][data-guide-step="4"] .g-arrow {
