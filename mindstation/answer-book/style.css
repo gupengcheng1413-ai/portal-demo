@@ -1122,8 +1122,8 @@ body[data-guide-trans="black"] .gstep { transition: none; }
 .g-orb-line--b { top: 200px; width: 222px; } /* Figma 5324:267 */
 .gstep--5 .g-illus--orb      { animation: g-fade-in .9s var(--ease-out) 1s both; }
 body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-title--breathe  { opacity: 0; animation: g-fade-in .8s var(--ease-out) 1.2s both; }
-body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--a     { opacity: 0; animation: g-fade-in .7s var(--ease-out) 3.2s both; }
-body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--b     { opacity: 0; animation: g-fade-in .7s var(--ease-out) 4.2s both; }
+body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--a     { opacity: 0; animation: g-fade-in .7s var(--ease-out) 2.4s both; }
+body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--b     { opacity: 0; animation: g-fade-in .7s var(--ease-out) 3.4s both; }
 
 /* 使用 visibility 的淡入动画（避免父容器 opacity 影响） */
 @keyframes g-fade-in-vis {
@@ -1137,7 +1137,7 @@ body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--b     { opa
 .g-meteor { position: absolute; pointer-events: none; z-index: 3; }
 .g-meteor--a { left: 1399px; top: 200px; width: 94px; height: 96px; }   /* 5322:57 path@1411,208 */
 .g-meteor--b { left: 1104px; top: 240px; width: 109px; height: 96px; }  /* 5313:509 path@1116,268，向上移20px避免浮动溢出 */
-.gstep--5 .g-meteor--b { animation: g-fade-in .8s var(--ease-out) .5s both; }
+.gstep--4 .g-meteor--a    { animation: g-fade-in .8s var(--ease-out) .50s both; }
 
 /* step5 红色箭头作为动态按钮 */
 .g-meteor--clickable {
@@ -1146,11 +1146,12 @@ body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-orb-line--b     { opa
   background: none;
   border: none;
   padding: 0;
+  opacity: 0; /* 初始隐藏，等待动画 */
   transition: transform .15s var(--ease-out);
 }
 body[data-state="guide"][data-guide-step="5"] .gstep--5 .g-meteor--clickable {
   opacity: 0;
-  animation: g-fade-in .8s var(--ease-out) 5s both, g-arrow-bob 1.8s var(--ease-out) 5s infinite;
+  animation: g-fade-in .8s var(--ease-out) 4.2s both, g-arrow-bob 1.8s var(--ease-out) 4.2s infinite;
 }
 .g-meteor--clickable img { width: 100%; height: 100%; display: block; }
 .g-meteor--clickable:active { transform: scale(.9); }
