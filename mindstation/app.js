@@ -152,9 +152,9 @@ function onSceneEnter(name){
   if(name === "daily")   runDailyEnter();
   if(name === "collect") renderCollect();
   if(name === "answer"){
-    // 进入时 lazy-load iframe，?skip-menu=1 让答案之书启动直接进 question 状态
+    // 进入时 lazy-load iframe，移除 skip-menu 参数以显示完整引导动画
     const fr = $("#ansFrame");
-    const target = "answer-book/index.html?skip-menu=1";
+    const target = "answer-book/index.html";
     if(fr && fr.getAttribute("src") !== target){
       fr.setAttribute("src", target);
     }
